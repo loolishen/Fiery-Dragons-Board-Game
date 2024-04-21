@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e0507622-64d1-42e4-ac59-1ebfb529c38c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/BoardComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/BoardComponent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/Cave.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/Cave.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/ChitCard$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/ChitCard$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/ChitCard$ClickCallback.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/ChitCard$ClickCallback.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/ChitCard.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/ChitCard.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/ImageNameExtractor$Result.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/ImageNameExtractor$Result.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/ImageNameExtractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/ImageNameExtractor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/RoundComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/RoundComponent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/RoundGameBoard$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/RoundGameBoard$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/RoundGameBoard.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/RoundGameBoard.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/Tile.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/Tile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/Token$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/Token$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/Token$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/Token$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/Token.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/Token.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/Volcano.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../target/classes/dizhen/game/Volcano.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../../.." />
+  </component>
+  <component name="ProjectId" id="2fMAzALAu10ormyFCZNb96ydprf" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Dizhen",
+    "last_opened_file_path": "C:/Users/DavidL/OneDrive/CS/FIT3077/Project/MA_Tuesday08am_Team123/fiery_dragon"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e0507622-64d1-42e4-ac59-1ebfb529c38c" name="Changes" comment="" />
+      <created>1713600833236</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1713600833236</updated>
+    </task>
+    <servers />
+  </component>
+</project>
