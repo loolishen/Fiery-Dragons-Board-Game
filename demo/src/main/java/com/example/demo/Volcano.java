@@ -19,6 +19,8 @@ public class Volcano {
         return totalCards;
     }
 
+
+
     public VolcanoCard getVolcanoCardByID(int id){
         return volcanoRing[id-1]; // our ID starts from 1 but array indexing is 0
     }

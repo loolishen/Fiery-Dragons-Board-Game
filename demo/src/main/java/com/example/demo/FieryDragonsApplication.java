@@ -17,12 +17,10 @@ public class FieryDragonsApplication extends GameApplication {
     private final static int ANIMAL_COUNT = 3;
     private final static int DRAGON_PIRATE_COUNT = 2;
 
+    private final static int NUM_PLAYERS = 4;
+
     private final static String[] animalImagePaths = {"/com/example/demo/assets/salamander", "/com/example/demo/assets/bat",
             "/com/example/demo/assets/spider","/com/example/demo/assets/babyDragon","/com/example/demo/assets/skull" };
-//    private final static String SALAMANDER_IMG_PATH = "/com/example/demo/assets/salamander1.png";
-//    private final static String BAT_IMG_PATH = "/com/example/demo/assets/bat1.png";
-//    private final static String SPIDER_IMG_PATH = "/com/example/demo/assets/spider1.png";
-//    private final static String BABY_DRAGON_IMG_PATH = "/com/example/demo/assets/babyDragon1.png";
 
     private final static int NUM_CHIT_CARDS = 16;
 
@@ -48,11 +46,10 @@ public class FieryDragonsApplication extends GameApplication {
     protected void initGame() {
         FXGL.getGameWorld().addEntityFactory(new ChitCardFactory());
 
-
         int cardRadius = 20; // Radius of the circular card
         int padding = 10; // Padding between cards
-        int sceneWidth = 320; // Scene width
-        int sceneHeight = 240; // Scene height
+        int sceneWidth = FXGL.getAppWidth();
+        int sceneHeight = FXGL.getAppHeight();
 
         // TODO: better formula for this and usage of 4 rows and 4 columns
         int gridWidth = NUM_CHIT_CARDS/4; // Number of cards in a row
@@ -63,8 +60,8 @@ public class FieryDragonsApplication extends GameApplication {
         int gridTotalHeight = gridHeight * (2 * cardRadius) + (gridHeight - 1) * padding;
 
         // Calculate the starting position to center the grid within the scene
-        int startX = (sceneWidth - gridTotalWidth) / 2;
-        int startY = (sceneHeight - gridTotalHeight) / 2;
+        int startX = (sceneWidth - gridTotalWidth) / 2 - 50;
+        int startY = (sceneHeight - gridTotalHeight) / 2 - 50;
 
         // get random coordinates for the chit cards
         List<int[]> randomCoordinates = RandomGeneration.getRandomPairs(NUM_CHIT_CARDS);
@@ -81,20 +78,19 @@ public class FieryDragonsApplication extends GameApplication {
             int[] coordinates = randomCoordinates.get(chitCardIdx);
             int x = startX + coordinates[0] * (2 * cardRadius + padding) + cardRadius;
             int y = startY + coordinates[1] * (2 * cardRadius + padding) + cardRadius;
+
             SpawnData spawnData = new SpawnData(x, y);
             if (chitCardIdx >= (NUM_CHIT_CARDS - gridWidth)){
-                if (dragonPirateCounter == 2) {
+                if (dragonPirateCounter == DRAGON_PIRATE_COUNT) {
                     dragonPirateCounter = 1;
                 }
-                System.out.println(animalImagePaths[animalImagePathsIdx]+dragonPirateCounter+".png");
                 spawnData.put("imagePath", animalImagePaths[animalImagePathsIdx]+dragonPirateCounter+".png");
                 spawnData.put("animalCount", dragonPirateCounter);
                 dragonPirateCounter += 1;
             } else {
-                if (animalCounter == 4) {
+                if (animalCounter == ANIMAL_COUNT+1) {
                     animalCounter = 1;
                 }
-                System.out.println(animalImagePaths[animalImagePathsIdx]+animalCounter+".png");
                 spawnData.put("imagePath", animalImagePaths[animalImagePathsIdx]+animalCounter+".png");
                 spawnData.put("animalCount", animalCounter);
                 animalCounter += 1;
@@ -102,6 +98,13 @@ public class FieryDragonsApplication extends GameApplication {
             FXGL.spawn("chitCard", spawnData);
             chitCardIdx += 1;
         }
+
+        // Add the volcano ring card factory
+        VolcanoRingFactory newVolcanoRingFactory = new VolcanoRingFactory(NUM_PLAYERS);
+        FXGL.getGameWorld().addEntityFactory(newVolcanoRingFactory);
+        FXGL.spawn("volcanoRing");
+
+        VolcanoSegment[] segments = newVolcanoRingFactory.createSegments();
 
 
 
