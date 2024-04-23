@@ -6,9 +6,10 @@ public class VolcanoCard {
     private int ringID;
     private AnimalType animal;
     private boolean occupied;
-    public VolcanoCard(int newSegmentID, int newRingID){
+    public VolcanoCard(int newSegmentID, int newRingID, AnimalType animalType){
         segmentID =newSegmentID;
         ringID = newRingID;
+        animal = animalType;
 
     }
 

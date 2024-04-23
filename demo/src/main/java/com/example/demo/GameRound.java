@@ -2,8 +2,8 @@ package com.example.demo;
 
 public class GameRound {
 
-    private Volcano volcanoRing;
-    private Player[] players; // TODO: clockwise direction,and youngest player starts first (first element is first player, others randomised
+    private final Volcano volcanoRing;
+    private final Player[] players; // TODO: clockwise direction,and youngest player starts first (first element is first player, others randomised
     private ChitCardFactory chitCardFactory;
     private boolean endGame;
 
@@ -17,6 +17,13 @@ public class GameRound {
         return volcanoRing;
     }
 
+    /**
+     * Display winning message.
+     */
+    private void displayMessage(){
+
+    }
+
     private void gameLoop(){
         int playerTurn = 1;
         Player currPlayer = players[playerTurn-1];
@@ -28,7 +35,8 @@ public class GameRound {
             // turn ended so go to next player
             currPlayer = players[playerTurn-1];
         }
-
+        displayMessage();
+        // TODO: go back to home screen (on clicking a return button?) or perhaps just refresh board?
     }
 
     private void playTurn(Player player){
