@@ -51,6 +51,7 @@ public class VolcanoRingFactory implements EntityFactory {
 
     @Spawns("volcanoRing")
     public Entity newChitCard(SpawnData data){
+
         // Create a group to hold the cards
         Group cardGroup = new Group();
 
@@ -65,12 +66,8 @@ public class VolcanoRingFactory implements EntityFactory {
         double angleIncrement = 360.0 / NUM_CARDS;
 
         int firstRotationAngle = 90;
-//        int segmentID = 1;
         for (int i = 0; i < NUM_CARDS; i++) {
-//            if (i!=0 && i%SEGMENT_LENGTH==0){
-//                System.out.println("i is "+i+" and we increase segment id to "+(segmentID+1));
-//                segmentID+=1;
-//            }
+
             // Calculate the angle for this card position
             double angle = Math.toRadians(i * angleIncrement);
 
@@ -97,33 +94,43 @@ public class VolcanoRingFactory implements EntityFactory {
 
             // Add the card view to the group
             cardGroup.getChildren().add(cardRect);
+
         }
 
         return FXGL.entityBuilder(data).view(cardGroup).build();
     }
+/**
+ * Populates the volcano's volcanoCard array with the cards
+ */
+    public VolcanoSegment[] createSegments(Volcano volcano){
 
-    public VolcanoSegment[] createSegments(){
         VolcanoSegment[] segments = new VolcanoSegment[NUM_SEGMENTS];
         int segmentID = 1;
         VolcanoSegment volcanoSegment = new VolcanoSegment(segmentID, SEGMENT_LENGTH);
         segments[0] = volcanoSegment;
+        int ringID = 0;
         for (int i=0; i<animals.length; i++){
             if (i!=0 && i%SEGMENT_LENGTH==0){
                 segmentID += 1;
                 volcanoSegment = new VolcanoSegment(segmentID, SEGMENT_LENGTH);
             }
             VolcanoCard newVolcanoCard = new VolcanoCard(segmentID, i+1, animals[i]);
+            //add volcano card to ring
+           volcano.getVolcanoRing()[ringID] = newVolcanoCard;
+            ringID+=1;
+
             volcanoSegment.addVolcanoCard(newVolcanoCard);
 
             if (i!=0 && i%SEGMENT_LENGTH==0){
                 segments[segmentID-1] = volcanoSegment;
             }
 
-            if (i%(NUM_SEGMENTS-2)==0){
+            if (i%(NUM_SEGMENTS-2)==0){ // logic to compute cards with cave
                 newVolcanoCard.setCave(true);
                 volcanoSegment.setHasCave(true);
             }
         }
+
         return  segments;
     }
 

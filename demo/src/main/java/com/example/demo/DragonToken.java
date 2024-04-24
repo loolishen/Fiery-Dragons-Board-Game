@@ -7,13 +7,15 @@ public class DragonToken {
     private boolean movedOutOfCave;
     private int picResource;
 
+    public DragonToken(VolcanoCard initialVolcanoCard){
+        volcanoCard = initialVolcanoCard;
+        movedOutOfCave = false; // by default has not moved out of cave
+    }
+
     public void updateTotalMovementCount(int steps){
         totalMovementCount += steps;
     }
 
-    public DragonToken(){
-        movedOutOfCave = false; // by default has not moved out of cave
-    }
     public int getCurrentPosition() {
         return volcanoCard.getRingID();
     }

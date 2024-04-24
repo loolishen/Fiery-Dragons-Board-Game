@@ -24,7 +24,7 @@ public class Player {
      * 0 means player's turn ends
      * 1 means player can make a choice again
      */
-    public int makeMove(GameRound gameEntity, ChitCard cardChosen) {
+    public int makeMove(Volcano volcano, ChitCard cardChosen) {
 
         int destinationRingID = 0;
         if (cardChosen == null){
@@ -45,7 +45,7 @@ public class Player {
             destinationRingID = ringID + chitCardAnimalCount; // TODO: write formula which takes into account exceeding maximum of 16
 
             // cannot go past cave once a full round is made around the volcano
-            if (destinationRingID > gameEntity.getVolcanoRing().getTotalCards()) {
+            if (destinationRingID > volcano.getTotalCards()) {
                 return 0;
             }
             // if player has moved out of cave, do not allow going back further than cave
@@ -53,7 +53,7 @@ public class Player {
                 destinationRingID = 1;
             }
 
-            boolean occupied = gameEntity.getVolcanoRing().getVolcanoCardByID(destinationRingID).getOccupiedStatus();
+            boolean occupied = volcano.getVolcanoCardByID(destinationRingID).getOccupiedStatus();
 
             if (occupied) { // no matter what, do not allow players to share same volcano card
                 return 0;

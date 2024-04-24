@@ -9,6 +9,11 @@ public class Volcano {
     public Volcano(int segmentLength, int numCards) {
         this.segmentLength = segmentLength;
         this.totalCards = numCards;
+        volcanoRing = new VolcanoCard[numCards];
+    }
+
+    public VolcanoCard[] getVolcanoRing() {
+        return volcanoRing;
     }
 
     private int calculateSegmentLength(int numCards){
