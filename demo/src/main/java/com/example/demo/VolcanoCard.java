@@ -15,6 +15,10 @@ public class VolcanoCard {
 
     }
 
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
+    }
+
     public boolean isCave() {
         return isCave;
     }

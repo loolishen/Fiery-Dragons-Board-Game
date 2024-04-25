@@ -10,7 +10,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class ChitCardFactory implements EntityFactory {
@@ -23,9 +22,9 @@ public class ChitCardFactory implements EntityFactory {
     @Spawns("chitCard")
     public Entity newChitCard(SpawnData data){
 
-        Circle defaultChitCardShape = new Circle(20, Color.LIGHTBLUE);
+        Circle defaultChitCardShape = new Circle(28, Color.LIGHTBLUE);
         defaultChitCardShape.setStrokeWidth(2); // Set the thickness to 2 pixels
-        defaultChitCardShape.setStroke(Color.LIGHTBLUE); // Set the outline color to black
+        defaultChitCardShape.setStroke(Color.BLACK); // Set the outline color to black
         int index = data.get("idx");
         chitCards[index] = defaultChitCardShape;
         // get animal type and count
@@ -37,43 +36,24 @@ public class ChitCardFactory implements EntityFactory {
         String imagePath = data.get("imagePath");
         Image image = new Image(getClass().getResource(imagePath).toExternalForm());
 
-        Circle newChitCardShape = new Circle(20);
+        Circle newChitCardShape = new Circle(28);
         newChitCardShape.setStrokeWidth(2);
-        newChitCardShape.setStroke(Color.LIGHTBLUE);
+        newChitCardShape.setStroke(Color.BLACK);
         newChitCardShape.setFill(new ImagePattern(image)); // Provide the path to your PNG image
 
-        ChitCard chitCard = new ChitCard(animalType,animalCount, defaultChitCardShape, newChitCardShape, data);
+        ChitCard chitCard = new ChitCard(index, animalType,animalCount, defaultChitCardShape, newChitCardShape, data);
         viewControllerMapping.put(defaultChitCardShape, chitCard);
         viewControllerMapping.put(newChitCardShape, chitCard);
-        return FXGL.entityBuilder(data).view(defaultChitCardShape).build();
+        return FXGL.entityBuilder(data).type(EntityType.CHIT_CARD).view(defaultChitCardShape).build();
     }
 
 
     @Spawns("uncoveredChitCard")
     public Entity newUncoveredChitCard(SpawnData data){
         Circle uncoveredChitCardShape = data.get("uncoveredShape");
-//        Circle defaultChitCardShape = new Circle(20, Color.LIGHTBLUE);
-//        defaultChitCardShape.setStrokeWidth(2); // Set the thickness to 2 pixels
-//        defaultChitCardShape.setStroke(Color.LIGHTBLUE); // Set the outline color to black
         int index = data.get("idx");
         chitCards[index] = uncoveredChitCardShape;
-//        // get animal type and count
-//        AnimalType animalType = data.get("animalType");
-//        int animalCount = data.get("animalCount");
-//        //get index
-//
-//        // Get the image path from the SpawnData
-//        String imagePath = data.get("imagePath");
-//        Image image = new Image(getClass().getResource(imagePath).toExternalForm());
-//
-//        Circle newChitCardShape = new Circle(20);
-//        newChitCardShape.setStrokeWidth(2);
-//        newChitCardShape.setStroke(Color.LIGHTBLUE);
-//        newChitCardShape.setFill(new ImagePattern(image)); // Provide the path to your PNG image
-//
-//        ChitCard chitCard = new ChitCard(animalType,animalCount, defaultChitCardShape, newChitCardShape, data);
-//        viewControllerMapping.put(defaultChitCardShape, chitCard);
-//        viewControllerMapping.put(newChitCardShape, chitCard);
+
         return FXGL.entityBuilder(data).view(uncoveredChitCardShape).build();
     }
 

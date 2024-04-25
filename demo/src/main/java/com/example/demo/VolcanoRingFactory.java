@@ -9,7 +9,6 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 
@@ -38,7 +37,7 @@ public class VolcanoRingFactory implements EntityFactory {
     private int[] hasCaveIndexes;
     private static final int NUM_SEGMENTS = NUM_CARDS/SEGMENT_LENGTH;
     private static final int ROTATION_AMOUNT = 360/NUM_CARDS;
-    private static final double CIRCLE_RADIUS = 200;
+    public static final double CIRCLE_RADIUS = 200;
     private static final double CARD_WIDTH = 40;
     private static final double CARD_HEIGHT = 60;
     public VolcanoRingFactory(int newNumPlayers){
@@ -50,18 +49,15 @@ public class VolcanoRingFactory implements EntityFactory {
     }
 
     @Spawns("volcanoRing")
-    public Entity newChitCard(SpawnData data){
+    public Entity volcanoRing(SpawnData data){
 
         // Create a group to hold the cards
         Group cardGroup = new Group();
 
         // Create a circle to represent the ring
-        Circle circle = new Circle(CIRCLE_RADIUS);
         int appCentreX = FXGL.getAppWidth()/2;
         int appCentreY = FXGL.getAppHeight()/2;
-        circle.setFill(Color.TRANSPARENT);
-        circle.setStroke(Color.BLACK);
-        circle.setStrokeWidth(2);
+
         // Calculate the angle increment between each card position
         double angleIncrement = 360.0 / NUM_CARDS;
 
@@ -97,7 +93,7 @@ public class VolcanoRingFactory implements EntityFactory {
 
         }
 
-        return FXGL.entityBuilder(data).view(cardGroup).build();
+        return FXGL.entityBuilder(data).type(EntityType.VOLCANO_RING).view(cardGroup).build();
     }
 /**
  * Populates the volcano's volcanoCard array with the cards
