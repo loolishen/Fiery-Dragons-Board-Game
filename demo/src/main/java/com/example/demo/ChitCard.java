@@ -11,9 +11,9 @@ public class ChitCard {
     private boolean covered;
     private int animalCount;
 
-    private Circle coveredForm; // this is default to all Chit cards
-    private Circle uncoveredForm;
-    private SpawnData spawnData;
+    private final Circle coveredForm; // this is default to all Chit cards
+    private final Circle uncoveredForm;
+    private final SpawnData spawnData;
 
 
 

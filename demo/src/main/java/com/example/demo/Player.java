@@ -74,11 +74,6 @@ public class Player {
             System.out.println("Token has moved out of cave "+ dragonToken.getMovedOutOfCave());
            if ((destinationRingID < dragonToken.getInitialVolcanoCard().getRingID()) && !dragonToken.getMovedOutOfCave()) {
                System.out.println("Cannot go back further than own cave since has not moved out of cave");
-                // TODO modify logic to ensure that when line 232 in FieryApplication is executed, even if the animal count is 2 for
-               // dragon pirate, we do NOT move by 2, because we only stay stationary at the cave. We CANNOT return 0 because this means we won't
-               // shift the token for cases when we need to shift token to intitial card, e.g. we are at 2, but we have 2 dragon pirate meaning we
-               // need to move back by 2 places, but it is limited by the initial card pos of 1. So we only shift by -shiftAmount+(initialCardPos-(destinationRingID)) = -2+(0-(-1))=-1
-               // another example is if initial card pos is 7, destination ring is 6 and our shift amount is -2 because our curr pos is 8, then we have -2+(7-(6)) = -1
                 if ((dragonToken.getCurrentPosition()-destinationRingID+cardChosen.getAnimalCount() == 0)){
                     this.setDoNothingContinueTurn(true);
                     return dragonToken.getCurrentPosition();

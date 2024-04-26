@@ -32,4 +32,8 @@ public class RandomGeneration {
         }
         return pairs;
     }
+
+    public static void shuffleIntArray(ArrayList<Integer> array, long seed){
+        Collections.shuffle(array, new Random(seed));
+    }
 }

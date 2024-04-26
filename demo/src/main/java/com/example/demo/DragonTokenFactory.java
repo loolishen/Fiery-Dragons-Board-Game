@@ -13,7 +13,7 @@ import javafx.scene.shape.Rectangle;
 
 public class DragonTokenFactory implements EntityFactory {
     private final int NUM_PLAYERS;
-    private static final int TOKEN_OFFSET = 75;
+    private static final int TOKEN_OFFSET = 65;
     private final double circle_radius;
     private Player[] players;
     private final static String[] dragonTokenImgPaths = {"/com/example/demo/assets/bluedragon.png", "/com/example/demo/assets/greenDragon.png",
@@ -36,10 +36,10 @@ public class DragonTokenFactory implements EntityFactory {
 
         // Calculate the angle increment between each token position
         double angleIncrement = 360.0 / NUM_PLAYERS;
-
+        int nextPlayerAt = 2; // volcano card id
         for (int i = 0; i < NUM_PLAYERS; i++) {
             // Calculate the angle, x, and y coordinates for the token position
-            double angle = Math.toRadians(i * angleIncrement);
+            double angle = Math.toRadians(i * angleIncrement+15);
             double x = appCentreX + tokenRadius * Math.cos(angle);
             double y = appCentreY + tokenRadius * Math.sin(angle);
 
@@ -53,11 +53,12 @@ public class DragonTokenFactory implements EntityFactory {
 
             Volcano volcanoRing = data.get("caveID");
             // set occupied status to True at the start
-            volcanoRing.getVolcanoCardByID(i*6+1).setOccupied(true);
-            DragonToken dragonToken = new DragonToken(volcanoRing.getVolcanoCardByID(i*6+1), cardRect, tokenRadius, (i)*90.0*Math.PI/180); // [0,2,4,6] refactor based on volcanoringfactory's hasCaveIndexes variable
+            volcanoRing.getVolcanoCardByID(nextPlayerAt).setOccupied(true);
+            DragonToken dragonToken = new DragonToken(volcanoRing.getVolcanoCardByID(nextPlayerAt), cardRect, tokenRadius, ((i)*90.0+15)*Math.PI/180); // [0,2,4,6] refactor based on volcanoringfactory's hasCaveIndexes variable
             players[i].setDragonToken(dragonToken);
             // Add the token view to the group
             tokenGroup.getChildren().add(cardRect);
+            nextPlayerAt += 6;
         }
         return FXGL.entityBuilder(data).type(EntityType.DRAGON_TOKEN).view(tokenGroup).build();
 

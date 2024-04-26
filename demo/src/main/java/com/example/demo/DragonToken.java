@@ -1,8 +1,11 @@
 package com.example.demo;
 
 import com.almasb.fxgl.dsl.FXGL;
-import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 
 public class DragonToken {
@@ -43,29 +46,24 @@ public class DragonToken {
     }
 
     public void moveToken(int animalCount){
-        double stopPosAngle = currPosAngle + ((MOVE_ANGLE*animalCount)*DEGREES_TO_RADIANS);
+
+        double stopPosAngle = currPosAngle + ((MOVE_ANGLE * animalCount) * DEGREES_TO_RADIANS);
         System.out.println("The stop pos angle is " + stopPosAngle);
 
-        AnimationTimer timer = new AnimationTimer() {
-            double timerCurrPosAngleRadians = currPosAngle;
-            @Override
-            public void handle(long l) {
-                timerCurrPosAngleRadians += ANGLE_INCREMENT;
+        // Calculate the start and end points
+        double startX = FXGL.getAppWidth() / 2.0 + (tokenRadius * Math.cos(currPosAngle));
+        double startY = FXGL.getAppHeight() / 2.0 + (tokenRadius * Math.sin(currPosAngle));
+        double endX = FXGL.getAppWidth() / 2.0 + (tokenRadius * Math.cos(stopPosAngle)-10);
+        double endY = FXGL.getAppHeight() / 2.0 + (tokenRadius * Math.sin(stopPosAngle)-10);
 
-                // new position of token
-                double x  = FXGL.getAppWidth() / 2.0 + (tokenRadius*Math.cos(currPosAngle));
-                double y = FXGL.getAppHeight()/2.0 + (tokenRadius*Math.sin(currPosAngle));
 
-                tokenImage.setX(x);
-                tokenImage.setY(y);
-
-                if (timerCurrPosAngleRadians >= stopPosAngle){
-                    stop();
-                }
-
-            }
-        };
-        timer.start();
+        // Create a timeline for smooth movement
+        Timeline timeline = new Timeline();
+        KeyValue keyValueX = new KeyValue(tokenImage.xProperty(), endX);
+        KeyValue keyValueY = new KeyValue(tokenImage.yProperty(), endY);
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), keyValueX, keyValueY);
+        timeline.getKeyFrames().add(keyFrame);
+        timeline.play();
         currPosAngle = stopPosAngle;
     }
 

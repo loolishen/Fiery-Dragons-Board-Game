@@ -37,7 +37,7 @@ public class CaveFactory implements EntityFactory {
 
         for (int i = 0; i < NUM_PLAYERS; i++) {
             // Calculate the angle, x, and y coordinates for the token position
-            double angle = Math.toRadians(i * angleIncrement);
+            double angle = Math.toRadians(i * angleIncrement+15);
             double x = appCentreX + tokenRadius * Math.cos(angle);
             double y = appCentreY + tokenRadius * Math.sin(angle);
 

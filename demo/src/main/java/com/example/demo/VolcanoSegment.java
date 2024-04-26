@@ -20,9 +20,6 @@ public class VolcanoSegment {
         segmentCards[counter] = volcanoCard;
         counter += 1;
 
-        if (counter > segmentLength){
-            throw new RuntimeException("Exceeded segment length");
-        }
     }
 
     public int getSegmentID() {
