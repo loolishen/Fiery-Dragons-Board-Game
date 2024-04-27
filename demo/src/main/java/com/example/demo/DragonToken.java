@@ -9,28 +9,19 @@ import javafx.util.Duration;
 
 
 public class DragonToken {
-
-    private static final int MOVE_ANGLE = 15;
-
-    private static final double ANGLE_INCREMENT = 0.01;
     private static final double DEGREES_TO_RADIANS = Math.PI/180;
-
     private int totalMovementCount;
-
-    private Rectangle tokenImage;
-
-    private final VolcanoCard initialVolcanoCard;
+    private final Rectangle tokenImage;
+    private final int initialVolcanoCardID;
     private VolcanoCard volcanoCard; // rationale: better than having reference to entire Volcano?
-
-    private double tokenRadius;
-
+    private final double tokenRadius;
     private boolean movedOutOfCave;
 
     private double currPosAngle;
 
     public DragonToken(VolcanoCard newInitialVolcanoCard, Rectangle newTokenImage, double newTokenRadius, double initialPosAngle){
         volcanoCard = newInitialVolcanoCard;
-        initialVolcanoCard = newInitialVolcanoCard;
+        initialVolcanoCardID = newInitialVolcanoCard.getRingID();
         movedOutOfCave = false; // by default has not moved out of cave
         tokenImage = newTokenImage;
         tokenRadius = newTokenRadius;
@@ -41,18 +32,15 @@ public class DragonToken {
         return currPosAngle;
     }
 
-    public VolcanoCard getInitialVolcanoCard() {
-        return initialVolcanoCard;
+    public int getInitialVolcanoCardID() {
+        return initialVolcanoCardID;
     }
 
     public void moveToken(int animalCount){
 
-        double stopPosAngle = currPosAngle + ((MOVE_ANGLE * animalCount) * DEGREES_TO_RADIANS);
-        System.out.println("The stop pos angle is " + stopPosAngle);
+        double stopPosAngle = currPosAngle + ((Constants.TOKEN_MOVE_ANGLE_INCREMENT * animalCount) * DEGREES_TO_RADIANS);
 
         // Calculate the start and end points
-        double startX = FXGL.getAppWidth() / 2.0 + (tokenRadius * Math.cos(currPosAngle));
-        double startY = FXGL.getAppHeight() / 2.0 + (tokenRadius * Math.sin(currPosAngle));
         double endX = FXGL.getAppWidth() / 2.0 + (tokenRadius * Math.cos(stopPosAngle)-10);
         double endY = FXGL.getAppHeight() / 2.0 + (tokenRadius * Math.sin(stopPosAngle)-10);
 

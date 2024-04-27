@@ -2,11 +2,9 @@ package com.example.demo;
 
 
 public class VolcanoCard {
-    private int segmentID;
-    private int ringID;
-    private AnimalType animal;
-
-    private boolean isCave;
+    private final int segmentID;
+    private final int ringID;
+    private final AnimalType animal;
     private boolean occupied;
     public VolcanoCard(int newSegmentID, int newRingID, AnimalType animalType){
         segmentID =newSegmentID;
@@ -19,13 +17,6 @@ public class VolcanoCard {
         this.occupied = occupied;
     }
 
-    public boolean isCave() {
-        return isCave;
-    }
-
-    public void setCave(boolean cave) {
-        isCave = cave;
-    }
 
     public boolean getOccupiedStatus(){
         return occupied;
@@ -39,7 +30,4 @@ public class VolcanoCard {
         return animal;
     }
 
-    public void flipOccupiedStatus(){
-        occupied = !occupied;
-    }
 }

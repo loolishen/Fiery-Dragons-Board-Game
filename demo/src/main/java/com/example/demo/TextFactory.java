@@ -2,13 +2,12 @@ package com.example.demo;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class TextFactory implements EntityFactory {
+public class TextFactory extends Spawnable {
     @Spawns("winningMsg")
     public Entity winMsg(SpawnData data){
         Text winningMessage = new Text("Player "+ data.get("winnerID") + " wins!");

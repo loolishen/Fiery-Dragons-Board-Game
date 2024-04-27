@@ -1,12 +1,14 @@
 package com.example.demo;
-
+/**
+ * Logical representation of a volcano segment. It stores references to the volcano cards, and the number is segment length
+ * Currently we fix it at 3 cards per segment
+ */
 public class VolcanoSegment {
-
-    private VolcanoCard[] segmentCards;
-    private int segmentLength;
+    private final VolcanoCard[] segmentCards;
+    private final int segmentLength;
     private int counter = 0;
-    private int segmentID;
-    private boolean hasCave;
+    private final int segmentID;
+    private boolean hasCave; // used so that we don't hard code the segments that should be shuffled in initials setup
 
     public VolcanoSegment(int newSegmentID, int newSegmentLength){
         segmentLength = newSegmentLength;
@@ -15,13 +17,15 @@ public class VolcanoSegment {
         hasCave = false;
     }
 
+    public int getSegmentLength() {
+        return segmentLength;
+    }
 
     public void addVolcanoCard(VolcanoCard volcanoCard){
         segmentCards[counter] = volcanoCard;
         counter += 1;
 
     }
-
     public int getSegmentID() {
         return segmentID;
     }
