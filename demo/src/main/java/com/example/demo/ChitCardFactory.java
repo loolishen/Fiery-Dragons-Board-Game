@@ -38,14 +38,11 @@ public class ChitCardFactory extends Spawnable {
         Circle coveredShape = data.get("covered");
         coveredChitCardShapes[index] = coveredShape;
         Circle uncoveredShape = data.get("uncovered");
-        uncoveredShape.setVisible(false);
 
         // create new chit card
         ChitCard chitCard = new ChitCard(index, animalType,animalCount, coveredShape, uncoveredShape);
         viewControllerMapping.put(coveredShape, chitCard);
         viewControllerMapping.put(uncoveredShape, chitCard);
-        coveredChitCardShapes[index].setVisible(true);
-
 
         cardGroup.getChildren().add(uncoveredShape);
         cardGroup.getChildren().add(coveredShape);
@@ -68,7 +65,8 @@ public class ChitCardFactory extends Spawnable {
         ArrayList<int[]> allPairsInRange = Utils.generatePairs(min, max);
 
         // Shuffle for randomness
-        Utils.shuffleIntArray(allPairsInRange, Constants.RNG_SEED);
+//        Utils.shuffleIntArray(allPairsInRange, Constants.RNG_SEED);
+        Utils.shuffleIntArray(allPairsInRange, 0);
 
         // get first 16 unique pairs
         return allPairsInRange.subList(0, Constants.NUM_CHIT_CARDS);
@@ -99,16 +97,16 @@ public class ChitCardFactory extends Spawnable {
             int y = Constants.START_Y + coordinates[1] * (2 * Constants.CARD_RADIUS + Constants.CARD_SPACE_PADDING) - Constants.CARD_RADIUS - Constants.CARD_SPACE_PADDING;
 
             // prepare the Circle nodes filled with the appropriate animal image
-            SpawnData spawnData = new SpawnData(x, y);
+            spawnData = new SpawnData(x,y);
             spawnData.put("idx", chitCardIdx);
             spawnData.put("animalType", Constants.ANIMAL_TYPES[animalImagePathsIdx]);
-            Circle newChitCardShape = new Circle(Constants.CARD_RADIUS); // create new node
-            newChitCardShape.setStrokeWidth(2);
-            newChitCardShape.setStroke(Color.BLACK);
+            Circle uncoveredChitCardShape = new Circle(Constants.CARD_RADIUS); // create new node
+            uncoveredChitCardShape.setStrokeWidth(2);
+            uncoveredChitCardShape.setStroke(Color.BLACK);
             String imagePathPrefix = Constants.ANIMAL_IMAGE_IMAGE_PATH_PREFIX_MAPPINGS.get(Constants.ANIMAL_TYPES[animalImagePathsIdx]);
             Image uncoveredImage;
             int animalCount;
-            // index from 12 to 15 is for dragon pirate
+//             index from 12 to 15 is for dragon pirate
             if (chitCardIdx >= (Constants.NUM_CHIT_CARDS - Constants.DRAGON_PIRATE_CHIT_CARD_COUNT)){
                 animalCount = -dragonPirateCounter;
                 uncoveredImage = new Image(Objects.requireNonNull(getClass().getResource(imagePathPrefix + dragonPirateCounter + ".png")).toExternalForm());
@@ -124,9 +122,12 @@ public class ChitCardFactory extends Spawnable {
                 uncoveredImage = new Image(Objects.requireNonNull(getClass().getResource(imagePathPrefix + animalCounter + ".png")).toExternalForm());
                 animalCounter += 1;
             }
-            newChitCardShape.setFill(new ImagePattern(uncoveredImage));
+
+            uncoveredChitCardShape.setFill(new ImagePattern(uncoveredImage));
+            uncoveredChitCardShape.setVisible(false);
+            defaultChitCardShape.setVisible(true);
             spawnData.put("animalCount", animalCount);
-            spawnData.put("uncovered", newChitCardShape);
+            spawnData.put("uncovered", uncoveredChitCardShape);
             spawnData.put("covered", defaultChitCardShape);
             // spawn both sides of card
             FXGL.spawn("chitCard", spawnData);

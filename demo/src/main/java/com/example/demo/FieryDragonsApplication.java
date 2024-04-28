@@ -13,6 +13,8 @@ public class FieryDragonsApplication extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
+        gameSettings.setTitle("Fiery Dragons");
+        gameSettings.setVersion("1.0");
     }
 
     @Override
@@ -30,22 +32,22 @@ public class FieryDragonsApplication extends GameApplication {
         PlayerTurnManager.getInstance();
         PlayerTurnManager.getInstance().createPlayers(Constants.NUM_PLAYERS);
 
-        // create dragon token factory and add it to game world and spawn them
+        // create dragon token factory and add it to game world
         DragonTokenFactory dragonTokenFactory = new DragonTokenFactory(VolcanoRingFactory.CIRCLE_RADIUS, PlayerTurnManager.getPlayers());
-        dragonTokenFactory.spawn();
         // create cave factory and add it to game world
         CaveFactory caveFactory = new CaveFactory(Constants.NUM_PLAYERS, VolcanoRingFactory.CIRCLE_RADIUS);
+        // spawn them
+        dragonTokenFactory.spawn();
         caveFactory.spawn();
-        // create chit card factory and add it to game world, and spawn them
+        // create chit card factory and add it to game world
         ChitCardFactory newChitCardFactory = new ChitCardFactory();
         newChitCardFactory.spawn();
 
         // now that chit card nodes have been populated, we can give them to the ChitCardFlipManager
         ChitCardFlipManager.getInstance();
-        ChitCardFlipManager.setCoveredChitCardShapes(newChitCardFactory.getCoveredChitCards());
+        Circle[] coveredShapes = newChitCardFactory.getCoveredChitCards();
+        ChitCardFlipManager.setCoveredChitCardShapes(coveredShapes);
         // start game
-        PlayerTurnManager.getInstance();
-        PlayerTurnManager.getInstance().setCurrPlayer(PlayerTurnManager.getPlayers()[PlayerTurnManager.getInstance().getPlayerTurn()-1]); // Should be something like getCurrentPlayer from the PlayerTurnManager class
         TextFactory newTextFactory = new TextFactory();
         newTextFactory.spawn();
 
@@ -55,7 +57,6 @@ public class FieryDragonsApplication extends GameApplication {
 
         // start first player's turn
         playTurn(PlayerTurnManager.getInstance().getCurrPlayer());
-
     }
     @Override
     protected void onUpdate(double tpf) {
@@ -83,9 +84,7 @@ public class FieryDragonsApplication extends GameApplication {
         ChitCardFlipManager.getInstance().handleUncover(chitCardChosen, ChitCardFactory.getViewControllerMapping().get(chitCardChosen));
 
         int result = player.makeMove(VolcanoRingFactory.volcanoRing, ChitCardFactory.getViewControllerMapping().get(chitCardChosen)); // result = 0 means end turn, otherwise it is destination ring ID that token should move to
-//        System.out.println("Result "+result);
-        if (!player.getDoNothingContinueTurn()) {
-//            System.out.println("Need to move");
+        if (!player.getDoNothingContinueTurn()) { // doNothingContinueTurn is True when card is dragon pirate and player is currently on cave (has not moved out)
             if (result != Constants.END_TURN_RESULT) {
                 PlayerTurnManager.getInstance().moveToken(player, ChitCardFactory.getViewControllerMapping().get(chitCardChosen), result);
 
@@ -95,7 +94,6 @@ public class FieryDragonsApplication extends GameApplication {
             }
         }
         if (player.getDoNothingContinueTurn()) {
-//            System.out.println("Do nothing");
             // reset the value
             player.setDoNothingContinueTurn(false);
         }

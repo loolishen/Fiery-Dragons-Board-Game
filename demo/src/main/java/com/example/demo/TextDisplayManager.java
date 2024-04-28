@@ -79,7 +79,7 @@ public class TextDisplayManager {
 
     public void handleEndGame(int currPlayerID){
         if (isFirstTimeRemove()) {
-            removeOldTurnUpdateMsg(getCurrentTextEntity());
+            removeOldTurnUpdateMsg(currentTextEntity);
             setFirstTimeRemove(false);
         }
         if (isFirstTimeWinMsg()) {

@@ -2,7 +2,6 @@ package com.example.demo.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public class Utils {
@@ -21,6 +20,8 @@ public class Utils {
     }
 
     public static <T> void shuffleIntArray(ArrayList<T> array, long seed){
-        Collections.shuffle(array, new Random(seed));
+        if (seed != 0) {
+            Collections.shuffle(array, new Random(seed));
+        } else {Collections.shuffle(array);}
     }
 }

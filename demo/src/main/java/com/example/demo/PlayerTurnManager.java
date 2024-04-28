@@ -6,7 +6,7 @@ public class PlayerTurnManager {
     private static PlayerTurnManager playerTurnManager;
     private static Player[] players; // TODO: add indicators to who is player 1,2,3,4 in UI
     private Player currPlayer;
-    private int playerTurn = 1; // always start with 1
+    private int playerTurn;
 
     private PlayerTurnManager(){}
     public static PlayerTurnManager getInstance(){
@@ -16,10 +16,6 @@ public class PlayerTurnManager {
         return playerTurnManager;
     }
 
-
-    public void setCurrPlayer(Player currPlayer) {
-        this.currPlayer = currPlayer;
-    }
 
     /**
      * Connascenece of execution: can only be called after getInstance() is called
@@ -36,14 +32,8 @@ public class PlayerTurnManager {
             Player newPlayer = new Player(i + 1);
             players[i] = newPlayer;
         }
-    }
-
-    public void setPlayerTurn(int playerTurn) {
-        this.playerTurn = playerTurn;
-    }
-
-    public int getPlayerTurn() {
-        return playerTurn;
+        playerTurn = 1; // always start with 1
+        currPlayer = players[playerTurn-1];
     }
 
     public Player getCurrPlayer() {
@@ -51,13 +41,13 @@ public class PlayerTurnManager {
     }
 
     public void handleTurnTransition(){
-        getCurrPlayer().setTurnEnded(false); // reset for next round
-        if (getPlayerTurn() == players.length) { // reset to 1 if the 4th player ended their turn
-            setPlayerTurn(1);
+        currPlayer.setTurnEnded(false); // reset for next round
+        if (playerTurn == players.length) { // reset to 1 if the 4th player ended their turn
+            playerTurn = 1;
         } else {
-            setPlayerTurn(getPlayerTurn()+1);
+            playerTurn += 1;
         }
-        setCurrPlayer(players[getPlayerTurn()-1]);
+        currPlayer = players[playerTurn-1];
     }
 
     public void moveToken(Player player, ChitCard cardChosen, int destinationID){

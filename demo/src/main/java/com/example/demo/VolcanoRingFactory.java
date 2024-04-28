@@ -40,8 +40,8 @@ public class VolcanoRingFactory extends Spawnable {
         VolcanoSegment[] volcanoSegments = data.get("segments");
         ArrayList<Integer> arrangement = generateRandomUncutSegmentSequence();
         // Create a circle to represent the ring
-        int appCentreX = FXGL.getAppWidth()/2;
-        int appCentreY = FXGL.getAppHeight()/2;
+        int appCentreX = Constants.SCENE_WIDTH/2;
+        int appCentreY = Constants.SCENE_HEIGHT/2;
         // Calculate the angle increment between each card position
         int firstRotationAngle = 90; //we start with
         int offset = 2;
@@ -132,7 +132,9 @@ public class VolcanoRingFactory extends Spawnable {
     private ArrayList<Integer> generateRandomUncutSegmentSequence(){
         // 1,3,5,7 are the segments that have cave
         ArrayList<Integer> randomArrangements = new ArrayList<>(Arrays.asList(2,4,6,8)); // TODO: MAGIC NUMBER for segment length
-        Utils.shuffleIntArray(randomArrangements, Constants.RNG_SEED);
+//        Utils.shuffleIntArray(randomArrangements, Constants.RNG_SEED);
+        Utils.shuffleIntArray(randomArrangements, 0);
+
         return randomArrangements;
     }
 
