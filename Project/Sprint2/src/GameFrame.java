@@ -10,11 +10,8 @@ public class GameFrame extends JFrame {
         setResizable(false);
 
         add(new BoardPanel(), BorderLayout.CENTER);
-        add(new ControlPanel(this), BorderLayout.SOUTH); // Pass 'this' to ControlPanel
+        add(new ControlPanel(this), BorderLayout.SOUTH);
 
-        JLabel titleLabel = new JLabel("FIERY DRAGON", JLabel.CENTER);
-        titleLabel.setFont(new Font("Serif", Font.BOLD, 24));
-        add(titleLabel, BorderLayout.NORTH);
     }
 
     public static void main(String[] args) {
