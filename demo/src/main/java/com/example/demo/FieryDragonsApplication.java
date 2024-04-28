@@ -82,16 +82,16 @@ public class FieryDragonsApplication extends GameApplication {
     private void handleCircleClick(Player player, Circle chitCardChosen){
         if (!endGame) {
             // handle the uncovering of chit card
-            ChitCardFlipManager.getInstance().handleUncover(chitCardChosen, ChitCardFactory.getViewControllerMapping().get(chitCardChosen));
+            ChitCardFlipManager.getInstance().handleUncover(chitCardChosen, ChitCardAdapter.getViewControllerMapping().get(chitCardChosen));
 
             int result = player.makeMove(chitCardChosen); // result = 0 means end turn, otherwise it is destination ring ID that token should move to
             if (!player.getDoNothingContinueTurn()) { // doNothingContinueTurn is True when card is dragon pirate and player is currently on cave (has not moved out)
                 if (result != Constants.END_TURN_RESULT) {
-                    PlayerTurnManager.getInstance().moveToken(player, ChitCardFactory.getViewControllerMapping().get(chitCardChosen), result);
+                    PlayerTurnManager.getInstance().moveToken(player, ChitCardAdapter.getViewControllerMapping().get(chitCardChosen), result);
 
                 } else {
                     player.setTurnEnded(true);
-                    ChitCardFlipManager.getInstance().resetOnClickListener(ChitCardFactory.getViewControllerMapping());
+                    ChitCardFlipManager.getInstance().resetOnClickListener(ChitCardAdapter.getViewControllerMapping());
                 }
             }
             if (player.getDoNothingContinueTurn()) {

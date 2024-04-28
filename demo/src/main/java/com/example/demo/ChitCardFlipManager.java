@@ -7,7 +7,7 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ChitCardFlipManager{
+public class ChitCardFlipManager {
     private static ChitCardFlipManager chitCardFlipManager;
     private static Circle[] coveredChitCardShapes; // used to ensure that they do not listen for clicks
     private boolean ANIMATION_IN_PROGRESS = false;
@@ -60,7 +60,7 @@ public class ChitCardFlipManager{
     public void handleTurnEnd(){
         // do flip back animation
         for (Circle uncoveredChitCard : uncoveredChitCardsByPlayer) {
-            ChitCard chitCard = ChitCardFactory.getViewControllerMapping().get(uncoveredChitCard);
+            ChitCard chitCard = ChitCardAdapter.getViewControllerMapping().get(uncoveredChitCard);
             // animate
             Circle hiddenCircle = chitCard.getCoveredForm();
             RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), uncoveredChitCard);
@@ -86,4 +86,5 @@ public class ChitCardFlipManager{
             getCoveredChitCardShapes()[card.getIndex()] = card.getCoveredForm();
         }
     }
+
 }

@@ -47,11 +47,11 @@ public class Player {
         int destinationRingID;
 
         AnimalType currentPositionAnimal = dragonToken.getAnimalType();
-        AnimalType chitCardAnimal = ChitCardFactory.getViewControllerMapping().get(cardChosen).getAnimalType();
+        AnimalType chitCardAnimal = ChitCardAdapter.getViewControllerMapping().get(cardChosen).getAnimalType();
         if (currentPositionAnimal == chitCardAnimal)
         {
             int ringID = dragonToken.getCurrentPosition();
-            int chitCardAnimalCount = ChitCardFactory.getViewControllerMapping().get(cardChosen).getAnimalCount();
+            int chitCardAnimalCount = ChitCardAdapter.getViewControllerMapping().get(cardChosen).getAnimalCount();
 
             destinationRingID = ringID + chitCardAnimalCount;
 
@@ -62,7 +62,7 @@ public class Player {
 
         }else if (chitCardAnimal == AnimalType.DRAGON_PIRATE) {
             // if player has not moved out of cave, do not allow going back further than cave
-            destinationRingID = dragonToken.getCurrentPosition() + ChitCardFactory.getViewControllerMapping().get(cardChosen).getAnimalCount();
+            destinationRingID = dragonToken.getCurrentPosition() + ChitCardAdapter.getViewControllerMapping().get(cardChosen).getAnimalCount();
             if ((destinationRingID < dragonToken.getInitialVolcanoCardID()) && !dragonToken.getMovedOutOfCave()) {
                 this.setDoNothingContinueTurn(true);
                 return dragonToken.getCurrentPosition();

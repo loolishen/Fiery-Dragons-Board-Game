@@ -19,9 +19,6 @@ public class ChitCardFactory extends SpawnFactory {
     // below two are references of attributes of ChitCardManager class
     private final Circle[] coveredChitCardShapes = new Circle[Constants.NUM_CHIT_CARDS]; // initialized with reference from FieryDragonsApplication class
 
-    // Maps a ChitCard's Circle node (UI) to its controller ChitCard class
-    private  static final HashMap<Circle, ChitCard> viewControllerMapping = new HashMap<>() {
-    };
 
 
     @Spawns("chitCard")
@@ -41,8 +38,8 @@ public class ChitCardFactory extends SpawnFactory {
 
         // create new chit card
         ChitCard chitCard = new ChitCard(index, animalType,animalCount, coveredShape, uncoveredShape);
-        viewControllerMapping.put(coveredShape, chitCard);
-        viewControllerMapping.put(uncoveredShape, chitCard);
+        ChitCardAdapter.addMapping(coveredShape, chitCard);
+        ChitCardAdapter.addMapping(uncoveredShape, chitCard);
 
         cardGroup.getChildren().add(uncoveredShape);
         cardGroup.getChildren().add(coveredShape);
@@ -54,9 +51,6 @@ public class ChitCardFactory extends SpawnFactory {
         return coveredChitCardShapes;
     }
 
-    public static HashMap<Circle, ChitCard> getViewControllerMapping(){
-        return viewControllerMapping;
-    }
 
     private static List<int[]> getRandomCoordinates(){
         // Generate all possible pairs of numbers for range 1 ... sqrt(NUM_CHIT_CARDS) to represent coordinates of a square grid
@@ -106,7 +100,7 @@ public class ChitCardFactory extends SpawnFactory {
             String imagePathPrefix = Constants.ANIMAL_IMAGE_IMAGE_PATH_PREFIX_MAPPINGS.get(Constants.ANIMAL_TYPES[animalImagePathsIdx]);
             Image uncoveredImage;
             int animalCount;
-//             index from 12 to 15 is for dragon pirate
+            //  index from 12 to 15 is for dragon pirate
             if (chitCardIdx >= (Constants.NUM_CHIT_CARDS - Constants.DRAGON_PIRATE_CHIT_CARD_COUNT)){
                 animalCount = -dragonPirateCounter;
                 uncoveredImage = new Image(Objects.requireNonNull(getClass().getResource(imagePathPrefix + dragonPirateCounter + ".png")).toExternalForm());
