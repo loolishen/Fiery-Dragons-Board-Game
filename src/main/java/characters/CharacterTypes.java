@@ -1,9 +1,10 @@
-package main.java;
+package main.java.characters;
 
 public enum CharacterTypes {
     SALAMANDER,
     BABY_DRAGON,
     BAT,
     SPIDER,
-    DRAGON_PIRATE
+    DRAGON_PIRATE,
+    PLAYER
 }
