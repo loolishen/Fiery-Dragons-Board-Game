@@ -87,13 +87,20 @@ This folder contains two options for launching the game:
     - Run the command ```java -jar fieryDragons-1.0.jar``` to launch the game application
 
 ## demo/src/main
-This folder contains two subfolders:
+This folder contains two subfolders for the Technical Work-In-Progress:
 - resources
   - This folder contains a folder 'com/example/demo/assets' which contains all the .png resources for the UI.
 - java
   - This folder contains a folder 'com/example/demo' which contains all the Java source code.
+Currently, the code does not support creating random segments of arbitrary length. Additionally, some parts of the code suffer from complex logic(math based, and involving indexes) that could have simpler solutions. 
+
+More comprehensive testing of the various functionalities of the FieryDragons game is demonstrated with this video:
+https://youtu.be/9h_PM7vrw9w
 
 ## demo/video
-This folder contains a video of the prototype demonstration.
+This folder contains videos of the prototype demonstration.
 Youtube link with timestamps:
 https://youtu.be/2bmGBBa5XHw
+Video where 2/3 players can play the game:
+https://youtu.be/HlQhavesGrk
+
