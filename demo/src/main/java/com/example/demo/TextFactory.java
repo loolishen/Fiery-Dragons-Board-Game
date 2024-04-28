@@ -7,6 +7,9 @@ import com.almasb.fxgl.entity.Spawns;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/**
+ * Provides the FXGL implementations for updating UI
+ */
 public class TextFactory extends SpawnFactory {
     @Spawns("winningMsg")
     public Entity winMsg(SpawnData data){

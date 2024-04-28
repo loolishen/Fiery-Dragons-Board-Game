@@ -10,7 +10,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-
+/**
+ * Used to spawn the caves according to the number of players playing
+ */
 public class CaveFactory extends SpawnFactory {
 
     private final int NUM_PLAYERS;

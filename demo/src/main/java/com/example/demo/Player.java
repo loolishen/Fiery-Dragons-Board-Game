@@ -40,7 +40,7 @@ public class Player {
     /**
      * The integer return value determines the course of action:
      * END_TURN_RESULT means player's turn ends
-     * 1 means player can make a choice again
+     * Otherwise, it is the destination volcano card's ID in volcano ring (index in VolcanoCard array)
      */
     public int makeMove(Circle cardChosen) {
 

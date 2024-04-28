@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Spawns the volcano ring of cards consisting of alternating cut and uncut segments, incorporating random arrangement of segments.
+ */
 public class VolcanoRingFactory extends SpawnFactory {
     public static final VolcanoCard[] volcanoRing = new VolcanoCard[Constants.VOLCANO_RING_NUM_CARDS];
     private final int segmentLength;
@@ -28,7 +31,6 @@ public class VolcanoRingFactory extends SpawnFactory {
         numCards = newNumCards;
         numSegments = newNumSegments;
         segmentLength = newNumCards/newNumSegments;
-        //TODO: ADD more logic for 1/2/3 players
         rotationAmount = 360.0/numCards;
     }
     public static VolcanoCard getVolcanoCardByID(int id){
@@ -135,9 +137,13 @@ public class VolcanoRingFactory extends SpawnFactory {
         return  segments;
     }
 
+    /**
+     * Gets random ordering of uncut segments. Currently only supports one configuration
+     * @return Random ordering of the uncut segments
+     */
     private ArrayList<Integer> generateRandomUncutSegmentSequence(){
-        // 1,3,5,7 are the segments that have cave
-        ArrayList<Integer> randomArrangements = new ArrayList<>(Arrays.asList(2,4,6,8)); // TODO: MAGIC NUMBER for segment length
+        // e.g. 1,3,5,7 are the segments that have cave
+        ArrayList<Integer> randomArrangements = new ArrayList<>(Arrays.asList(2,4,6,8));
 //        Utils.shuffleIntArray(randomArrangements, Constants.RNG_SEED);
         Utils.shuffleIntArray(randomArrangements, Constants.RNG_SEED);
 

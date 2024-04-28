@@ -1,10 +1,13 @@
 package com.example.demo;
 
-
+/**
+ * Creates the players. Manages the players' turns. If a dragon token is moved, it calls upon the player to update its
+ * dragon token's state, and asks the Volcano Cards involved tp toggle the occupied status
+ */
 public class PlayerTurnManager {
 
     private static PlayerTurnManager playerTurnManager;
-    private static Player[] players; // TODO: add indicators to who is player 1,2,3,4 in UI
+    private static Player[] players;
     private Player currPlayer;
     private int playerTurn;
 

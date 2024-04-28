@@ -10,6 +10,7 @@ import static java.util.Map.entry;
 public class Constants {
     // For RNG testing
     public static long RNG_SEED = 531;
+    public static long NO_SEED = 0;
 
     // Animal related info: types and max count
     public static final AnimalType[] ANIMAL_TYPES = {AnimalType.SALAMANDER, AnimalType.BAT, AnimalType.SPIDER, AnimalType.BABY_DRAGON, AnimalType.DRAGON_PIRATE};

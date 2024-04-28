@@ -12,7 +12,9 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.Objects;
 
-
+/**
+ * Used to create the dragon tokens, also sets the player's dragon token
+ */
 public class DragonTokenFactory extends SpawnFactory {
     private final double volcanoCircleRadius;
     private static final String[] DRAGON_TOKEN_IMAGE_PATHS = {"/com/example/demo/assets/bluedragon.png", "/com/example/demo/assets/greenDragon.png",
@@ -47,7 +49,6 @@ public class DragonTokenFactory extends SpawnFactory {
             cardRect.setStroke(Color.BLACK);
             cardRect.setStrokeWidth(1);
 
-            // TODO: init below managed by a central class in charge of init player,dragon token and cave?
             // set occupied status to True at the start
             VolcanoCard card = VolcanoRingFactory.getVolcanoCardByID(nextPlayerAt);
             card.setOccupied(true);

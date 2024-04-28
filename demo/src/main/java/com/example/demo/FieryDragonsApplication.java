@@ -4,6 +4,9 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.shape.Circle;
 
+/**
+ * Main application class
+ */
 public class FieryDragonsApplication extends GameApplication {
     private boolean endGame = false;
 
@@ -79,6 +82,11 @@ public class FieryDragonsApplication extends GameApplication {
         }
     }
 
+    /**
+     * Calls the state managers to respond to the circle click
+     * @param player the player who clicked the chit card
+     * @param chitCardChosen the chit card shape clicked
+     */
     private void handleCircleClick(Player player, Circle chitCardChosen){
         if (!endGame) {
             // handle the uncovering of chit card
@@ -105,6 +113,10 @@ public class FieryDragonsApplication extends GameApplication {
 
     }
 
+    /**
+     * Used to listen for player's clicks on the chit cards
+     * @param newPlayer currentPlayer
+     */
     private void playTurn(Player newPlayer){
         for (Circle circle : ChitCardFlipManager.getInstance().getCoveredChitCardShapes()) {
             if (circle != null) {

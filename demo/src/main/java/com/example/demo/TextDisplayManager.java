@@ -4,6 +4,9 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 
+/**
+ * Class used to display various text, including during player turn transitions and end game scenario
+ */
 public class TextDisplayManager {
 
     private Entity currentTextEntity;

@@ -7,10 +7,13 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Used to respond to players flipping chit cards
+ */
 public class ChitCardFlipManager {
     private static ChitCardFlipManager chitCardFlipManager;
     private static Circle[] coveredChitCardShapes; // used to ensure that they do not listen for clicks
-    private boolean ANIMATION_IN_PROGRESS = false;
+    private boolean ANIMATION_IN_PROGRESS = false; // used to ensure smoother animations
     private final ArrayList<Circle> uncoveredChitCardsByPlayer = new ArrayList<>(); // specific uncovered chit cards in a player's turn
 
     private ChitCardFlipManager(){}

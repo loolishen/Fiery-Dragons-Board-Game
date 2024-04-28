@@ -1,7 +1,6 @@
 package com.example.demo;
 /**
  * Logical representation of a volcano segment. It stores references to the volcano cards, and the number is segment length
- * Currently we fix it at 3 cards per segment
  */
 public class VolcanoSegment {
     private final VolcanoCard[] segmentCards;

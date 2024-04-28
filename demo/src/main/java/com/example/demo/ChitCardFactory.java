@@ -13,12 +13,12 @@ import javafx.scene.shape.Circle;
 
 import java.util.*;
 
-
+/**
+ * Used to create chit cards, and pass the information of the covered sides to the ChitCardFlipManager once they are initialized
+ */
 public class ChitCardFactory extends SpawnFactory {
 
-    // below two are references of attributes of ChitCardManager class
     private final Circle[] coveredChitCardShapes = new Circle[Constants.NUM_CHIT_CARDS]; // initialized with reference from FieryDragonsApplication class
-
 
 
     @Spawns("chitCard")

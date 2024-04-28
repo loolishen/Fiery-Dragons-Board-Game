@@ -7,7 +7,6 @@ import javafx.animation.Timeline;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-
 public class DragonToken {
     private static final double DEGREES_TO_RADIANS = Math.PI/180;
     private int totalMovementCount;
@@ -17,7 +16,7 @@ public class DragonToken {
     private final double tokenRadius;
     private boolean movedOutOfCave;
 
-    private double currPosAngle;
+    private double currPosAngle; // its current position on the volcano ring measured by angle
 
     public DragonToken(VolcanoCard newInitialVolcanoCard, Rectangle newTokenImage, double newTokenRadius, double initialPosAngle){
         volcanoCard = newInitialVolcanoCard;

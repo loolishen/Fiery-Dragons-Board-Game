@@ -2,6 +2,9 @@ package com.example.demo;
 
 import javafx.scene.shape.Circle;
 
+/**
+ * Stores the state of chit cards
+ */
 public class ChitCard {
     private final int index;
     private final AnimalType animalType;
