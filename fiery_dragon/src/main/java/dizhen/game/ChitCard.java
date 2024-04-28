@@ -25,7 +25,7 @@ public class ChitCard extends JPanel {
     private static int currentTokenIndex = 0;
     private static ArrayList<ChitCard> volChitCards = new ArrayList<>();
     private static ArrayList<Cave> caves = Cave.getCaves();
-
+    public static ArrayList<ChitCard> startChitCards = new ArrayList<>();
 
     // Define an interface for the click callback
     public interface ClickCallback extends dizhen.game.ClickCallback {
@@ -66,6 +66,8 @@ public class ChitCard extends JPanel {
                 //move it to the the cloest chitcard when first time the chitcard align
                 //with the token card in its turn
                 //If the token is still in cave
+
+
                 Token turnToken = allTokens.get(currentTokenIndex);
                 if (offsetDist < cave.getRoundSize()){
                    
@@ -73,10 +75,11 @@ public class ChitCard extends JPanel {
                         
                         turnToken.setLocation(nearestChitCards.get(currentTokenIndex).getLocation());
                                 // Print out the new location of the token
+
                         System.out.println("Token moved to: " + turnToken.getLocation());
                     }
-                    
-                    
+
+
                 }
                 //for rest of rounds for to the number of animals on the picture
                 else{
@@ -90,7 +93,13 @@ public class ChitCard extends JPanel {
                         nearestCardIndex.set(currentTokenIndex, updatedIndex);
                         ChitCard targetCard = volChitCards.get(updatedIndex);
                         turnToken.setLocation(targetCard.getLocation());
-                    }  
+                    }
+
+                    else if (lastClickedCard.getImageName().equals("skull")){
+                        turnToken.setLocation(nearestChitCards.get(currentTokenIndex).getLocation());
+                    }
+
+
                 }
                 
                 // Ensure the GUI is updated to reflect the new token location

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Fiery_Dragon:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Fiery_Dragon_jar</output-path>
+    <root id="archive" name="Fiery_Dragon.jar">
+      <element id="module-output" name="Fiery_Dragon" />
+    </root>
+  </artifact>
+</component>
