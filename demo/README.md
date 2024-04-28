@@ -34,3 +34,8 @@ This folder contains two subfolders:
   - This folder contains a folder 'com/example/demo/assets' which contains all the .png resources for the UI.
 - java
   - This folder contains a folder 'com/example/demo' which contains all the Java source code.
+
+## demo/video
+This folder contains a video of the prototype demonstration.
+Youtube link with timestamps:
+https://youtu.be/2bmGBBa5XHw
