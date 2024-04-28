@@ -61,13 +61,13 @@ public class ChitCard extends JPanel {
                 Point caveLocation = cave.getLocation();
                 Point tokenLocation = allTokens.get(currentTokenIndex).getLocation();
                 double distance = Math.sqrt(Math.pow(caveLocation.x - tokenLocation.x, 2) + Math.pow(caveLocation.y - tokenLocation.y, 2));
-                double offsetDist = distance + cave.getCaveSize()/2;
+                double offsetDist = distance + cave.getRoundSize()/2;
                 //look which token in turn
                 //move it to the the cloest chitcard when first time the chitcard align
                 //with the token card in its turn
                 //If the token is still in cave
                 Token turnToken = allTokens.get(currentTokenIndex);
-                if (offsetDist < cave.getCaveSize()){
+                if (offsetDist < cave.getRoundSize()){
                    
                     if (turnToken.getImageName().equals(lastClickedCard.getImageName())){
                         

@@ -55,7 +55,7 @@ class RoundComponent extends JComponent {
     }
    
         // Method to get the size of the cave
-    public int getCaveSize() {
+    public int getRoundSize() {
         return this.size; // Accessing the 'size' field from RoundComponent
     }
    
