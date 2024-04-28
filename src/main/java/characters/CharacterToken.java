@@ -16,7 +16,7 @@ public class CharacterToken extends JPanel {
 
     public CharacterToken(Image image) {
         this.image = image;
-        setPreferredSize(new Dimension(50, 50)); // Set preferred size for the token
+        setPreferredSize(new Dimension(10, 10)); // Set preferred size for the token
     }
 
     @Override
@@ -24,7 +24,7 @@ public class CharacterToken extends JPanel {
         super.paintComponent(g);
 
         // Draw circle
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.fillOval(0, 0, getWidth(), getHeight());
 
         // Draw image inside the circle
