@@ -10,7 +10,7 @@ This folder contains the single PDF containing all drawn/written deliverables
 ## demo/executables
 
 This folder contains two options for launching the game:
-- zip file: fieryDragons-1.0.zip
+- zip file: fieryDragons.zip
   - Platform: Windows
   - Steps to run application:
     - Download and extract zip file.
