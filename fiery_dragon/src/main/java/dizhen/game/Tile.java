@@ -6,17 +6,15 @@
 package dizhen.game;
 
 // Import the Swing library for building graphical user interfaces.
-import javax.swing.*;
 // Import the AWT (Abstract Window Toolkit) library for windowing, layout managers, and event handling.
 import java.awt.*;
 // Import the AWT Geom library for geometric shapes.
 import java.awt.geom.*;
-import java.io.File;
 
 // Declare the Tile class which extends the BoardComponent class.
 public class Tile extends BoardComponent {
     // Declare an Image object to hold the volcano image. It is final because it won't change once set.
-    private Image volcanoImage;
+    private Image tileImage;
 
     // Constructor for Tile.
     public Tile(int startAngle, int outerDiameter, int innerDiameter) {
@@ -51,22 +49,22 @@ public class Tile extends BoardComponent {
         g2d.setClip(clippingArea);
 
         // Draw the volcano image within the clipping area.
-        if (volcanoImage != null){
-            g2d.drawImage(volcanoImage, centerX - outerDiameter / 2, centerY - outerDiameter / 2, outerDiameter, outerDiameter, this);
+        if (tileImage != null){
+            g2d.drawImage(tileImage, centerX - outerDiameter / 2, centerY - outerDiameter / 2, outerDiameter, outerDiameter, this);
         }
 
         // Dispose of the Graphics2D object to release system resources and clean up.
         g2d.dispose();
     }
 
-    public Image getVolcanoImage() {
-        return volcanoImage;
+    public Image getTileImage() {
+        return tileImage;
     }
 
-    public void setVolcanoImage(String imagePath) {
+    public void setTileImage(String imagePath) {
         // Load the image for the volcano using the provided path.
-        volcanoImage = Toolkit.getDefaultToolkit().getImage(imagePath);
-        this.volcanoImage = volcanoImage;
+        tileImage = Toolkit.getDefaultToolkit().getImage(imagePath);
+        this.tileImage = tileImage;
     }
    
 
