@@ -4,11 +4,19 @@
  */
 package dizhen.game;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
+import java.util.Collections;
+import javax.swing.JPanel;
 
 public class ChitCard extends JPanel {
     private final Image frontImage;
@@ -22,6 +30,7 @@ public class ChitCard extends JPanel {
     private static ArrayList<Token> allTokens = Token.getAllTokens();
     private static ArrayList<ChitCard> nearestChitCards = new ArrayList<>();
     private static ArrayList<Integer> nearestCardIndex = new ArrayList<>();
+    private static ArrayList<Integer> startChitIndex = new ArrayList<>();
     private static int currentTokenIndex = 0;
     private static ArrayList<ChitCard> volChitCards = new ArrayList<>();
     private static ArrayList<Cave> caves = Cave.getCaves();
@@ -42,6 +51,8 @@ public class ChitCard extends JPanel {
 
         // Initially, the front image is visible
         isFrontVisible = true;
+        // 使用Collections.nCopies()创建一个包含四个0的列表
+        startChitIndex = new ArrayList<>(Collections.nCopies(4, 0));
 
         // Add a mouse listener to flip the card when clicked
         addMouseListener(new MouseAdapter() {
@@ -74,6 +85,7 @@ public class ChitCard extends JPanel {
                     if (turnToken.getImageName().equals(lastClickedCard.getImageName())){
                         
                         turnToken.setLocation(nearestChitCards.get(currentTokenIndex).getLocation());
+                        startChitIndex.set(currentTokenIndex, nearestCardIndex.get(currentTokenIndex));
                                 // Print out the new location of the token
 
                         System.out.println("Token moved to: " + turnToken.getLocation());
@@ -83,10 +95,12 @@ public class ChitCard extends JPanel {
                 }
                 //for rest of rounds for to the number of animals on the picture
                 else{
-                    
+
+                    int currentIndex = nearestCardIndex.get(currentTokenIndex);
+                    int stepMove = ChitCard.lastClickedCard.getImageId();
                     if (turnToken.getImageName().equals(lastClickedCard.getImageName())){
-                        int currentIndex = nearestCardIndex.get(currentTokenIndex);
-                        int stepMove = ChitCard.lastClickedCard.getImageId();
+                        //get the current index of the chitcard when token stands on
+
                         int updatedIndex = currentIndex + stepMove;
                         updatedIndex = updatedIndex % volChitCards.size();
                         //update the nearestCardIndex  correspondingly
@@ -96,7 +110,18 @@ public class ChitCard extends JPanel {
                     }
 
                     else if (lastClickedCard.getImageName().equals("skull")){
-                        turnToken.setLocation(nearestChitCards.get(currentTokenIndex).getLocation());
+                        int updatedIndex = currentIndex - stepMove;
+                        if (updatedIndex <= startChitIndex.get(currentTokenIndex)) {
+                            turnToken.setLocation(
+                                volChitCards.get(startChitIndex.get(currentTokenIndex))
+                                    .getLocation());
+                        }
+                        else{
+                            updatedIndex = updatedIndex % volChitCards.size();
+                            nearestCardIndex.set(currentTokenIndex, updatedIndex);
+                            ChitCard targetCard = volChitCards.get(updatedIndex);
+                            turnToken.setLocation(targetCard.getLocation());
+                        }
                     }
 
 
