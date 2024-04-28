@@ -21,8 +21,8 @@ public class SingleModePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawBoard(g);
-            drawTitle(g);
-        }
+        drawTitle(g);
+    }
 
 
     private void drawTitle(Graphics g) {
