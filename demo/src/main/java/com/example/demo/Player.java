@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import javafx.scene.shape.Circle;
+
 public class Player {
     private DragonToken dragonToken;
     private boolean doNothingContinueTurn;
@@ -40,28 +42,27 @@ public class Player {
      * END_TURN_RESULT means player's turn ends
      * 1 means player can make a choice again
      */
-    public int makeMove(Volcano volcano, ChitCard cardChosen) {
+    public int makeMove(Circle cardChosen) {
 
         int destinationRingID;
 
         AnimalType currentPositionAnimal = dragonToken.getAnimalType();
-        AnimalType chitCardAnimal = cardChosen.getAnimalType();
+        AnimalType chitCardAnimal = ChitCardFactory.getViewControllerMapping().get(cardChosen).getAnimalType();
         if (currentPositionAnimal == chitCardAnimal)
         {
             int ringID = dragonToken.getCurrentPosition();
-            int chitCardAnimalCount = cardChosen.getAnimalCount();
+            int chitCardAnimalCount = ChitCardFactory.getViewControllerMapping().get(cardChosen).getAnimalCount();
 
             destinationRingID = ringID + chitCardAnimalCount;
 
             // cannot go past cave once a full round is made around the volcano
             if (dragonToken.getTotalMovementCount()+chitCardAnimalCount > Constants.VOLCANO_RING_NUM_CARDS) {
-                System.out.println("Cannot move ahead of own cave");
                 return Constants.END_TURN_RESULT;
             }
 
         }else if (chitCardAnimal == AnimalType.DRAGON_PIRATE) {
             // if player has not moved out of cave, do not allow going back further than cave
-            destinationRingID = dragonToken.getCurrentPosition() + cardChosen.getAnimalCount();
+            destinationRingID = dragonToken.getCurrentPosition() + ChitCardFactory.getViewControllerMapping().get(cardChosen).getAnimalCount();
             if ((destinationRingID < dragonToken.getInitialVolcanoCardID()) && !dragonToken.getMovedOutOfCave()) {
                 this.setDoNothingContinueTurn(true);
                 return dragonToken.getCurrentPosition();
@@ -74,7 +75,7 @@ public class Player {
             destinationRingID -= Constants.VOLCANO_RING_NUM_CARDS;
         } else if (destinationRingID < 1){destinationRingID = Constants.VOLCANO_RING_NUM_CARDS+destinationRingID;}
         // no matter what, do not allow players to share same volcano card.
-        boolean occupied = volcano.getVolcanoCardByID(destinationRingID).getOccupiedStatus();
+        boolean occupied = VolcanoRingFactory.getVolcanoCardByID(destinationRingID).getOccupiedStatus();
         if (occupied) {
             return Constants.END_TURN_RESULT;
         }

@@ -55,6 +55,7 @@ public class Constants {
 
     // info about setup related to player including cave and dragon token
     public static final int NUM_PLAYERS = 4;
+    public static final int SPACE_BETWEEN_PLAYERS = (VOLCANO_RING_NUM_CARDS-NUM_PLAYERS)/NUM_PLAYERS;
     public static final int END_TURN_RESULT = 0;
     public static final int CAVE_CIRCLE_RADIUS = 15;
     public static final int CAVE_POS_RADIUS_OFFSET = 35;

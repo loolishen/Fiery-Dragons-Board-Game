@@ -11,7 +11,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 
-public class CaveFactory extends Spawnable {
+public class CaveFactory extends SpawnFactory {
 
     private final int NUM_PLAYERS;
 

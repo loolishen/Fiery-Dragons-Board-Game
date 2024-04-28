@@ -7,7 +7,7 @@ import com.almasb.fxgl.entity.Spawns;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class TextFactory extends Spawnable {
+public class TextFactory extends SpawnFactory {
     @Spawns("winningMsg")
     public Entity winMsg(SpawnData data){
         Text winningMessage = new Text("Player "+ data.get("winnerID") + " wins!");

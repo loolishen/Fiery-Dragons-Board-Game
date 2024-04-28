@@ -14,7 +14,7 @@ import javafx.scene.shape.Circle;
 import java.util.*;
 
 
-public class ChitCardFactory extends Spawnable {
+public class ChitCardFactory extends SpawnFactory {
 
     // below two are references of attributes of ChitCardManager class
     private final Circle[] coveredChitCardShapes = new Circle[Constants.NUM_CHIT_CARDS]; // initialized with reference from FieryDragonsApplication class
@@ -66,7 +66,7 @@ public class ChitCardFactory extends Spawnable {
 
         // Shuffle for randomness
 //        Utils.shuffleIntArray(allPairsInRange, Constants.RNG_SEED);
-        Utils.shuffleIntArray(allPairsInRange, 0);
+        Utils.shuffleIntArray(allPairsInRange, Constants.RNG_SEED);
 
         // get first 16 unique pairs
         return allPairsInRange.subList(0, Constants.NUM_CHIT_CARDS);

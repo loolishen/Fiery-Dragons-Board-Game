@@ -11,13 +11,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class VolcanoRingFactory extends Spawnable {
-    public static final Volcano volcanoRing = new Volcano();
+public class VolcanoRingFactory extends SpawnFactory {
+    public static final VolcanoCard[] volcanoRing = new VolcanoCard[Constants.VOLCANO_RING_NUM_CARDS];
     private final int segmentLength;
     private final int numCards;
     private final int numSegments;
@@ -31,6 +30,13 @@ public class VolcanoRingFactory extends Spawnable {
         segmentLength = newNumCards/newNumSegments;
         //TODO: ADD more logic for 1/2/3 players
         rotationAmount = 360.0/numCards;
+    }
+    public static VolcanoCard getVolcanoCardByID(int id){
+        return volcanoRing[id-1]; // our ID starts from 1 but array indexing is 0
+    }
+
+    public static VolcanoCard[] getVolcanoRing() {
+        return volcanoRing;
     }
 
     @Spawns("volcanoRing")
@@ -77,7 +83,7 @@ public class VolcanoRingFactory extends Spawnable {
                 rect.getTransforms().addAll(rotate);
                 cardGroup.getChildren().add(rect);
 
-                volcanoRing.getVolcanoRing()[cardCounter] = new VolcanoCard(i, cardCounter+1, segment.getSegmentCards()[j].getAnimal());
+                volcanoRing[cardCounter] = new VolcanoCard(i, cardCounter+1, segment.getSegmentCards()[j].getAnimal());
                 cardCounter += 1;
             }
 
@@ -133,7 +139,7 @@ public class VolcanoRingFactory extends Spawnable {
         // 1,3,5,7 are the segments that have cave
         ArrayList<Integer> randomArrangements = new ArrayList<>(Arrays.asList(2,4,6,8)); // TODO: MAGIC NUMBER for segment length
 //        Utils.shuffleIntArray(randomArrangements, Constants.RNG_SEED);
-        Utils.shuffleIntArray(randomArrangements, 0);
+        Utils.shuffleIntArray(randomArrangements, Constants.RNG_SEED);
 
         return randomArrangements;
     }

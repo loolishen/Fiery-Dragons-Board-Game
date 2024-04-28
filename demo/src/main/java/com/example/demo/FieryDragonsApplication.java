@@ -33,7 +33,7 @@ public class FieryDragonsApplication extends GameApplication {
         PlayerTurnManager.getInstance().createPlayers(Constants.NUM_PLAYERS);
 
         // create dragon token factory and add it to game world
-        DragonTokenFactory dragonTokenFactory = new DragonTokenFactory(VolcanoRingFactory.CIRCLE_RADIUS, PlayerTurnManager.getPlayers());
+        DragonTokenFactory dragonTokenFactory = new DragonTokenFactory(VolcanoRingFactory.CIRCLE_RADIUS);
         // create cave factory and add it to game world
         CaveFactory caveFactory = new CaveFactory(Constants.NUM_PLAYERS, VolcanoRingFactory.CIRCLE_RADIUS);
         // spawn them
@@ -80,32 +80,34 @@ public class FieryDragonsApplication extends GameApplication {
     }
 
     private void handleCircleClick(Player player, Circle chitCardChosen){
-        // handle the uncovering of chit card
-        ChitCardFlipManager.getInstance().handleUncover(chitCardChosen, ChitCardFactory.getViewControllerMapping().get(chitCardChosen));
+        if (!endGame) {
+            // handle the uncovering of chit card
+            ChitCardFlipManager.getInstance().handleUncover(chitCardChosen, ChitCardFactory.getViewControllerMapping().get(chitCardChosen));
 
-        int result = player.makeMove(VolcanoRingFactory.volcanoRing, ChitCardFactory.getViewControllerMapping().get(chitCardChosen)); // result = 0 means end turn, otherwise it is destination ring ID that token should move to
-        if (!player.getDoNothingContinueTurn()) { // doNothingContinueTurn is True when card is dragon pirate and player is currently on cave (has not moved out)
-            if (result != Constants.END_TURN_RESULT) {
-                PlayerTurnManager.getInstance().moveToken(player, ChitCardFactory.getViewControllerMapping().get(chitCardChosen), result);
+            int result = player.makeMove(chitCardChosen); // result = 0 means end turn, otherwise it is destination ring ID that token should move to
+            if (!player.getDoNothingContinueTurn()) { // doNothingContinueTurn is True when card is dragon pirate and player is currently on cave (has not moved out)
+                if (result != Constants.END_TURN_RESULT) {
+                    PlayerTurnManager.getInstance().moveToken(player, ChitCardFactory.getViewControllerMapping().get(chitCardChosen), result);
 
-            } else {
-                player.setTurnEnded(true);
-                ChitCardFlipManager.getInstance().resetOnClickListener(ChitCardFactory.getViewControllerMapping());
+                } else {
+                    player.setTurnEnded(true);
+                    ChitCardFlipManager.getInstance().resetOnClickListener(ChitCardFactory.getViewControllerMapping());
+                }
             }
-        }
-        if (player.getDoNothingContinueTurn()) {
-            // reset the value
-            player.setDoNothingContinueTurn(false);
-        }
-        if (player.getDragonToken().getTotalMovementCount() == Constants.VOLCANO_RING_NUM_CARDS) { // end the game
-            endGame = true;
+            if (player.getDoNothingContinueTurn()) {
+                // reset the value
+                player.setDoNothingContinueTurn(false);
+            }
+            if (player.getDragonToken().getTotalMovementCount() == Constants.VOLCANO_RING_NUM_CARDS) { // end the game
+                endGame = true;
+            }
         }
 
     }
 
     private void playTurn(Player newPlayer){
         for (Circle circle : ChitCardFlipManager.getInstance().getCoveredChitCardShapes()) {
-            if (circle!=null) {
+            if (circle != null) {
                 circle.setOnMouseClicked(event ->
                         handleCircleClick(newPlayer, circle));
             }

@@ -5,7 +5,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 
-public abstract class Spawnable implements EntityFactory {
+public abstract class SpawnFactory implements EntityFactory {
     protected SpawnData spawnData;
 
     public void spawn(){

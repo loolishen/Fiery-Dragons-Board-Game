@@ -54,11 +54,11 @@ public class PlayerTurnManager {
         player.getDragonToken().moveToken(cardChosen.getAnimalCount()); //VIEW: move token
         // update the volcano card's (the token is on) 'occupied' status to false
         int currPositionRingID = player.getDragonToken().getCurrentPosition();
-        VolcanoRingFactory.volcanoRing.getVolcanoCardByID(currPositionRingID).setOccupied(false);
+        VolcanoRingFactory.getVolcanoCardByID(currPositionRingID).setOccupied(false);
 
         // update the state: dragon token's position and total movement count
-        VolcanoRingFactory.volcanoRing.getVolcanoCardByID(destinationID).setOccupied(true);
-        player.getDragonToken().setCurrentPosition(VolcanoRingFactory.volcanoRing.getVolcanoCardByID(destinationID));
+        VolcanoRingFactory.getVolcanoCardByID(destinationID).setOccupied(true);
+        player.getDragonToken().setCurrentPosition(VolcanoRingFactory.getVolcanoCardByID(destinationID));
         player.getDragonToken().updateTotalMovementCount((cardChosen.getAnimalCount()));
 
         // update movedOutOfCave to True if exiting cave for the first time

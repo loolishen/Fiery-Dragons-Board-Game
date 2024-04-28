@@ -13,15 +13,13 @@ import javafx.scene.shape.Rectangle;
 import java.util.Objects;
 
 
-public class DragonTokenFactory extends Spawnable {
+public class DragonTokenFactory extends SpawnFactory {
     private final double volcanoCircleRadius;
-    private final Player[] players; // a reference to the players of the game round
     private static final String[] DRAGON_TOKEN_IMAGE_PATHS = {"/com/example/demo/assets/bluedragon.png", "/com/example/demo/assets/greenDragon.png",
             "/com/example/demo/assets/redDragon.png","/com/example/demo/assets/yellowDragon.png"};
 
-    public DragonTokenFactory(double newVolcanoCircleRadius, Player[] newPlayers){
+    public DragonTokenFactory(double newVolcanoCircleRadius){
         volcanoCircleRadius = newVolcanoCircleRadius;
-        players = newPlayers;
     }
 
     @Spawns("dragonToken")
@@ -50,14 +48,14 @@ public class DragonTokenFactory extends Spawnable {
             cardRect.setStrokeWidth(1);
 
             // TODO: init below managed by a central class in charge of init player,dragon token and cave?
-            Volcano volcanoRing = data.get("volcano");
             // set occupied status to True at the start
-            volcanoRing.getVolcanoCardByID(nextPlayerAt).setOccupied(true);
-            DragonToken dragonToken = new DragonToken(volcanoRing.getVolcanoCardByID(nextPlayerAt), cardRect, tokenRadius, angle);
-            players[i].setDragonToken(dragonToken);
+            VolcanoCard card = VolcanoRingFactory.getVolcanoCardByID(nextPlayerAt);
+            card.setOccupied(true);
+            DragonToken dragonToken = new DragonToken(VolcanoRingFactory.getVolcanoCardByID(nextPlayerAt), cardRect, tokenRadius, angle);
+            PlayerTurnManager.getPlayers()[i].setDragonToken(dragonToken);
             // Add the token view to the group
             tokenGroup.getChildren().add(cardRect);
-            nextPlayerAt += 6;
+            nextPlayerAt += Constants.SPACE_BETWEEN_PLAYERS+1;
         }
         return FXGL.entityBuilder(data).view(tokenGroup).build();
 
@@ -66,7 +64,7 @@ public class DragonTokenFactory extends Spawnable {
     @Override
     public void spawn() {
         super.spawn();
-        spawnData.put("volcano", VolcanoRingFactory.volcanoRing);
+        spawnData.put("volcano", VolcanoRingFactory.getVolcanoRing());
         FXGL.spawn("dragonToken", this.spawnData);
     }
 }
