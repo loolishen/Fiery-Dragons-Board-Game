@@ -3,11 +3,14 @@ import java.awt.*;
 
 public class SingleModePanel extends JPanel {
     private CircularGamePanel gameCircle;
+    private JFrame parentFrame;
 
-    public SingleModePanel() {
+    public SingleModePanel(JFrame parentFrame) {
+        this.parentFrame = parentFrame; // Store the reference
         setLayout(new BorderLayout()); // Use BorderLayout to manage components
         initUI();
     }
+
 
     private void initUI() {
         gameCircle = new CircularGamePanel();
@@ -15,7 +18,19 @@ public class SingleModePanel extends JPanel {
 
         // Adjust the size and position of the gameCircle if needed
         gameCircle.setBounds(50, 50, 300, 300);
+        JButton backButton = new JButton("End Game");
+        backButton.addActionListener(e -> switchToBoardPanel());
+        add(backButton, BorderLayout.SOUTH); // Add the button at the bottom
+
     }
+    private void switchToBoardPanel() {
+        parentFrame.getContentPane().removeAll(); // Remove all components
+        parentFrame.getContentPane().add(new BoardPanel(), BorderLayout.CENTER); // Add the BoardPanel back
+        parentFrame.revalidate();
+        parentFrame.repaint();
+    }
+
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -27,7 +42,7 @@ public class SingleModePanel extends JPanel {
 
     private void drawTitle(Graphics g) {
         g.setColor(Color.BLACK); // Choose a color that stands out
-        g.setFont(new Font("Serif", Font.BOLD, 48)); // Set font size and style
+        g.setFont(new Font("Serif", Font.BOLD, 28)); // Set font size and style
         FontMetrics fm = g.getFontMetrics();
         String title = "Single Player Mode"; // Adjust the title for single player mode
         int x = 50 + (600 - fm.stringWidth(title)) / 2; // Center the title horizontally within the board
