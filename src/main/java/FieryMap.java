@@ -2,8 +2,8 @@ package main.java;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
+import java.util.List;
 
 public class FieryMap extends JPanel {
 
@@ -27,32 +27,63 @@ public class FieryMap extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Draw outer circle
-        g2d.setColor(Color.BLACK);
-        g2d.drawOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+        // adjust zoom factor so that the parts don't get covered from being too big
+        double zoomFactor = 0.8; // Adjust the zoom factor as needed
 
-        // Draw segments
+        // shuffle the segment colors array
+        List<Color> segmentColorsList = Arrays.asList(SEGMENT_COLORS);
+        Collections.shuffle(segmentColorsList);
+
+        // draw outer circle with adjusted radius
+        int adjustedRadius = (int) (radius * zoomFactor);
+        g2d.setColor(Color.BLACK);
+        g2d.drawOval(centerX - adjustedRadius, centerY - adjustedRadius, 2 * adjustedRadius, 2 * adjustedRadius);
+
+        // draw segments
         for (int i = 0; i < SEGMENT_COUNT; i++) {
             double startAngle = 2 * Math.PI * i / SEGMENT_COUNT;
             double endAngle = 2 * Math.PI * (i + 1) / SEGMENT_COUNT;
-            g2d.setColor(SEGMENT_COLORS[i % SEGMENT_COLORS.length]);
-            g2d.fillArc(centerX - radius, centerY - radius, 2 * radius, 2 * radius, (int) Math.toDegrees(startAngle), (int) Math.toDegrees(endAngle - startAngle));
+            g2d.setColor(segmentColorsList.get(i));
+            g2d.fillArc(centerX - adjustedRadius, centerY - adjustedRadius, 2 * adjustedRadius, 2 * adjustedRadius, (int) Math.toDegrees(startAngle), (int) Math.toDegrees(endAngle - startAngle));
         }
 
-        // Draw dividing lines for parts
+        // draw dividing lines for parts
         for (int i = 0; i < SEGMENT_COUNT; i++) {
             for (int j = 0; j < PART_COUNT; j++) {
                 Point point = getSegmentPartCoordinate(i, j);
+                double adjustedZoomFactor = zoomFactor + 0.06; // Adjust the zoom factor for the lines to make them touch the circumference
+                int scaledX = (int) (centerX + (point.x - centerX) * adjustedZoomFactor);
+                int scaledY = (int) (centerY + (point.y - centerY) * adjustedZoomFactor);
                 g2d.setColor(Color.BLACK);
-                g2d.drawLine(centerX, centerY, point.x, point.y);
+                g2d.drawLine(centerX, centerY, scaledX, scaledY);
             }
         }
 
-        // Draw inner circle
-        int innerRadius = radius / 2; // Adjust the inner radius as needed
-        // Draw inner circle with yellow fill color
+        // draw inner circle
+        int innerRadius = (int) (radius * zoomFactor / 2); // Adjust the inner radius as needed
         g2d.setColor(Color.YELLOW);
+        g2d.drawOval(centerX - innerRadius, centerY - innerRadius, 2 * innerRadius, 2 * innerRadius);
         g2d.fillOval(centerX - innerRadius, centerY - innerRadius, 2 * innerRadius, 2 * innerRadius);
+
+        // adjust the radius of the circles based on the zoom factor
+        int circleRadius = (int) (radius * zoomFactor / 5); // Adjust the radius of the circles
+
+        // draw circle half outside to the north
+        g2d.setColor(Color.BLUE);
+        g2d.drawOval(centerX - circleRadius, centerY - adjustedRadius - circleRadius, 2 * circleRadius, 2 * circleRadius);
+        g2d.fillOval(centerX - circleRadius, centerY - adjustedRadius - circleRadius, 2 * circleRadius, 2 * circleRadius);
+        // draw circle half outside to the south
+        g2d.setColor(Color.RED);
+        g2d.drawOval(centerX - circleRadius, centerY + adjustedRadius - circleRadius, 2 * circleRadius, 2 * circleRadius);
+        g2d.fillOval(centerX - circleRadius, centerY + adjustedRadius - circleRadius, 2 * circleRadius, 2 * circleRadius);
+        // draw circle half outside to the east
+        g2d.setColor(Color.ORANGE);
+        g2d.drawOval(centerX + adjustedRadius - circleRadius, centerY - circleRadius, 2 * circleRadius, 2 * circleRadius);
+        g2d.fillOval(centerX + adjustedRadius - circleRadius, centerY - circleRadius, 2 * circleRadius, 2 * circleRadius);
+        // draw circle half outside to the west
+        g2d.setColor(Color.MAGENTA);
+        g2d.drawOval(centerX - adjustedRadius - circleRadius, centerY - circleRadius, 2 * circleRadius, 2 * circleRadius);
+        g2d.fillOval(centerX - adjustedRadius - circleRadius, centerY - circleRadius, 2 * circleRadius, 2 * circleRadius);
     }
 
     private void calculateCoordinates() {
@@ -83,4 +114,5 @@ public class FieryMap extends JPanel {
         super.invalidate();
         calculateCoordinates();
     }
+
 }
