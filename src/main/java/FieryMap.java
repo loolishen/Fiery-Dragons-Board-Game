@@ -1,7 +1,11 @@
 package main.java;
 
+import main.java.Player;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
@@ -15,9 +19,38 @@ public class FieryMap extends JPanel {
     private int centerX;
     private int centerY;
     private int radius;
+    private int circleRadius;
+    private double zoomFactor = 0.8;
+
+    private Player player;
+    private Point playerPosition;
+    private int adjustedRadius;
 
     public FieryMap() {
         calculateCoordinates();
+        JButton rotateButton = new JButton("Rotate");
+        add(rotateButton);
+        generateRandomColors();
+    }
+
+    private void generateRandomColors() {
+        // Shuffle the segment colors array
+        List<Color> segmentColorsList = Arrays.asList(SEGMENT_COLORS);
+        Collections.shuffle(segmentColorsList);
+    }
+
+    public void setPlayer(Player player, Point position, int adjustedRadius, int circleRadius) {
+        // Remove the previous player if exists
+        if (this.player != null) {
+            remove(this.player);
+        }
+
+        this.player = player;
+        this.playerPosition = position;
+        this.adjustedRadius = adjustedRadius;
+        this.circleRadius = circleRadius;
+
+        repaint(); // Trigger repaint to update the component
     }
 
     @Override
@@ -68,6 +101,16 @@ public class FieryMap extends JPanel {
         // adjust the radius of the circles based on the zoom factor
         int circleRadius = (int) (radius * zoomFactor / 5); // Adjust the radius of the circles
 
+        // Draw player token at the specified position if it exists
+        if (player != null && playerPosition != null) {
+            int tokenRadius = circleRadius / 2; // Adjust the token radius
+            int tokenX = centerX + playerPosition.x - tokenRadius - player.getWidth() / 2;
+            int tokenY = centerY + playerPosition.y - tokenRadius - player.getHeight();
+            player.setBounds(tokenX, tokenY, player.getWidth(), player.getHeight());
+            player.paintComponent(g2d);
+
+        }
+
         // draw circle half outside to the north
         g2d.setColor(Color.BLUE);
         g2d.drawOval(centerX - circleRadius, centerY - adjustedRadius - circleRadius, 2 * circleRadius, 2 * circleRadius);
@@ -86,10 +129,14 @@ public class FieryMap extends JPanel {
         g2d.fillOval(centerX - adjustedRadius - circleRadius, centerY - circleRadius, 2 * circleRadius, 2 * circleRadius);
     }
 
+
+
     private void calculateCoordinates() {
+        int halfCircleRadius = radius / 5;
+
         centerX = getWidth() / 2;
-        centerY = getHeight() / 2;
-        radius = Math.min(getWidth(), getHeight()) / 2;
+        centerY = getHeight() / 2 + halfCircleRadius;
+        radius = Math.min(getWidth(), getHeight()) / 2 - halfCircleRadius;
 
         for (int i = 0; i < SEGMENT_COUNT; i++) {
             double angle = 2 * Math.PI * i / SEGMENT_COUNT;
@@ -114,5 +161,4 @@ public class FieryMap extends JPanel {
         super.invalidate();
         calculateCoordinates();
     }
-
 }

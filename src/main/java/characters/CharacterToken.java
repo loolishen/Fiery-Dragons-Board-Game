@@ -38,7 +38,7 @@ public class CharacterToken extends JPanel {
     }
 
     /**
-     * Add a capability to this Actor.
+     * Add a capability to this Character.
      *
      * @param capability the Capability to add
      */
