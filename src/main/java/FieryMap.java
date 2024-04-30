@@ -26,11 +26,24 @@ public class FieryMap extends JPanel {
     private Point playerPosition;
     private int adjustedRadius;
 
+    private double rotationAngle = 0.0; // Current rotation angle in radians
+
     public FieryMap() {
         calculateCoordinates();
-        JButton rotateButton = new JButton("Rotate");
+        JButton rotateButton = new JButton("Next player");
+        rotateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                rotateMap(); // Rotate the map when the button is clicked
+            }
+        });
         add(rotateButton);
         generateRandomColors();
+    }
+
+    private void rotateMap() {
+        rotationAngle -= Math.PI / 2; // Rotate by 90 degrees counter-clockwise
+        repaint(); // Repaint the component to reflect the rotation
     }
 
     private void generateRandomColors() {
@@ -60,12 +73,14 @@ public class FieryMap extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        g2d.rotate(rotationAngle, centerX, centerY);
+
         // adjust zoom factor so that the parts don't get covered from being too big
         double zoomFactor = 0.8; // Adjust the zoom factor as needed
 
         // shuffle the segment colors array
         List<Color> segmentColorsList = Arrays.asList(SEGMENT_COLORS);
-        Collections.shuffle(segmentColorsList);
+//        Collections.shuffle(segmentColorsList);
 
         // draw outer circle with adjusted radius
         int adjustedRadius = (int) (radius * zoomFactor);
@@ -127,6 +142,8 @@ public class FieryMap extends JPanel {
         g2d.setColor(Color.MAGENTA);
         g2d.drawOval(centerX - adjustedRadius - circleRadius, centerY - circleRadius, 2 * circleRadius, 2 * circleRadius);
         g2d.fillOval(centerX - adjustedRadius - circleRadius, centerY - circleRadius, 2 * circleRadius, 2 * circleRadius);
+
+        g2d.rotate(-rotationAngle, centerX, centerY);
     }
 
 
