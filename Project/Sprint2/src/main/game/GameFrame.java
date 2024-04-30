@@ -3,11 +3,16 @@ package main.game;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The main frame of the "Fiery Dragons Game", which initializes and displays the primary game interface.
+ */
 public class GameFrame extends JFrame {
     public GameFrame() {
         setTitle("Fiery Dragons Game");
-        setSize(900, 800);
+        setSize(900, 850);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
         setLocationRelativeTo(null);
         setResizable(false);
 
@@ -17,10 +22,9 @@ public class GameFrame extends JFrame {
     }
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
+        SwingUtilities.invokeLater(() -> {
             GameFrame frame = new GameFrame();
             frame.setVisible(true);
         });
     }
-
 }

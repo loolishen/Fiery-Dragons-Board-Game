@@ -1,6 +1,8 @@
 package main.game;
 
-import javax.swing.*;
+/**
+ * Manages the flipping state of ChitCards, ensuring that only one card can be flipped at a time across the application.
+ */
 
 public class ChitCardFlipManager {
     private static ChitCard currentlyFlipped = null;
@@ -17,10 +19,4 @@ public class ChitCardFlipManager {
         currentlyFlipped = card;  // Update the currently flipped card reference
     }
 
-    public static void unflipAll() {
-        if (currentlyFlipped != null) {
-            currentlyFlipped.unflip();
-            currentlyFlipped = null;
-        }
-    }
 }

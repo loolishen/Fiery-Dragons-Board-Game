@@ -3,6 +3,9 @@ package main.game;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Provides a user interface for navigating between different game modes in the application.
+ */
 public class ControlPanel extends JPanel {
     JFrame parentFrame;
 

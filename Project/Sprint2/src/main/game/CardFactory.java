@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
+/**
+ * Provides factory methods for creating various types of card-related UI components in the game.
+ */
 public class CardFactory {
 
     // Factory method for creating a general chit card

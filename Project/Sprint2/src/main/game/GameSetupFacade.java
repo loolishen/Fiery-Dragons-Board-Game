@@ -5,6 +5,10 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Facade class for setting up various components of the game interface.
+ */
+
 
 public class GameSetupFacade {
     public static void setupChitCards(JPanel gridPanel, List<Card> chitCards) {

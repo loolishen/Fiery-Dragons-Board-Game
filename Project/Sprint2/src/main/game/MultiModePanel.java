@@ -3,6 +3,9 @@ package main.game;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Panel for the multiplayer mode of the game, containing the game interface for multiplayer gameplay.
+ */
 public class MultiModePanel extends JPanel {
     private GamePanel gamePanel;
     private JFrame parentFrame;

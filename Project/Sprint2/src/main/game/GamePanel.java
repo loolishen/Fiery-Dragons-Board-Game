@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ Represents the main panel of the "Fiery Dragons Game", responsible for displaying the game interface.
+ */
+
 public class GamePanel extends JPanel {
     static final int NUM_CARDS = 24;
     static final int PANEL_WIDTH = 900;

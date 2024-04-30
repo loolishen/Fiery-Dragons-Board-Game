@@ -3,6 +3,9 @@ package main.game;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents the game panel for single-player mode, containing the main game interface and a button to end the game.
+ */
 public class SingleModePanel extends JPanel {
     private GamePanel gameCircle;
     private JFrame parentFrame;

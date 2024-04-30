@@ -6,6 +6,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 
+/**
+ * Represents an interactive game card that can be flipped to reveal an image, with visual and interactive properties tailored for the game's UI.
+ */
 public class ChitCard extends JLabel {
     private Card card;
     private boolean isFlipped;  // This now belongs to ChitCard, not Card

@@ -3,7 +3,9 @@ package main.game;
 import javax.swing.*;
 import java.awt.*;
 
-
+/**
+ * Represents the Board Panel for the main starting frame.
+ */
 public class BoardPanel extends JPanel {
     private Image dragonImage;
 
