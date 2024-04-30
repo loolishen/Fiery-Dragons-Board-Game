@@ -1,48 +1,60 @@
 package main.game;
 
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 
+public class ChitCard extends JLabel {
+    private Card card;
+    private boolean isFlipped;  // This now belongs to ChitCard, not Card
 
-class ChitCard extends JButton {
-    private ImageIcon faceUpIcon;
-    private ImageIcon faceDownIcon;
-    private boolean isFaceUp = false;
-    private static final int CARD_SIZE = 50; // Assuming 50 is the size you want
-
-    public ChitCard(ImageIcon faceUpIcon, ImageIcon faceDownIcon) {
-        this.faceUpIcon = faceUpIcon;
-        this.faceDownIcon = faceDownIcon;
-
-        setIcon(faceDownIcon);
-        setPreferredSize(new Dimension(CARD_SIZE, CARD_SIZE));
-        setContentAreaFilled(false);
-        setBorderPainted(false);
-        setFocusPainted(false);
-
+    public ChitCard(Card card) {
+        this.card = card;
+        this.isFlipped = false;  // Initialize as not flipped
+        setPreferredSize(new Dimension(60, 60));
+        setBackground(Color.ORANGE);
+        setOpaque(false);
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.ORANGE),
+                BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        ));
         addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                flipCard();
+            public void mouseClicked(MouseEvent evt) {
+                ChitCardFlipManager.flipCard(ChitCard.this);
             }
         });
     }
 
-    private void flipCard() {
-        isFaceUp = !isFaceUp;
-        setIcon(isFaceUp ? faceUpIcon : faceDownIcon);
+    public boolean isFlipped() {
+        return isFlipped;
     }
 
-    // This method is static because it does not use any instance variables of ChitCard
-    public static ImageIcon createPlaceholderIcon(Color color, int width, int height) {
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = image.createGraphics();
-        g2d.setColor(color);
-        g2d.fillRect(0, 0, width, height);
-        g2d.dispose();
-        return new ImageIcon(image);
+    public void setFlipped(boolean flipped) {
+        this.isFlipped = flipped;
+        repaint();
+    }
+
+    // Method to unflip the card
+    public void unflip() {
+        setFlipped(false);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        Shape clip = new Ellipse2D.Float(0, 0, getWidth(), getHeight());
+        g2.setClip(clip);
+        g2.setColor(getBackground());
+        g2.fill(clip);
+
+        if (isFlipped) {
+            ImageIcon icon = new ImageIcon(getClass().getResource("/" + card.getImageName()));
+            g2.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
+        }
     }
 }
