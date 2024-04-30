@@ -3,10 +3,37 @@ package main.game;
 import javax.swing.*;
 import java.awt.*;
 
-class MultiModePanel extends JPanel {
-    public MultiModePanel() {
+public class MultiModePanel extends JPanel {
+    private GamePanel gamePanel;
+    private JFrame parentFrame;
+
+    public MultiModePanel(JFrame parentFrame) {
+        this.parentFrame = parentFrame;
         setLayout(new BorderLayout());
-        add(new JLabel("Play with Friends Mode"), BorderLayout.CENTER);
-        // Add more components specific to Multi Player mode here
+        initUI();
+    }
+
+    private void initUI() {
+        // Similar to SingleModePanel, we initialize the game panel for multiplayer mode
+        gamePanel = new GamePanel();
+        gamePanel.setPreferredSize(new Dimension(900, 700));
+        add(gamePanel, BorderLayout.CENTER);
+
+        // Multiplayer specific configuration can be initialized here if needed
+
+        // Add a button to return to the main board panel
+        JButton backButton = new JButton("End Game");
+        backButton.addActionListener(e -> switchToBoardPanel());
+        add(backButton, BorderLayout.SOUTH);
+    }
+
+    private void switchToBoardPanel() {
+        parentFrame.getContentPane().removeAll();
+        parentFrame.getContentPane().setLayout(new BorderLayout());
+        parentFrame.getContentPane().add(new BoardPanel(), BorderLayout.CENTER);
+        parentFrame.getContentPane().add(new ControlPanel(parentFrame), BorderLayout.SOUTH);
+        parentFrame.pack();
+        parentFrame.revalidate();
+        parentFrame.repaint();
     }
 }

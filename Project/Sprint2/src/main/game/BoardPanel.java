@@ -10,7 +10,7 @@ public class BoardPanel extends JPanel {
 
     public BoardPanel() {
         setPreferredSize(new Dimension(900, 700));
-        setLayout(new BorderLayout()); // Use BorderLayout to manage components
+        setLayout(new BorderLayout());
         loadImages();
     }
 
@@ -23,14 +23,12 @@ public class BoardPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawBoard(g);
-        // Ensure the image scales correctly over the desired area
         if (dragonImage != null) {
             int imageWidth = 250;
             int imageHeight = 300;
             int boardWidth = 800;
             int boardHeight = 700;
 
-            // Calculate the center position
             int x = 50 + (boardWidth - imageWidth) / 2;
             int y = 50 + (boardHeight - imageHeight) / 2;
 
@@ -42,12 +40,12 @@ public class BoardPanel extends JPanel {
     }
 
     private void drawTitle(Graphics g) {
-        g.setColor(Color.BLACK); // Choose a color that stands out
-        g.setFont(new Font("Serif", Font.BOLD, 48)); // Set font size and style
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Times", Font.BOLD, 48));
         FontMetrics fm = g.getFontMetrics();
         String title = "Fiery Dragons";
         int x = 50 + (800 - fm.stringWidth(title)) / 2; // Center the title horizontally within the board
-        int y = 100; // Position the title vertically within the board
+        int y = 100;
         g.drawString(title, x, y);
     }
 
@@ -55,6 +53,6 @@ public class BoardPanel extends JPanel {
         // Draw the game board
         Color boardColor = new Color(0xD9, 0xD9, 0xD9);
         g.setColor(boardColor);
-        g.fillRect(50, 50, 800, 700); // Draw the rectangle as board
+        g.fillRect(50, 50, 800, 700);
     }
 }

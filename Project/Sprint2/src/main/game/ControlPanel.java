@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ControlPanel extends JPanel {
-    JFrame parentFrame; // Reference to the main application window
+    JFrame parentFrame;
 
     public ControlPanel(JFrame parent) {
         this.parentFrame = parent;
@@ -14,15 +14,15 @@ public class ControlPanel extends JPanel {
         add(btnSinglePlayer);
 
         JButton btnPlayFriends = new JButton("Play with Friends");
-        btnPlayFriends.addActionListener(e -> switchPanel(new MultiModePanel()));
+        btnPlayFriends.addActionListener(e -> switchPanel(new MultiModePanel(parentFrame)));
         add(btnPlayFriends);
     }
+
     private void switchPanel(JPanel newPanel) {
         parentFrame.getContentPane().removeAll();
         parentFrame.getContentPane().add(newPanel, BorderLayout.CENTER);
-        parentFrame.pack(); // repack after switch
+        parentFrame.pack();
         parentFrame.revalidate();
         parentFrame.repaint();
     }
-
 }
