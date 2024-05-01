@@ -1,4 +1,4 @@
-package main.game;
+package game;
 
 /**
  * Represents an animal enum for the volcano cards.

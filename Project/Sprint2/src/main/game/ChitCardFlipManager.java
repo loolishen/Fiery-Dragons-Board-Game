@@ -1,4 +1,4 @@
-package main.game;
+package game;
 
 /**
  * Manages the flipping state of ChitCards, ensuring that only one card can be flipped at a time across the application.

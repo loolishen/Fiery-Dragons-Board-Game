@@ -1,4 +1,4 @@
-package main.game;
+package game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +16,8 @@ public class GameFrame extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        add(new BoardPanel(), BorderLayout.CENTER);
-        add(new ControlPanel(this), BorderLayout.SOUTH);
+        add(new game.BoardPanel(), BorderLayout.CENTER);
+        add(new game.ControlPanel(this), BorderLayout.SOUTH);
         pack();
     }
 
