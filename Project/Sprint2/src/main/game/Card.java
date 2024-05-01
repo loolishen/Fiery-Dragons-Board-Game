@@ -1,4 +1,4 @@
-package game;
+package main.game;
 
 /**
  * Represents a basic card with an image.
