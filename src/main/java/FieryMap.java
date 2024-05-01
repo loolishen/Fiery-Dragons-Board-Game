@@ -113,6 +113,21 @@ public class FieryMap extends JPanel {
         g2d.drawOval(centerX - innerRadius, centerY - innerRadius, 2 * innerRadius, 2 * innerRadius);
         g2d.fillOval(centerX - innerRadius, centerY - innerRadius, 2 * innerRadius, 2 * innerRadius);
 
+        // draw smaller circles inside the inner circle
+        int smallCircleRadius = (int) (innerRadius * 0.15); // Adjust the radius of smaller circles as needed
+
+        // Draw smaller circles inside the inner circle in a circular pattern
+        int smallCircleCount = 16; // Number of smaller circles
+        for (int k = 0; k < smallCircleCount; k++) {
+            double angle = 2 * Math.PI * k / smallCircleCount;
+            int x = (int) (centerX + (innerRadius * 0.8) * Math.cos(angle));
+            int y = (int) (centerY + (innerRadius * 0.8) * Math.sin(angle));
+            g2d.setColor(Color.BLACK);
+            g2d.fillOval(x - smallCircleRadius, y - smallCircleRadius, 2 * smallCircleRadius, 2 * smallCircleRadius);
+        }
+
+
+
         // adjust the radius of the circles based on the zoom factor
         int circleRadius = (int) (radius * zoomFactor / 5); // Adjust the radius of the circles
 
@@ -147,6 +162,20 @@ public class FieryMap extends JPanel {
     }
 
 
+    private boolean circleClicked(int x, int y, int circleX, int circleY, int circleRadius) {
+        // Calculate the distance between the click point (x, y) and the center of the circle (circleX, circleY)
+        double distance = Math.sqrt(Math.pow(x - circleX, 2) + Math.pow(y - circleY, 2));
+
+        // If the distance is less than or equal to the radius of the circle, the click is inside the circle
+        return distance <= circleRadius;
+    }
+
+
+
+    private Color getColor() {
+        // Generate a random color
+        return new Color(0,0,0);
+    }
 
     private void calculateCoordinates() {
         int halfCircleRadius = radius / 5;
