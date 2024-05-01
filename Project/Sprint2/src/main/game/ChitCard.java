@@ -11,7 +11,7 @@ import java.awt.geom.Ellipse2D;
  */
 public class ChitCard extends JLabel {
     private Card card;
-    private boolean isFlipped;  // This now belongs to ChitCard, not Card
+    private boolean isFlipped;
 
     public ChitCard(Card card) {
         this.card = card;
