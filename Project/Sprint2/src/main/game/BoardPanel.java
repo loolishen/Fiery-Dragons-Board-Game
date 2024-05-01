@@ -22,7 +22,11 @@ public class BoardPanel extends JPanel {
      * Loads the dragon image from the resources directory.
      */
     private void loadImages() {
-        ImageIcon ii = new ImageIcon("Project/Sprint2/src/main/resources/dragon.png");
+        // Get the class loader for the current class
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        // Load the image as a resource using the class loader
+        ImageIcon ii = new ImageIcon(classLoader.getResource("dragon.png"));
         dragonImage = ii.getImage();
     }
 
