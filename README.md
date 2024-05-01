@@ -8,17 +8,21 @@ This folder contains the resources and the game
   - This contains the GUI resources in .png format
 
 ## Project/Sprint2/documents
-This folder contains a pdf to the UML Class and Sequence Diagrams as well as the Design Rationale
+This folder contains a pdf to the UML Class and Sequence Diagrams as well as the Design Rationale (contains video demo link)
 
 ## Executable:
-To launch the game:
-- .jar file: MA_Tuesday08am_Team123_jar.jar
-  - JDK version: 15
-    **openjdk version "15.0.2" 2021-01-19
-OpenJDK Runtime Environment Corretto-15.0.2.7.1 (build 15.0.2+7)
-OpenJDK 64-Bit Server VM Corretto-15.0.2.7.1 (build 15.0.2+7, mixed mode, sharing)**
 
-  - To run the application:
+- Unzip the jar file and then click on file: fierydragon_MA.jar
+  - JDK version used: 20
+
+  - To run the application through terminal:
     - Download the .jar file.
     - Open the terminal and go to the directory where the .jar file is located. Eg. "cd Downloads" 
-    - Run the command "java -jar MA_Tuesday08am_Team123.jar"
+    - Run the command "java -jar fierydragon_MA.jar"
+
+## Video Demo:
+In this video, we talk about how to create a .JAR file and how to launch the game. We also discuss the game functionalities implemented
+https://youtu.be/iM3xT_F8iwY
+
+Game Testing:
+https://youtu.be/30nhcg8z28U
