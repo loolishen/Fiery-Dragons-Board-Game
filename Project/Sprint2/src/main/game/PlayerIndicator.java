@@ -19,7 +19,6 @@ public class PlayerIndicator extends JLabel {
             System.err.println("Resource not found: " + imageName);
         }
 
-        // Set size and position of the label
         setBounds(x, y, INDICATOR_SIZE, INDICATOR_SIZE);
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setToolTipText(imageName.substring(0, imageName.lastIndexOf('1')));

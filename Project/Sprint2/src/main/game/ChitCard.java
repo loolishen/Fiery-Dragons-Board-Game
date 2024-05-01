@@ -12,10 +12,14 @@ import java.awt.geom.Ellipse2D;
 public class ChitCard extends JLabel {
     private Card card;
     private boolean isFlipped;
+    private static ChitCard currentlyFlippedCard;
 
+    /**
+     * Constructs a new ChitCard with the specified card image.
+     */
     public ChitCard(Card card) {
         this.card = card;
-        this.isFlipped = false;  // Initialize as not flipped
+        this.isFlipped = false;
         setPreferredSize(new Dimension(60, 60));
         setBackground(Color.ORANGE);
         setOpaque(false);
@@ -25,21 +29,35 @@ public class ChitCard extends JLabel {
         ));
         addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                ChitCardFlipManager.flipCard(ChitCard.this);
+                if (!isFlipped && currentlyFlippedCard == null) {
+                    setFlipped(true);
+                    currentlyFlippedCard = ChitCard.this;
+                } else if (isFlipped && currentlyFlippedCard == ChitCard.this) {
+                    unflip();
+                    currentlyFlippedCard = null;
+                }
             }
         });
     }
 
+    /**
+     * Checks if the card is currently flipped.
+     */
     public boolean isFlipped() {
         return isFlipped;
     }
 
+    /**
+     * Sets the flipped state of the card.
+     */
     public void setFlipped(boolean flipped) {
         this.isFlipped = flipped;
         repaint();
     }
 
-    // Method to unflip the card
+    /**
+     * Unflips the card, resetting its flipped state to false.
+     */
     public void unflip() {
         setFlipped(false);
     }

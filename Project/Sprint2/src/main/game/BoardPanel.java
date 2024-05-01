@@ -9,18 +9,27 @@ import java.awt.*;
 public class BoardPanel extends JPanel {
     private Image dragonImage;
 
-
+    /**
+     * Constructor for the Board Panel. Sets the preferred size, layout, and loads images.
+     */
     public BoardPanel() {
         setPreferredSize(new Dimension(900, 700));
         setLayout(new BorderLayout());
         loadImages();
     }
 
+    /**
+     * Loads the dragon image from the resources directory.
+     */
     private void loadImages() {
         ImageIcon ii = new ImageIcon("Project/Sprint2/src/main/resources/dragon.png");
         dragonImage = ii.getImage();
     }
 
+    /**
+     * Overrides the paintComponent method to draw the board, dragon image, and title on the panel.
+     * @param g The Graphics object used for painting.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -41,6 +50,10 @@ public class BoardPanel extends JPanel {
         }
     }
 
+    /**
+     * Draws the title "Fiery Dragons" at the center of the board.
+     * @param g The Graphics object used for painting.
+     */
     private void drawTitle(Graphics g) {
         g.setColor(Color.BLACK);
         g.setFont(new Font("Times", Font.BOLD, 48));
@@ -51,6 +64,10 @@ public class BoardPanel extends JPanel {
         g.drawString(title, x, y);
     }
 
+    /**
+     * Draws the game board with a specified color.
+     * @param g The Graphics object used for painting.
+     */
     private void drawBoard(Graphics g) {
         // Draw the game board
         Color boardColor = new Color(0xD9, 0xD9, 0xD9);

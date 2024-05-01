@@ -26,30 +26,30 @@ public class GameSetupFacade {
         }
     }
 
-    public static void setupVolcanoRing(GamePanel panel, List<String> volcanoImageNames) {
+    public static void setupVolcanoRing(GamePanel panel, List<Animal> animals) {
         int cardWidth = 55;
         int cardHeight = 65;
         int centerX = GamePanel.PANEL_WIDTH / 2;
         int centerY = GamePanel.PANEL_HEIGHT / 2 - 80;
         int radius = 270;
 
-        Collections.shuffle(volcanoImageNames);
+        Collections.shuffle(animals);
 
         for (int i = 0; i < GamePanel.NUM_CARDS; i++) {
             double angle = 2 * Math.PI * i / GamePanel.NUM_CARDS;
             int x = centerX + (int) (radius * Math.sin(angle)) - cardWidth / 2;
             int y = centerY + (int) (radius * Math.cos(angle)) - cardHeight / 2;
-            String imageName = volcanoImageNames.get(i % volcanoImageNames.size());
+            Animal animal = animals.get(i % animals.size());
 
-            JLabel volcanoCard = CardFactory.createVolcanoCard(imageName, cardWidth, cardHeight);
+            JLabel volcanoCard = CardFactory.createVolcanoCard(animal, cardWidth, cardHeight);
             volcanoCard.setBounds(x, y, cardWidth, cardHeight);
             panel.add(volcanoCard);
         }
     }
 
     public static void setupPlayerIndicators(GamePanel panel, String[] playerImages, int[] cardPositions) {
-        int radius = 335; // Adjust this radius if necessary to prevent overlap
-        int indicatorSize = 50; // The size of the player indicator
+        int radius = 335;
+        int indicatorSize = 50;
 
         for (int i = 0; i < playerImages.length; i++) {
             double angle = 2 * Math.PI * (cardPositions[i] - 1) / GamePanel.NUM_CARDS;
@@ -77,7 +77,7 @@ public class GameSetupFacade {
             tokenLabel.setHorizontalAlignment(SwingConstants.CENTER);
             tokenLabel.setVerticalAlignment(SwingConstants.CENTER);
             tokenLabel.setOpaque(true);
-            tokenLabel.setBackground(Color.BLUE); // Customize token color as needed
+            tokenLabel.setBackground(Color.BLUE);
 
             // Adjusting position to match player indicators
             int radius = 305;

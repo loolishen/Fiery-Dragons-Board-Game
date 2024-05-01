@@ -22,9 +22,6 @@ public class MultiModePanel extends JPanel {
         gamePanel.setPreferredSize(new Dimension(900, 700));
         add(gamePanel, BorderLayout.CENTER);
 
-        // Multiplayer specific configuration can be initialized here if needed
-
-        // Add a button to return to the main board panel
         JButton backButton = new JButton("End Game");
         backButton.addActionListener(e -> switchToBoardPanel());
         add(backButton, BorderLayout.SOUTH);

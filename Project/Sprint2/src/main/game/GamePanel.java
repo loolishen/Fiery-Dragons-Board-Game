@@ -9,13 +9,14 @@ import java.util.List;
 /**
  Represents the main panel of the "Fiery Dragons Game", responsible for displaying the game interface.
  */
-
 public class GamePanel extends JPanel {
     static final int NUM_CARDS = 24;
     static final int PANEL_WIDTH = 900;
     static final int PANEL_HEIGHT = 850;
 
     private List<Card> chitCards;
+    private Animal[] volcanoAnimals = {Animal.BABY_DRAGON, Animal.BAT, Animal.SALAMANDER, Animal.SPIDER};
+
     private String[] volcanoImageNames = {"babydragon.png", "bat.png", "salamander.png", "spider.png"};
 
     public GamePanel() {
@@ -26,7 +27,7 @@ public class GamePanel extends JPanel {
         JPanel gridPanel = new JPanel();
         add(gridPanel);
         GameSetupFacade.setupChitCards(gridPanel, chitCards);
-        GameSetupFacade.setupVolcanoRing(this, Arrays.asList(volcanoImageNames));
+        GameSetupFacade.setupVolcanoRing(this, Arrays.asList(volcanoAnimals));
         GameSetupFacade.setupPlayerIndicators(this, new String[]{"dragon1.png", "bat1.png", "spider1.png", "salamander1.png"}, new int[]{1, 7, 13, 19});
         GameSetupFacade.setupPlayerTokens(this, new int[]{1, 2, 3, 4}, new int[]{1, 7, 13, 19});
 
