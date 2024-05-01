@@ -48,16 +48,47 @@ public class GameSetupFacade {
     }
 
     public static void setupPlayerIndicators(GamePanel panel, String[] playerImages, int[] cardPositions) {
-        int radius = 295; // Base radius for placement
+        int radius = 335; // Adjust this radius if necessary to prevent overlap
         int indicatorSize = 50; // The size of the player indicator
 
         for (int i = 0; i < playerImages.length; i++) {
             double angle = 2 * Math.PI * (cardPositions[i] - 1) / GamePanel.NUM_CARDS;
             int x = (int) (GamePanel.PANEL_WIDTH / 2 + radius * Math.cos(angle)) - indicatorSize / 2;
-            int y = (int) ((GamePanel.PANEL_HEIGHT - 80) / 2 - radius * Math.sin(angle)) - indicatorSize / 2;
-            x += 55 / 2 - indicatorSize / 2;  // Center horizontally on the card
-            y += 65 / 2 - indicatorSize / 2;  // Center vertically on the card
-            panel.add(CardFactory.createPlayerIndicator(playerImages[i], x, y));
+            int y = (int) ((GamePanel.PANEL_HEIGHT - 80) / 2 - radius * Math.sin(angle)) - indicatorSize / 2 - 30;
+
+            // Adjusting position to ensure there is no overlap
+            x += (55 - indicatorSize) / 2;  // Adjust centering horizontally
+            y += (65 - indicatorSize) / 2;  // Adjust centering vertically
+
+            PlayerIndicator indicator = CardFactory.createPlayerIndicator(playerImages[i], x, y);
+            panel.add(indicator);
+            panel.setComponentZOrder(indicator, 0); // This ensures indicators are always on top
         }
     }
+
+    public static void setupPlayerTokens(GamePanel panel, int[] playerNumbers, int[] cardPositions) {
+        int tokenSize = 30; // The size of the player token
+        Font tokenFont = new Font("Arial", Font.BOLD, 20); // Font for token numbers
+
+        for (int i = 0; i < playerNumbers.length; i++) {
+            JLabel tokenLabel = new JLabel(String.valueOf(playerNumbers[i]));
+            tokenLabel.setFont(tokenFont);
+            tokenLabel.setForeground(Color.WHITE);
+            tokenLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            tokenLabel.setVerticalAlignment(SwingConstants.CENTER);
+            tokenLabel.setOpaque(true);
+            tokenLabel.setBackground(Color.BLUE); // Customize token color as needed
+
+            // Adjusting position to match player indicators
+            int radius = 305;
+            double angle = 2 * Math.PI * (cardPositions[i] - 1) / GamePanel.NUM_CARDS;
+            int x = (int) (GamePanel.PANEL_WIDTH / 2 + radius * Math.cos(angle)) - tokenSize / 2;
+            int y = (int) ((GamePanel.PANEL_HEIGHT - 80) / 2 - radius * Math.sin(angle)) - tokenSize / 2 - 30;
+
+            tokenLabel.setBounds(x, y, tokenSize, tokenSize);
+            panel.add(tokenLabel);
+            panel.setComponentZOrder(tokenLabel, 0); // This ensures tokens are always on top of other components
+        }
+    }
+
 }

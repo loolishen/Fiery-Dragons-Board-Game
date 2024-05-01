@@ -28,6 +28,8 @@ public class GamePanel extends JPanel {
         GameSetupFacade.setupChitCards(gridPanel, chitCards);
         GameSetupFacade.setupVolcanoRing(this, Arrays.asList(volcanoImageNames));
         GameSetupFacade.setupPlayerIndicators(this, new String[]{"dragon1.png", "bat1.png", "spider1.png", "salamander1.png"}, new int[]{1, 7, 13, 19});
+        GameSetupFacade.setupPlayerTokens(this, new int[]{1, 2, 3, 4}, new int[]{1, 7, 13, 19});
+
     }
 
 
