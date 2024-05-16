@@ -1,29 +1,31 @@
 package com.example.demo;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.example.demo.Animals.AnimalType;
+import javafx.scene.paint.Color;
 
 import java.util.Map;
 
-import static com.example.demo.AnimalType.*;
+import static com.example.demo.Animals.AnimalType.*;
 import static java.util.Map.entry;
 
-public class Constants {
+public class Config {
     // For RNG testing
     public static long RNG_SEED = 531;
-    public static long NO_SEED = 0;
+    public static long NO_SEED = 0; // when we want true randomness each time
 
     // Animal related info: types and max count
-    public static final AnimalType[] ANIMAL_TYPES = {AnimalType.SALAMANDER, AnimalType.BAT, AnimalType.SPIDER, AnimalType.BABY_DRAGON, AnimalType.DRAGON_PIRATE};
+    public static final AnimalType[] ANIMAL_TYPES = {SALAMANDER, BAT, SPIDER, BABY_DRAGON, DRAGON_PIRATE};
     public static final int DRAGON_PIRATE_MAX_COUNT = 2;
     public static final int ANIMAL_MAX_COUNT = 3;
 
     // For image resource paths
     public final static Map<AnimalType, String> ANIMAL_IMAGE_IMAGE_PATH_PREFIX_MAPPINGS = Map.ofEntries(
-            entry(AnimalType.SALAMANDER, "/com/example/demo/assets/salamander"),
-            entry(AnimalType.SPIDER, "/com/example/demo/assets/spider"),
-            entry(AnimalType.BABY_DRAGON, "/com/example/demo/assets/babyDragon"),
-            entry(AnimalType.BAT, "/com/example/demo/assets/bat"),
-            entry(AnimalType.DRAGON_PIRATE, "/com/example/demo/assets/skull")
+            entry(SALAMANDER, "/com/example/demo/assets/salamander"),
+            entry(SPIDER, "/com/example/demo/assets/spider"),
+            entry(BABY_DRAGON, "/com/example/demo/assets/babyDragon"),
+            entry(BAT, "/com/example/demo/assets/bat"),
+            entry(DRAGON_PIRATE, "/com/example/demo/assets/skull")
     );
 
     // Application window dimensions
@@ -49,21 +51,25 @@ public class Constants {
             SPIDER, BABY_DRAGON, BAT, SPIDER, SPIDER, BAT,SALAMANDER };
     public static final int VOLCANO_RING_RADIUS = 200;
     public static final int VOLCANO_RING_NUM_CARDS = 24;
+    public static final int FIRST_ROTATION_ANGLE = 90;
     public static final int VOLCANO_CARD_WIDTH = 40;
     public static final int VOLCANO_CARD_HEIGHT = 60;
     public static final int VOLCANO_RING_SEGMENT_LENGTH = 3;
 
 
     // info about setup related to player including cave and dragon token
+
+    public static final Color[] COLORS = {Color.BLUE,Color.GREEN,Color.RED,Color.DARKORANGE};
     public static final int NUM_PLAYERS = 4;
     public static final int SPACE_BETWEEN_PLAYERS = (VOLCANO_RING_NUM_CARDS-NUM_PLAYERS)/NUM_PLAYERS;
     public static final int END_TURN_RESULT = 0;
     public static final int CAVE_CIRCLE_RADIUS = 15;
     public static final int CAVE_POS_RADIUS_OFFSET = 35;
     public static final int CAVE_TEXT_OFFSET = 7;
-    public static final int ANGLE_OFFSET = 15; // because the cave and token starts at second chit card of any given segment
+    public static final int ANGLE_OFFSET = 0; // because the cave and token starts at second chit card of any given segment
     public static final double TOKEN_MOVE_ANGLE_INCREMENT = 360.0/VOLCANO_RING_NUM_CARDS;
     public static final int TOKEN_PATH_RADIUS_OFFSET = 65; // so that token moves on a circular path of the circumference
+    public static final int DRAGON_TOKEN_RADIUS = VOLCANO_RING_RADIUS+TOKEN_PATH_RADIUS_OFFSET;
     // of a larger circle compared to the volcano ring's circle
     public static final int TOKEN_WIDTH = 25;
     public static final int TOKEN_HEIGHT = 45;
