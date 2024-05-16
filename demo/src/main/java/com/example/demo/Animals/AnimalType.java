@@ -1,5 +1,4 @@
-package com.example.demo;
-
+package com.example.demo.Animals;
 /**
  * Enum for animal types used
  */
