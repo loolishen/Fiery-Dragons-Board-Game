@@ -7,3 +7,4 @@ public class Spider extends Animal{
         super(Config.ANIMAL_IMAGE_IMAGE_PATH_PREFIX_MAPPINGS.get(AnimalType.SPIDER), count);
     }
 }
+

@@ -7,4 +7,5 @@ public class Bat extends Animal {
         super(Config.ANIMAL_IMAGE_IMAGE_PATH_PREFIX_MAPPINGS.get(AnimalType.BAT), count);
     }
 
+
 }
