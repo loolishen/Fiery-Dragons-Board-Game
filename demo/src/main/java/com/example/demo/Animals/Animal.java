@@ -32,6 +32,7 @@ public abstract class Animal{
         return baseImgPath + "" + count + ".png";
     }
 
+
     /**
      * This method returns the specific animal instance based on the animal type and count desired
      * @param animalType Enum AnimalType
@@ -53,5 +54,7 @@ public abstract class Animal{
             System.out.println("Error: Animal type does not match known animals");
             return null;
         }
+
     }
+
 }
