@@ -3,6 +3,11 @@ package com.example.demo.Model;
 
 import com.example.demo.Animals.AnimalType;
 
+/**
+ * The VolcanoCard class represents a card in the volcano ring, containing information about its ring ID,
+ * associated animal type, and occupancy status.
+ */
+
 public class VolcanoCard {
     private final int ringID;
     private AnimalType animal;

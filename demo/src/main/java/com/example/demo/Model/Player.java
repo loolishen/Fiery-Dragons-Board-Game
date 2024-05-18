@@ -6,6 +6,12 @@ import com.example.demo.Controller.ChitCardAdapter;
 import com.example.demo.EntityFactory.VolcanoRingFactory;
 import javafx.scene.shape.Circle;
 
+/**
+ * Represents a player in the game, handling their ID, assigned animal type, dragon token,
+ * turn status, and actions. It includes methods for managing the dragon token, determining the player's
+ * turn status, and making moves based on the chosen card.
+ */
+
 public class Player {
     private DragonToken dragonToken;
     private boolean doNothingContinueTurn;

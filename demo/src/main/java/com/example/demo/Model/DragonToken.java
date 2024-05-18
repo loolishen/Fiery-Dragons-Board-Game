@@ -10,6 +10,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+/**
+ * The DragonToken class represents a dragon token in the game, managing its movement around the volcano ring,
+ * position, and associated animations.
+ */
 
 public class DragonToken {
     private static final double DEGREES_TO_RADIANS = Math.PI/180;
