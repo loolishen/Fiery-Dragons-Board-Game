@@ -14,6 +14,7 @@ import java.util.HashMap;
 /**
  * Used to respond to players flipping chit cards
  */
+
 public class ChitCardFlipManager {
     private static ChitCardFlipManager chitCardFlipManager;
     private static Circle[] coveredChitCardShapes; // used to ensure that they do not listen for clicks

@@ -15,6 +15,7 @@ import java.util.Arrays;
  * Creates the players. Manages the players' turns. If a dragon token is moved, it calls upon the player to update its
  * dragon token's state, and asks the Volcano Cards involved tp toggle the occupied status
  */
+
 public class PlayerTurnManager implements InitModel {
     private final ArrayList<Integer> RAND_ANIMAL_CHOICES = new ArrayList<>(Arrays.asList(0,1,2,3));
     private static PlayerTurnManager playerTurnManager;

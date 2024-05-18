@@ -18,6 +18,10 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+/**
+ * The MainMenu class defines the main menu of the application, including background image, menu buttons,
+ * and their respective actions. Handles UI and user interactions for starting and quitting the game.
+ */
 
 public class MainMenu extends FXGLMenu {
 

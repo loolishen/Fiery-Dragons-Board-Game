@@ -5,9 +5,13 @@ import com.example.demo.Animals.AnimalType;
 import javafx.scene.paint.Color;
 
 import java.util.Map;
-
-import static com.example.demo.Animals.AnimalType.*;
 import static java.util.Map.entry;
+import static com.example.demo.Animals.AnimalType.*;
+
+/**
+ * The Config class stores configuration settings and constants for the application, including RNG seeds,
+ * animal types and properties, image paths, window dimensions, UI components, and player setup information.
+ */
 
 public class Config {
     // For RNG testing

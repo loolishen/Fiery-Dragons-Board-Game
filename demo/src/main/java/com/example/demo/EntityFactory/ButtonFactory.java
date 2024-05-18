@@ -1,4 +1,5 @@
 package com.example.demo.EntityFactory;
+
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
@@ -12,6 +13,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+/**
+ * The ButtonFactory class is responsible for creating and managing the exit button entity, including its appearance,
+ * position, and mouse event listeners for interaction effects such as changing colors and handling clicks.
+ */
 
 public class ButtonFactory extends SpawnFactory {
     private Circle exitBtn;

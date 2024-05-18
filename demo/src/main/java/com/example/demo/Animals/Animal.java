@@ -6,6 +6,10 @@ import javafx.scene.shape.Shape;
 
 import java.util.Objects;
 
+/**
+ * The Animal class is an abstract base class representing an animal with an image path and count. It provides methods to fill a UI shape with the animal's image and retrieve specific animal instances based on their type and count.
+ */
+
 public abstract class Animal{
     private final String baseImgPath;
     private final int count;
