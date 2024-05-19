@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 /**
  * Used to adapt Circle into ChitCard by maintaining a mapping of view to model
+ * @author Liang Dizhen
  */
 public class ChitCardAdapter implements InitModel {
     private  static final HashMap<Circle, ChitCard> viewModelMapping = new HashMap<>();

@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.SpawnData;
 
 /**
  * Class used to display various text, including during player turn transitions and end game scenario
+ * @author Liang Dizhen
  */
 
 public class TextDisplayManager {

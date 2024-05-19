@@ -14,6 +14,7 @@ import java.util.Arrays;
 /**
  * Creates the players. Manages the players' turns. If a dragon token is moved, it calls upon the player to update its
  * dragon token's state, and asks the Volcano Cards involved tp toggle the occupied status
+ * @author Liang Dizhen
  */
 
 public class PlayerTurnManager implements InitModel {

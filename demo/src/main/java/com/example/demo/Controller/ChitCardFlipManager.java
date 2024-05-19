@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 /**
  * Used to respond to players flipping chit cards
+ * @author Liang Dizhen
  */
 
 public class ChitCardFlipManager {
