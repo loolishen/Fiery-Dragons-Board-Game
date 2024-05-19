@@ -2,6 +2,10 @@ package com.example.demo.Animals;
 
 import com.example.demo.Config;
 
+/**
+ * Dragon class
+ * @author Maliha Tariq
+ */
 
 public class DragonPirate extends Animal{
     public DragonPirate(int count) {

@@ -2,6 +2,10 @@ package com.example.demo.Animals;
 
 import com.example.demo.Config;
 
+/**
+ * Bat class
+ * @author Maliha Tariq
+ */
 
 public class Bat extends Animal {
     public Bat(int count) {
