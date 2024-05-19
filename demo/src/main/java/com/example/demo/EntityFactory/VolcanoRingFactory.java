@@ -64,7 +64,7 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel {
                 segment =  volcanoSegments[arrangement.get(i-offset)-1];
                 offset += 1;
             }else{
-                segment = volcanoSegments[arrangementOdd.get(i-oddOffset-1)];
+                segment = volcanoSegments[arrangementOdd.get(i-oddOffset-1)-1];
                 oddOffset += 1;
             }
             for (int j=0; j<segmentLength; j++){
