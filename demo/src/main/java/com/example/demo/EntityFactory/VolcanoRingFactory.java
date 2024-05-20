@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 /**
  * Spawns the volcano ring of cards consisting of alternating cut and uncut segments, incorporating random arrangement of segments.
+ * @author Loo Li Shen
  */
 public class VolcanoRingFactory extends SpawnFactory implements InitModel {
     private static final VolcanoCard[] volcanoRing = new VolcanoCard[Config.VOLCANO_RING_NUM_CARDS];

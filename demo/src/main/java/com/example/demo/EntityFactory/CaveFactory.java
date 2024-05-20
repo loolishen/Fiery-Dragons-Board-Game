@@ -15,6 +15,7 @@ import java.util.Objects;
 
 /**
  * Used to spawn the caves according to the number of players playing
+ * @author Loo Li Shen
  */
 public class CaveFactory extends SpawnFactory {
 

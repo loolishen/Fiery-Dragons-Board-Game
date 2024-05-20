@@ -20,6 +20,7 @@ import java.util.Objects;
 
 /**
  * Used to create chit cards, and pass the information of the covered sides to the ChitCardFlipManager once they are initialized
+ * @author Loo Li Shen
  */
 public class ChitCardFactory extends SpawnFactory{
 

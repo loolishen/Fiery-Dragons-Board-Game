@@ -20,6 +20,7 @@ import java.util.Objects;
 
 /**
  * Used to create the dragon tokens, also sets the player's dragon token
+ * @author Loo Li Shen
  */
 public class DragonTokenFactory extends SpawnFactory implements InitModel {
 

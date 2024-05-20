@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 /**
  * The ButtonFactory class is responsible for creating and managing the exit button entity, including its appearance,
  * position, and mouse event listeners for interaction effects such as changing colors and handling clicks.
+ * @author Loo Li Shen
  */
 
 public class ButtonFactory extends SpawnFactory {

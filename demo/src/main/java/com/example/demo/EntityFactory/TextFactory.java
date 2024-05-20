@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 
 /**
  * Provides the FXGL implementations for updating UI
+ * @author Loo Li Shen
  */
 public class TextFactory extends SpawnFactory {
     @Spawns("winningMsg")
