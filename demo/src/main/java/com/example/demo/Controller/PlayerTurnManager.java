@@ -43,7 +43,7 @@ public class PlayerTurnManager implements InitModel {
     @Override
     public void createModel(SpawnData data){
         int numPlayers = data.get("numPlayers");
-        Utils.shuffleIntArray(RAND_ANIMAL_CHOICES, Config.NO_SEED);
+        Utils.shuffleIntArray(RAND_ANIMAL_CHOICES, Config.NO_SEED); // random animal assigned
         players = new Player[numPlayers];
         // add players (to have player factory is over-engineering since we can add player name etc. in Player manager class, so no UI component needed
         for (int i =0; i<numPlayers; i++) {

@@ -46,7 +46,6 @@ public class ChitCardFlipManager {
 
 
     public void handleUncover(Circle chitCardChosen, ChitCard cardChosen){
-        cardChosen.setCovered(false);
         getCoveredChitCardShapes()[cardChosen.getIndex()] = null; // this is so that it won't be listening for clicks on next turn
         uncoveredChitCardsByPlayer.add(cardChosen.getUncoveredForm());
 
@@ -91,7 +90,6 @@ public class ChitCardFlipManager {
             });
             rotateTransition.play();
 
-            chitCard.setCovered(true);
         }
         uncoveredChitCardsByPlayer.clear(); // all the chit cards that were uncovered have been covered, so they need to start listening for clicks again
 

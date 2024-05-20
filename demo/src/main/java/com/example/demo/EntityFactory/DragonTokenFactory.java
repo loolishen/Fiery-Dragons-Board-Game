@@ -90,7 +90,6 @@ public class DragonTokenFactory extends SpawnFactory implements InitModel {
 
         // create token and assign it to player
         DragonToken dragonToken = new DragonToken(VolcanoRingFactory.getVolcanoCardByID(nextPlayerAt), cardRect, angle, playerIDText);
-        dragonToken.setCaveAnimal(PlayerTurnManager.getPlayers()[i].getAnimalType());
         PlayerTurnManager.getPlayers()[i].setDragonToken(dragonToken);
     }
 

@@ -62,7 +62,6 @@ public class ChitCardFactory extends SpawnFactory{
         ArrayList<int[]> allPairsInRange = Utils.generatePairs(min, max);
 
         // Shuffle for randomness
-//        Utils.shuffleIntArray(allPairsInRange, Constants.RNG_SEED);
         Utils.shuffleIntArray(allPairsInRange, Config.NO_SEED); // this simulates randomness of chit card positions
 
         // get first 16 unique pairs
