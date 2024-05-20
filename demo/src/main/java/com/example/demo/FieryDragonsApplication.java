@@ -18,6 +18,7 @@ import javafx.scene.shape.Circle;
 
 /**
  * Main application class
+ * @author Jia Wynn Khor
  */
 public class FieryDragonsApplication extends GameApplication {
     public static boolean endGame = false;

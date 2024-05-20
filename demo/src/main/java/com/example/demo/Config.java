@@ -11,6 +11,7 @@ import static com.example.demo.Animals.AnimalType.*;
 /**
  * The Config class stores configuration settings and constants for the application, including RNG seeds,
  * animal types and properties, image paths, window dimensions, UI components, and player setup information.
+ * @author Jia Wynn Khor
  */
 
 public class Config {

@@ -5,6 +5,7 @@ import javafx.scene.shape.Circle;
 
 /**
  * Stores the state of chit cards
+ * @author Jia Wynn Khor
  */
 public class ChitCard {
     private final int index;

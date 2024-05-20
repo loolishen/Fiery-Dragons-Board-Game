@@ -8,6 +8,7 @@ import java.util.Random;
 
 /**
  * Utility class
+ * @author Jia Wynn Khor
  */
 public class Utils {
 

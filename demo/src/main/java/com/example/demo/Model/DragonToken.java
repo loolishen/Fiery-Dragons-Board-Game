@@ -13,6 +13,7 @@ import javafx.util.Duration;
 /**
  * The DragonToken class represents a dragon token in the game, managing its movement around the volcano ring,
  * position, and associated animations.
+ * @author Jia Wynn Khor
  */
 
 public class DragonToken {
