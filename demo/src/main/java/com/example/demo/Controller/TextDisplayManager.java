@@ -45,6 +45,16 @@ public class TextDisplayManager {
         FXGL.spawn("winningMsg", winMsgData);
     }
 
+    public void displayPlayerPointsMsg(int currPlayerID, int points) {
+        if (currentTextEntity != null) {
+            FXGL.getGameWorld().removeEntity(currentTextEntity);
+        }
+        SpawnData pointsMsgData = new SpawnData(20, 70);
+        pointsMsgData.put("playerTurn", currPlayerID);
+        pointsMsgData.put("playerPoints", points); // adding points data to SpawnData
+        FXGL.spawn("playerPointsMsg", pointsMsgData);
+    }
+
     public void removeOldTurnUpdateMsg(Entity textEntity){
         FXGL.getGameWorld().removeEntity(textEntity);
     }
@@ -77,8 +87,9 @@ public class TextDisplayManager {
         this.firstTimeTurnMsg = firstTimeTurnMsg;
     }
 
-    public void initialize(int currPlayerID){
+    public void initialize(int currPlayerID, int playerPoints){
         setCurrentTextEntity(displayTurnUpdateMsg(currPlayerID)); // might need to be refactored as attribute of TextManager class
+        displayPlayerPointsMsg(currPlayerID, playerPoints); // display initial points message
         setFirstTimeTurnMsg(false);
     }
 

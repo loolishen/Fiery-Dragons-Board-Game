@@ -19,9 +19,16 @@ public class Player {
     private boolean turnEnded=false;
     private final int ID;
     private final AnimalType animalType;
+    private int points;
+
     public Player(int newID, AnimalType randAnimalType){
         ID = newID;
         animalType = randAnimalType;
+        points = 0;
+    }
+
+    public int getPoints(){
+        return points;
     }
 
     public int getId() {
@@ -95,6 +102,10 @@ public class Player {
         if (occupied) {
             return Config.END_TURN_RESULT;
         }
+
+        // all checks passed, player can move, so add points
+        points += 2;
+
         return destinationRingID; // all checks passed, player can move
 
     }

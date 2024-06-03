@@ -85,6 +85,8 @@ public class PlayerTurnManager implements InitModel {
             playerTurn += 1;
         }
         currPlayer = players[playerTurn-1];
+
+        TextDisplayManager.getInstance().displayPlayerPointsMsg(currPlayer.getId(),currPlayer.getPoints());
     }
 
 

@@ -30,4 +30,12 @@ public class TextFactory extends SpawnFactory {
         return FXGL.entityBuilder(data).view(turnUpdateMsg).build();
     }
 
+    @Spawns("playerPointsMsg")
+    public Entity playerPointsMsg(SpawnData data){
+        Text pointsMsg = new Text("Player "+ data.get("playerTurn") + " 's points: " + data.get("playerPoints"));
+        pointsMsg.setFont(Font.font("Arial", 24));
+        int playerID = data.get("playerTurn");
+        pointsMsg.setFill(Config.COLORS[playerID - 1]);
+        return FXGL.entityBuilder(data).view(pointsMsg).build();
+    }
 }

@@ -69,7 +69,7 @@ public class FieryDragonsApplication extends GameApplication {
 
     @Override
     protected void initGame() {
-        // Create the volcano ring card factory and add it to the game world and spawn them
+        // Create the volcano ring card factory and add it to the game world and  them
         VolcanoRingFactory volcanoRingFactory = new VolcanoRingFactory(Config.VOLCANO_RING_NUM_CARDS, Config.VOLCANO_RING_NUM_CARDS / Config.VOLCANO_RING_SEGMENT_LENGTH);
         volcanoRingFactory.spawn();
 
@@ -106,7 +106,8 @@ public class FieryDragonsApplication extends GameApplication {
         TextFactory newTextFactory = new TextFactory();
         newTextFactory.spawn();
         // initialize first player turn display message and state
-        TextDisplayManager.getInstance().initialize(PlayerTurnManager.getInstance().getCurrPlayer().getId());
+        TextDisplayManager.getInstance().initialize(PlayerTurnManager.getInstance().getCurrPlayer().getId(),
+                                                    PlayerTurnManager.getInstance().getCurrPlayer().getPoints());
         // start first player's turn
 //        PlayerTurnManager.getInstance().getCurrPlayer().setTurnEnded(false);
 
