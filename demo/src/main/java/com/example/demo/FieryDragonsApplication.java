@@ -10,27 +10,54 @@ import com.example.demo.Controller.ChitCardFlipManager;
 import com.example.demo.Controller.PlayerTurnManager;
 import com.example.demo.Controller.TextDisplayManager;
 import com.example.demo.EntityFactory.*;
+import com.example.demo.Model.ChitCard;
 import com.example.demo.Model.Player;
+import com.example.demo.UserInterfaces.GameMenu;
+import com.example.demo.UserInterfaces.LoadSaveUI;
+import com.example.demo.UserInterfaces.MainMenu;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 
 /**
  * Main application class
  * @author Jia Wynn Khor
  */
-public class FieryDragonsApplication extends GameApplication {
-    public static boolean endGame = false;
+public class FieryDragonsApplication extends GameApplication implements LoadSave {
+    public boolean endGame = false;
+    private boolean turnEnded = false;
+    private final ChitCardAdapter chitCardAdapter = new ChitCardAdapter();
+    private PlayerTurnManager playerTurnManager;
+    private TextDisplayManager textDisplayManager = new TextDisplayManager();
+    private LoadSaveUI loadSaveUI = new LoadSaveUI(this);
+
+    private ArrayList<LoadSave> loadSaves = new ArrayList<>();
+    private int slotToLoad = -1;
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    public ArrayList<LoadSave> getLoadSaves() {
+        return loadSaves;
+    }
+
+    private void registerLoadSave(LoadSave loadSave) {
+        loadSaves.add(loadSave);
+    }
+
     @Override
     protected void initSettings(GameSettings gameSettings) {
-        gameSettings.setWidth(1000);
-        gameSettings.setHeight(700);
+        int APP_WIDTH = 1000;
+        gameSettings.setWidth(APP_WIDTH);
+        int APP_HEIGHT = 700;
+        gameSettings.setHeight(APP_HEIGHT);
         gameSettings.setTitle("Fiery Dragons");
         gameSettings.setVersion("1.0");
         gameSettings.setMainMenuEnabled(true);
@@ -39,9 +66,14 @@ public class FieryDragonsApplication extends GameApplication {
         SceneFactory sceneFactory = new SceneFactory() {
             @Override
             public FXGLMenu newMainMenu() {
-                return new MainMenu();
+                return new MainMenu(loadSaveUI);
             }
 
+            @Override
+            public FXGLMenu newGameMenu() {
+                GameMenu gameMenu = new GameMenu(loadSaveUI);
+                return gameMenu;
+            }
         };
         gameSettings.setSceneFactory(sceneFactory);
     }
@@ -67,121 +99,204 @@ public class FieryDragonsApplication extends GameApplication {
                 backgroundSize)));
     }
 
-    @Override
-    protected void initGame() {
-        // Create the volcano ring card factory and add it to the game world and  them
-        VolcanoRingFactory volcanoRingFactory = new VolcanoRingFactory(Config.VOLCANO_RING_NUM_CARDS, Config.VOLCANO_RING_NUM_CARDS / Config.VOLCANO_RING_SEGMENT_LENGTH);
-        volcanoRingFactory.spawn();
-
-        // let playerTurnManager manage creation of players
-        PlayerTurnManager.getInstance();
-        SpawnData data = new SpawnData();
-        data.put("numPlayers", Config.NUM_PLAYERS);
-        PlayerTurnManager.getInstance().createModel(data);
-
-        // create dragon token factory and add it to game world
-        DragonTokenFactory dragonTokenFactory = new DragonTokenFactory();
-        // create cave factory and add it to game world
-        CaveFactory caveFactory = new CaveFactory(Config.VOLCANO_RING_RADIUS);
-        // spawn them
-        dragonTokenFactory.spawn();
-        caveFactory.spawn();
-
-        // create chit card factory and add it to game world
-        ChitCardFactory newChitCardFactory = new ChitCardFactory();
-        newChitCardFactory.spawn();
-
-        // now that chit card nodes have been populated, we can give them to the ChitCardFlipManager
-        ChitCardFlipManager.getInstance();
-        Circle[] coveredShapes = newChitCardFactory.getCoveredChitCards();
-        ChitCardFlipManager.setCoveredChitCardShapes(coveredShapes);
-
-        // add factory for buttons
-        ButtonFactory buttonFactory = new ButtonFactory();
-        buttonFactory.spawn();
-
-        buttonFactory.setListeners();
-
-        // text factory for producing text messages
-        TextFactory newTextFactory = new TextFactory();
-        newTextFactory.spawn();
-        // initialize first player turn display message and state
-        TextDisplayManager.getInstance().initialize(PlayerTurnManager.getInstance().getCurrPlayer().getId(),
-                                                    PlayerTurnManager.getInstance().getCurrPlayer().getPoints());
-        // start first player's turn
-//        PlayerTurnManager.getInstance().getCurrPlayer().setTurnEnded(false);
-
-
-        playTurn(PlayerTurnManager.getInstance().getCurrPlayer());
-
+    public boolean loadGame(int slotIndex) {
+        slotToLoad = slotIndex;
+        return true;
     }
 
+    private void loadGameState(int slotIndex) {
+        load(slotIndex);
+        registerLoadSave(chitCardAdapter);
+        playerTurnManager = new PlayerTurnManager(textDisplayManager);
+        registerLoadSave(playerTurnManager);
+
+        VolcanoRingFactory volcanoRingFactory = new VolcanoRingFactory(Config.VOLCANO_RING_NUM_CARDS, Config.VOLCANO_RING_NUM_CARDS / Config.VOLCANO_RING_SEGMENT_LENGTH);
+        try {
+            volcanoRingFactory.load(slotIndex);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        registerLoadSave(volcanoRingFactory);
+        volcanoRingFactory.spawn();
+
+        SpawnData data = new SpawnData();
+        data.put("numPlayers", Config.NUM_PLAYERS);
+        try {
+            playerTurnManager.load(slotIndex);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        DragonTokenFactory dragonTokenFactory = new DragonTokenFactory(playerTurnManager);
+        dragonTokenFactory.spawn();
+        CaveFactory caveFactory = new CaveFactory(Config.VOLCANO_RING_RADIUS, playerTurnManager);
+        registerLoadSave(caveFactory);
+
+        caveFactory.load(slotIndex);
+        caveFactory.spawn();
+
+        chitCardAdapter.load(slotIndex);
+        ChitCardFactory newChitCardFactory = new ChitCardFactory(chitCardAdapter);
+        newChitCardFactory.spawn();
+
+        ChitCardFlipManager.getInstance();
+
+        ArrayList<Circle> uncoveredChitCardShapes = new ArrayList<>();
+        Circle[] coveredShapes = new Circle[Config.NUM_CHIT_CARDS];
+        int counter = 0;
+        for (ChitCard chitCard : chitCardAdapter.getChitCards()) {
+            if (chitCard.isUncoveredVisible()) {
+                uncoveredChitCardShapes.add(chitCard.getUncoveredForm());
+            } else {
+                coveredShapes[counter] = chitCard.getCoveredForm();
+            }
+            counter += 1;
+        }
+
+        ChitCardFlipManager.getInstance().setUncoveredChitCardsByPlayer(uncoveredChitCardShapes);
+        ChitCardFlipManager.getInstance().setCoveredChitCardShapes(coveredShapes);
+        ButtonFactory buttonFactory = new ButtonFactory();
+        buttonFactory.spawn();
+        buttonFactory.setListeners();
+
+        TextFactory newTextFactory = new TextFactory();
+        newTextFactory.spawn();
+        textDisplayManager.initialize(playerTurnManager.getCurrPlayer().getId(), playerTurnManager.getCurrPlayer().getDragonToken().getTotalMovementCount());
+        playTurn();
+    }
+
+    @Override
+    protected void initGame() {
+        endGame = false;
+
+        if (slotToLoad == -1) {
+            registerLoadSave(chitCardAdapter);
+
+            playerTurnManager = new PlayerTurnManager(textDisplayManager);
+            registerLoadSave(playerTurnManager);
+
+            VolcanoRingFactory volcanoRingFactory = new VolcanoRingFactory(Config.VOLCANO_RING_NUM_CARDS, Config.VOLCANO_RING_NUM_CARDS / Config.VOLCANO_RING_SEGMENT_LENGTH);
+            registerLoadSave(volcanoRingFactory);
+            volcanoRingFactory.spawn();
+
+            SpawnData data = new SpawnData();
+            data.put("numPlayers", Config.NUM_PLAYERS);
+            playerTurnManager.createModel(data);
+
+            DragonTokenFactory dragonTokenFactory = new DragonTokenFactory(playerTurnManager);
+            CaveFactory caveFactory = new CaveFactory(Config.VOLCANO_RING_RADIUS, playerTurnManager);
+            registerLoadSave(caveFactory);
+
+            dragonTokenFactory.spawn();
+            caveFactory.spawn();
+
+            ChitCardFactory newChitCardFactory = new ChitCardFactory(chitCardAdapter);
+            newChitCardFactory.spawn();
+
+            ChitCardFlipManager.getInstance();
+            Circle[] coveredShapes = newChitCardFactory.getCoveredChitCards();
+            ChitCardFlipManager.getInstance().setCoveredChitCardShapes(coveredShapes);
+
+            ButtonFactory buttonFactory = new ButtonFactory();
+            buttonFactory.spawn();
+            buttonFactory.setListeners();
+
+            TextFactory newTextFactory = new TextFactory();
+            newTextFactory.spawn();
+            textDisplayManager.initialize(1, 0);
+            playTurn();
+        } else {
+            loadGameState(slotToLoad);
+        }
+        slotToLoad = 0;
+    }
 
     @Override
     protected void onUpdate(double tpf) {
-        if (!ChitCardFlipManager.getInstance().getAnimationInProgress()) {
+        if (!ChitCardFlipManager.getInstance().getAnimationInProgress() && !turnEnded) {
             if (endGame) {
-                TextDisplayManager.getInstance().handleEndGame(PlayerTurnManager.getInstance().getCurrPlayer().getId());
+                textDisplayManager.handleEndGame(playerTurnManager.getWinner().getId());
             } else {
-                if (PlayerTurnManager.getInstance().getCurrPlayer().getTurnEnded()) {
-                    TextDisplayManager.getInstance().removeOldTurnUpdateMsg(TextDisplayManager.getInstance().getCurrentTextEntity());
-                    ChitCardFlipManager.getInstance().handleTurnEnd();
-                    PlayerTurnManager.getInstance().handleTurnTransition();
-                    TextDisplayManager.getInstance().setFirstTimeTurnMsg(true);
-
-                }
-                if (!endGame) {
-                    TextDisplayManager.getInstance().handleTurnTransition(PlayerTurnManager.getInstance().getCurrPlayer().getId());
-                    playTurn(PlayerTurnManager.getInstance().getCurrPlayer());
+                if (playerTurnManager.getCurrPlayer().getTurnEnded()) {
+                    turnEnded = true;
+                    textDisplayManager.removeOldTurnUpdateMsg(textDisplayManager.getCurrentTextEntity());
+                    textDisplayManager.removeOldMovementCountMsg(textDisplayManager.getCurrentMovementCountEntity());
+                    ChitCardFlipManager.getInstance().handleTurnEnd(chitCardAdapter);
+                    playerTurnManager.handleTurnTransition();
+                    Player currPlayer = playerTurnManager.getCurrPlayer();
+                    textDisplayManager.handleTurnTransition(currPlayer.getId());
+                    textDisplayManager.handleMovementCountUpdate(currPlayer.getId(), currPlayer.getDragonToken().getTotalMovementCount());
+                    playTurn();
+                    turnEnded = false;
                 }
             }
         }
     }
 
-    /**
-     * Calls the state managers to respond to the circle click
-     *
-     * @param player         the player who clicked the chit card
-     * @param chitCardChosen the chit card shape clicked
-     */
-    private void handleCircleClick(Player player, Circle chitCardChosen) {
+    private void handleCircleClick(Circle chitCardChosen) {
         if (!endGame) {
-            // handle the uncovering of chit card
-            ChitCardFlipManager.getInstance().handleUncover(chitCardChosen, ChitCardAdapter.getViewControllerMapping().get(chitCardChosen));
+            ChitCardFlipManager.getInstance().handleUncover(chitCardChosen, chitCardAdapter.getViewControllerMapping().get(chitCardChosen));
+            Player currPlayer = playerTurnManager.getCurrPlayer();
+            int result = currPlayer.validateMove(chitCardChosen, chitCardAdapter);
 
-            int result = player.makeMove(chitCardChosen); // result = 0 means end turn, otherwise it is destination ring ID that token should move to
-            if (!player.getDoNothingContinueTurn()) { // doNothingContinueTurn is True when card is dragon pirate and player is currently on cave (has not moved out)
+            if (!currPlayer.getDoNothingContinueTurn()) {
                 if (result != Config.END_TURN_RESULT) {
-                    PlayerTurnManager.getInstance().moveToken(player, ChitCardAdapter.getViewControllerMapping().get(chitCardChosen).getAnimalCount(), result);
-
+                    int animalCount = chitCardAdapter.getViewControllerMapping().get(chitCardChosen).getAnimal().getCount();
+                    currPlayer.moveToken(animalCount, result, false);
+                    currPlayer.resetIncorrectRevealCounter();
                 } else {
-                    player.setTurnEnded(true);
-                    ChitCardFlipManager.getInstance().resetOnClickListener(ChitCardAdapter.getViewControllerMapping());
+                    currPlayer.incrementIncorrectRevealCounter();
+                    if (currPlayer.getIncorrectRevealCounter() >= 3) {
+                        currPlayer.setEqualityBoost(true);
+                        currPlayer.resetIncorrectRevealCounter();
+                        FXGL.getNotificationService().pushNotification("Equality Boost awarded to Player " + currPlayer.getId());
+                    }
+                    currPlayer.setTurnEnded(true);
+                    ChitCardFlipManager.getInstance().resetOnClickListener(chitCardAdapter.getViewControllerMapping());
                 }
             }
-            if (player.getDoNothingContinueTurn()) {
-                // reset the value
-                player.setDoNothingContinueTurn(false);
+            if (currPlayer.getDoNothingContinueTurn()) {
+                currPlayer.setDoNothingContinueTurn(false);
             }
-            if (player.getDragonToken().getTotalMovementCount() == Config.VOLCANO_RING_NUM_CARDS) { // end the game
+
+            if (currPlayer.hasEqualityBoost()) {
+                currPlayer.useEqualityBoost();
+            }
+
+            if (playerTurnManager.checkWinCondition()) {
                 endGame = true;
             }
         }
-
     }
 
-    /**
-     * Used to listen for player's clicks on the chit cards
-     *
-     * @param newPlayer currentPlayer
-     */
-    private void playTurn(Player newPlayer) {
+    private void playTurn() {
         for (Circle circle : ChitCardFlipManager.getInstance().getCoveredChitCardShapes()) {
             if (circle != null) {
-                circle.setOnMouseClicked(event ->
-                        handleCircleClick(newPlayer, circle));
+                circle.setOnMouseClicked(event -> handleCircleClick(circle));
             }
         }
+    }
 
+    @Override
+    public void load(int slotIndex) {
+        try (BufferedReader reader = Files.newBufferedReader(getSaveFilePath(slotIndex))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.equals("Application")) {
+                    while (!(line = reader.readLine()).equals("*")) {
+                        endGame = line.equals("true");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void save(BufferedWriter writer, int slotIndex) throws IOException {
+        writer.write("Application\n");
+        writer.write(endGame + "");
+        writer.write("*\n");
     }
 }
