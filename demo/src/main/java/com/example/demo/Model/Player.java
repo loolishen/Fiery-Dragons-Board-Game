@@ -1,9 +1,12 @@
 package com.example.demo.Model;
 
+import com.example.demo.Animals.Animal;
 import com.example.demo.Animals.AnimalType;
 import com.example.demo.Config;
 import com.example.demo.Controller.ChitCardAdapter;
+import com.example.demo.Controller.TextDisplayManager;
 import com.example.demo.EntityFactory.VolcanoRingFactory;
+import com.example.demo.LoadSave;
 import javafx.scene.shape.Circle;
 
 /**
@@ -18,17 +21,15 @@ public class Player {
     private boolean doNothingContinueTurn;
     private boolean turnEnded=false;
     private final int ID;
-    private final AnimalType animalType;
-    private int points;
+    private TextDisplayManager textDisplayManager;
+    private final AnimalType caveAnimalType;
+    private int incorrectRevealCounter = 0;
+    private boolean hasEqualityBoost = false;
 
-    public Player(int newID, AnimalType randAnimalType){
+    public Player(int newID, AnimalType randAnimalType, TextDisplayManager textDisplayManager){
         ID = newID;
-        animalType = randAnimalType;
-        points = 0;
-    }
-
-    public int getPoints(){
-        return points;
+        caveAnimalType = randAnimalType;
+        this.textDisplayManager = textDisplayManager;
     }
 
     public int getId() {
@@ -57,60 +58,80 @@ public class Player {
     public DragonToken getDragonToken(){
         return dragonToken;
     }
+
+
+    public int getIncorrectRevealCounter() {
+        return incorrectRevealCounter;
+    }
+
+    public void incrementIncorrectRevealCounter() {
+        incorrectRevealCounter++;
+    }
+
+    public void resetIncorrectRevealCounter() {
+        incorrectRevealCounter = 0;
+    }
+
+    public boolean hasEqualityBoost() {
+        return hasEqualityBoost;
+    }
+
+    public void setEqualityBoost(boolean hasEqualityBoost) {
+        this.hasEqualityBoost = hasEqualityBoost;
+    }
+
+    public void useEqualityBoost() {
+        if (hasEqualityBoost) {
+            int currentPosition = getDragonToken().getCurrentPositionInRing();
+            int nextPosition = currentPosition + 1;
+            if (nextPosition > Config.VOLCANO_RING_NUM_CARDS) {
+                nextPosition -= Config.VOLCANO_RING_NUM_CARDS;
+            }
+            moveToken(1, nextPosition, false);
+            setEqualityBoost(false);
+        }
+    }
     /**
      * The integer return value determines the course of action:
      * END_TURN_RESULT means player's turn ends
      * Otherwise, it is the destination volcano card's ID in volcano ring (index in VolcanoCard array)
      */
-    public int makeMove(Circle cardChosen) {
-
-        int destinationRingID; // hypothetical destination id in the volcano ring if player successfully makes a move
-        AnimalType animalUsedForChecking = dragonToken.getMovedOutOfCave()? dragonToken.getAnimalType():animalType;
-        AnimalType chitCardAnimal = ChitCardAdapter.getViewControllerMapping().get(cardChosen).getAnimalType(); // animal on chit card
-        int ringID = dragonToken.getCurrentPositionInRing(); // current position in ring
-
-        if (animalUsedForChecking == chitCardAnimal)
-        {
-
-            int chitCardAnimalCount = ChitCardAdapter.getViewControllerMapping().get(cardChosen).getAnimalCount();
-
-            destinationRingID = ringID + chitCardAnimalCount;
-
-            // cannot go past cave once a full round is made around the volcano
-            if (dragonToken.getTotalMovementCount()+chitCardAnimalCount > Config.VOLCANO_RING_NUM_CARDS) {
-                return Config.END_TURN_RESULT;
-            }
-
-        }else if (chitCardAnimal == AnimalType.DRAGON_PIRATE) {
-            // if player has not moved out of cave, do not allow going back further than cave
-            destinationRingID = dragonToken.getCurrentPositionInRing() + ChitCardAdapter.getViewControllerMapping().get(cardChosen).getAnimalCount();
-            if ((destinationRingID < dragonToken.getInitialVolcanoCardID()) && !dragonToken.getMovedOutOfCave()) {
-                this.setDoNothingContinueTurn(true);
-                return dragonToken.getCurrentPositionInRing();
-            }
-        }
-        else {
-            return Config.END_TURN_RESULT;
-        }
-        // adjust destination ring id to always be within the range 1,24
-        if( destinationRingID > Config.VOLCANO_RING_NUM_CARDS){
-            destinationRingID -= Config.VOLCANO_RING_NUM_CARDS;
-        } else if (destinationRingID < 1){destinationRingID = Config.VOLCANO_RING_NUM_CARDS+destinationRingID;}
-
-        // no matter what, do not allow players to share same volcano card.
-        boolean occupied = VolcanoRingFactory.getVolcanoCardByID(destinationRingID).getOccupiedStatus();
-        if (occupied) {
-            return Config.END_TURN_RESULT;
+    public int validateMove(Circle cardChosen, ChitCardAdapter chitCardAdapter) {
+        Animal animal = chitCardAdapter.getViewControllerMapping().get(cardChosen).getAnimal();
+        int animalCount = chitCardAdapter.getViewControllerMapping().get(cardChosen).getAnimal().getCount();
+        return animal.calculateDestinationID(this, dragonToken, animalCount);
+    }
+    public void moveToken(int animalCount, int destinationID, boolean isSwap){
+        this.getDragonToken().moveToken(animalCount); //VIEW: move token
+        // update the volcano card's (the token is on) 'occupied' status to false if it not a swap
+        if (!isSwap) {
+            int currPositionRingID = this.getDragonToken().getCurrentPositionInRing();
+            VolcanoRingFactory.getVolcanoCardByID(currPositionRingID).setOccupied(false);
         }
 
-        // all checks passed, player can move, so add points
-        points += 2;
+        // update the state: dragon token's position and total movement count
+        VolcanoRingFactory.getVolcanoCardByID(destinationID).setOccupied(true);
+        this.getDragonToken().setCurrentPosition(VolcanoRingFactory.getVolcanoCardByID(destinationID));
+        // since we updated movement count, message needs to updated as well
+        this.getDragonToken().updateTotalMovementCount(animalCount);
+        textDisplayManager.removeOldMovementCountMsg(textDisplayManager.getCurrentMovementCountEntity());
+        textDisplayManager.handleMovementCountUpdate(this.getId(),this.getDragonToken().getTotalMovementCount());
 
-        return destinationRingID; // all checks passed, player can move
+        // update movedOutOfCave to True if exiting cave for the first time
+        if (!this.getDragonToken().getMovedOutOfCave()) {
+            this.getDragonToken().setMovedOutOfCave();
+        }
 
+        this.setDoNothingContinueTurn(true); // since we already did the animation, continue onto next flip
     }
 
-    public AnimalType getAnimalType() {
-        return animalType;
+    public AnimalType getCaveAnimalType() {
+        return caveAnimalType;
     }
+
+    public String loadSaveString(){
+        return "Player:"+doNothingContinueTurn+","+turnEnded;
+    }
+
+
 }
