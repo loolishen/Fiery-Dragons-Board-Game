@@ -13,9 +13,14 @@ public class VolcanoCard {
     private final int ringID;
     private AnimalType animal;
     private boolean occupied;
-    public VolcanoCard(int newRingID, AnimalType animalType){
+    private double xPos;
+    private double yPos;
+    public VolcanoCard(int newRingID, AnimalType animalType, double xPos, double yPos, boolean occupied){
         ringID = newRingID;
         animal = animalType;
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.occupied = occupied;
 
     }
 
@@ -39,4 +44,12 @@ public class VolcanoCard {
         this.animal = animal;
     }
 
+
+    public double getxPos() {
+        return xPos;
+    }
+
+    public double getyPos() {
+        return yPos;
+    }
 }

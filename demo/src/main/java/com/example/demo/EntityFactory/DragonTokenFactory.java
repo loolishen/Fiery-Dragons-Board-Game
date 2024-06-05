@@ -5,9 +5,11 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.example.demo.Config;
+import com.example.demo.Controller.DragonTokenManager;
 import com.example.demo.Controller.PlayerTurnManager;
 import com.example.demo.InitModel;
 import com.example.demo.Model.DragonToken;
+import com.example.demo.Model.Player;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -15,20 +17,38 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
 import java.util.Objects;
 
 /**
  * Used to create the dragon tokens, also sets the player's dragon token
  * @author Loo Li Shen
  */
-public class DragonTokenFactory extends SpawnFactory implements InitModel {
+public class DragonTokenFactory extends SpawnFactory implements InitModel{
+    private final PlayerTurnManager playerTurnManager;
+    public DragonTokenFactory(PlayerTurnManager playerTurnManager) {
+        this.playerTurnManager = playerTurnManager;
+    }
 
-    private static final String[] DRAGON_TOKEN_IMAGE_PATHS = {"/com/example/demo/assets/bluedragon.png", "/com/example/demo/assets/greenDragon.png",
+    public static final String[] DRAGON_TOKEN_IMAGE_PATHS = {"/com/example/demo/assets/bluedragon.png", "/com/example/demo/assets/greenDragon.png",
             "/com/example/demo/assets/redDragon.png","/com/example/demo/assets/yellowDragon.png"};
 
-    @Spawns("dragonToken")
-    public Entity dragonTokens(SpawnData data){
+    @Spawns("loadDragonTokens")
+    public Entity loadDragonTokens(SpawnData data){
+        Group tokenGroup = new Group();
+        for (Player player:playerTurnManager.getPlayers()){
+            DragonToken dragonToken = player.getDragonToken();
+            Rectangle cardRect = dragonToken.getTokenImage();
+            // player label
+            Text playerID = dragonToken.getPlayerLabel();
+            // Add the views to the group
+            tokenGroup.getChildren().add(cardRect);
+            tokenGroup.getChildren().add(playerID);
+        }
+        return FXGL.entityBuilder(data).view(tokenGroup).build();
+    }
+
+    @Spawns("newDragonTokens")
+    public Entity newDragonTokens(SpawnData data) {
         Group tokenGroup = new Group();
         // Calculate the radius for positioning the tokens
         double tokenRadius = Config.VOLCANO_RING_RADIUS + Config.TOKEN_PATH_RADIUS_OFFSET;
@@ -68,13 +88,16 @@ public class DragonTokenFactory extends SpawnFactory implements InitModel {
 
         }
         return FXGL.entityBuilder(data).view(tokenGroup).build();
-
     }
 
     @Override
-    public void spawn() {
-        super.spawn();
-        FXGL.spawn("dragonToken", this.spawnData);
+    public void spawn(boolean isNewGame) {
+        super.spawn(isNewGame);
+        if (isNewGame){
+            FXGL.spawn("newDragonTokens", spawnData);
+        }else {
+            FXGL.spawn("loadDragonTokens", spawnData);
+        }
     }
 
     @Override
@@ -89,8 +112,10 @@ public class DragonTokenFactory extends SpawnFactory implements InitModel {
         VolcanoRingFactory.getVolcanoCardByID(nextPlayerAt).setOccupied(true);
 
         // create token and assign it to player
-        DragonToken dragonToken = new DragonToken(VolcanoRingFactory.getVolcanoCardByID(nextPlayerAt), cardRect, angle, playerIDText);
-        PlayerTurnManager.getPlayers()[i].setDragonToken(dragonToken);
+        DragonToken dragonToken = new DragonToken(VolcanoRingFactory.getVolcanoCardByID(nextPlayerAt), cardRect, angle,
+                playerIDText, playerTurnManager.getPlayers()[i]);
+        DragonTokenManager.addDragonToken(dragonToken);
+        playerTurnManager.getPlayers()[i].setDragonToken(dragonToken);
     }
 
     private Text createPlayerIDLabel(double x, double y, int id){
@@ -111,4 +136,7 @@ public class DragonTokenFactory extends SpawnFactory implements InitModel {
         cardRect.setStrokeWidth(1);
         return cardRect;
     }
+
+
+
 }

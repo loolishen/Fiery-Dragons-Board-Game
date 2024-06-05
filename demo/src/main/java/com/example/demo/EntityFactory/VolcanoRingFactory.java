@@ -7,20 +7,26 @@ import com.almasb.fxgl.entity.Spawns;
 import com.example.demo.Animals.Animal;
 import com.example.demo.Config;
 import com.example.demo.InitModel;
+import com.example.demo.LoadSave;
 import com.example.demo.Model.VolcanoCard;
-import com.example.demo.utils.Utils;
+import com.example.demo.Utils.Utils;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+
 
 /**
  * Spawns the volcano ring of cards consisting of alternating cut and uncut segments, incorporating random arrangement of segments.
  * @author Loo Li Shen
  */
-public class VolcanoRingFactory extends SpawnFactory implements InitModel {
+public class VolcanoRingFactory extends SpawnFactory implements InitModel, LoadSave {
     private static final VolcanoCard[] volcanoRing = new VolcanoCard[Config.VOLCANO_RING_NUM_CARDS];
     private final int segmentLength;
     private final int numCards;
@@ -37,8 +43,8 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel {
         return volcanoRing[id-1]; // our ID starts from 1 but array indexing is 0
     }
 
-    @Spawns("volcanoRing")
-    public Entity volcanoRing(SpawnData data){
+    @Spawns("newVolcanoRing")
+    public Entity newVolcanoRing(SpawnData data){
         // Create a group to hold the cards
         Group cardGroup = new Group();
         VolcanoSegment[] volcanoSegments = data.get("segments");
@@ -49,8 +55,8 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel {
         for (int i=1; i<numSegments+1; i++){
             boolean b = i % 2 == 0 ? arrangement.add(i) : arrangementOdd.add(i);
         }
-        Utils.shuffleIntArray(arrangement, Config.NO_SEED); // change to RNG_SEED for testing purposes
-        Utils.shuffleIntArray(arrangementOdd, Config.NO_SEED);
+        Utils.shuffleIntArray(arrangement, Config.RNG_SEED); // change to RNG_SEED for testing purposes
+        Utils.shuffleIntArray(arrangementOdd, Config.RNG_SEED);
         // Create a circle to represent the ring
         int appCentreX = Config.SCENE_WIDTH/2;
         int appCentreY = Config.SCENE_HEIGHT/2;
@@ -84,13 +90,43 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel {
                 data.put("j",j);
                 data.put("segment", segment);
                 data.put("cardCounter",cardCounter);
+                data.put("x", x);
+                data.put("y",y);
                 createModel(data);
-
                 cardCounter += 1;
             }
 
         }
 
+        return FXGL.entityBuilder(data).view(cardGroup).build();
+    }
+
+    @Spawns("loadVolcanoRing")
+    public Entity loadVolcanoRing(SpawnData data){
+        int cardCounter = 23;
+        // Create a group to hold the cards
+        Group cardGroup = new Group();
+        for (VolcanoCard card:volcanoRing){
+            if (cardCounter == 24){cardCounter = 0;}
+            // Calculate the x and y coordinates for the card position. Adjust if needed
+            double x = card.getxPos();
+            double y = card.getyPos();
+            Rectangle rect = new Rectangle(x - Config.VOLCANO_CARD_WIDTH / 2.0, y - Config.VOLCANO_CARD_HEIGHT / 2.0, Config.VOLCANO_CARD_WIDTH, Config.VOLCANO_CARD_HEIGHT);
+            Animal newAnimal = Animal.getAnimal(card.getAnimal(), 1);
+            assert newAnimal != null;
+            newAnimal.fillUIShape(rect);
+            rect.setStroke(Color.BLACK);
+            rect.setStrokeWidth(1);
+            // rotate
+            Rotate rotate = new Rotate();
+            rotate.setAngle(Config.FIRST_ROTATION_ANGLE+15+(cardCounter*rotationAmount));
+            rotate.setPivotX(x);
+            rotate.setPivotY(y);
+            rect.getTransforms().addAll(rotate);
+            cardGroup.getChildren().add(rect);
+            cardCounter += 1;
+
+        }
         return FXGL.entityBuilder(data).view(cardGroup).build();
     }
 
@@ -112,7 +148,7 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel {
                 segmentID += 1;
                 volcanoSegment = new VolcanoSegment(segmentLength);
             }
-            VolcanoCard newVolcanoCard = new VolcanoCard(i+1, Config.ANIMALS[i]);
+            VolcanoCard newVolcanoCard = new VolcanoCard(i+1, Config.ANIMALS[i], 0,0, false); // dummy values
             volcanoSegment.addVolcanoCard(newVolcanoCard);
 
             if (i==segmentEnd){
@@ -125,12 +161,18 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel {
     }
 
     @Override
-    public void spawn() {
-        super.spawn();
-        VolcanoSegment[] segments = this.createSegments();
-        // random segments arrangements. remember that segments are alternately placed, so randomising is for position 2,4,6,8
-        spawnData.put("segments", segments); // pass the information to the factory so that it can spawn based on the segments
-        FXGL.spawn("volcanoRing", spawnData); // this also updates volcano ring
+    public void spawn(boolean isNewGame) {
+        super.spawn(isNewGame);
+        if (isNewGame) {
+            VolcanoSegment[] segments = this.createSegments();
+            //random segments arrangements. remember that segments are alternately placed, so randomising is for position 2,4,6,8
+            spawnData.put("segments", segments); // pass the information to the factory so that it can spawn based on the segments
+
+        FXGL.spawn("newVolcanoRing", spawnData); // this also updates volcano ring
+        }
+        else {
+            FXGL.spawn("loadVolcanoRing", spawnData);
+        }
     }
 
     private Rectangle createVolcanoCardShape(double x, double y, VolcanoSegment segment, int j, int cardCounter){
@@ -158,8 +200,43 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel {
         int cardCounter = spawnData.get("cardCounter");
         VolcanoSegment segment = spawnData.get("segment");
         int j = spawnData.get("j");
-        volcanoRing[cardCounter] = new VolcanoCard(cardCounter+1, segment.getSegmentCards()[j].getAnimal());
+        double x = spawnData.get("x");
+        double y = spawnData.get("y");
+        volcanoRing[cardCounter] = new VolcanoCard(cardCounter+1, segment.getSegmentCards()[j].getAnimal(),x,y,false );
 
+    }
+
+    @Override
+    public void load(int slotIndex) throws IOException{
+        BufferedReader reader = Files.newBufferedReader(getSaveFilePath(slotIndex));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.equals("VolcanoRingFactory")) {
+                while (!(line = reader.readLine()).equals("*")) {
+                    String[] parts = line.split(",");
+                    int index = Integer.parseInt(parts[0]);
+                    boolean occupied = parts[3].equals("true");
+                    volcanoRing[index-1] = new VolcanoCard(
+                            index,
+                            Utils.stringTypeMapping(parts[4]),
+                            Double.parseDouble(parts[1]),
+                            Double.parseDouble(parts[2]),
+                            occupied);
+                }
+                break;
+            }
+        }
+
+    }
+
+    @Override
+    public void save(BufferedWriter writer, int slotIndex) throws IOException{
+        // Save current state
+        writer.write("VolcanoRingFactory\n");
+        for (VolcanoCard card:volcanoRing){
+            writer.write(+card.getRingID()+","+card.getxPos()+","+card.getyPos()+","+card.getOccupiedStatus()+","+card.getAnimal()+"\n");
+        }
+        writer.write("*\n");
     }
 
     /**

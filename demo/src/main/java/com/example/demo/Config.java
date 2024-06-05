@@ -20,7 +20,7 @@ public class Config {
     public static long NO_SEED = 0; // when we want true randomness each time
 
     // Animal related info: types and max count
-    public static final AnimalType[] ANIMAL_TYPES = {SALAMANDER, BAT, SPIDER, BABY_DRAGON, DRAGON_PIRATE};
+    public static final AnimalType[] ANIMAL_TYPES = {SALAMANDER, BAT, SPIDER, BABY_DRAGON, DRAGON_PIRATE, LEPRECHAUN};
     public static final int DRAGON_PIRATE_MAX_COUNT = 2;
     public static final int ANIMAL_MAX_COUNT = 3;
 
@@ -30,7 +30,9 @@ public class Config {
             entry(SPIDER, "/com/example/demo/assets/spider"),
             entry(BABY_DRAGON, "/com/example/demo/assets/babyDragon"),
             entry(BAT, "/com/example/demo/assets/bat"),
-            entry(DRAGON_PIRATE, "/com/example/demo/assets/skull")
+            entry(DRAGON_PIRATE, "/com/example/demo/assets/skull"),
+            entry(LEPRECHAUN, "/com/example/demo/assets/leprechaun")
+
     );
 
     // Application window dimensions
@@ -38,10 +40,10 @@ public class Config {
     public static final int SCENE_HEIGHT = FXGL.getAppHeight();
 
     // Info about chit cards,their UI positioning, their UI components
-    public static final int NUM_CHIT_CARDS = 16;
+    public static final int NUM_CHIT_CARDS = 17;
     public static final int DRAGON_PIRATE_CHIT_CARD_COUNT = 4;
-    public static final int CARD_RADIUS = 28; // Radius of the circular card
-    public static final int CARD_SPACE_PADDING = 10; // Padding between cards
+    public static final int CARD_RADIUS = 24; // Radius of the circular card
+    public static final int CARD_SPACE_PADDING = 30; // Padding between cards 10
     public static final int CHIT_CARD_GRID_WIDTH = NUM_CHIT_CARDS/4;
     public static final int CHIT_CARD_GRID_HEIGHT = NUM_CHIT_CARDS/4;
     public static final int  CHIT_CARD_GRID_TOTAL_WIDTH = CHIT_CARD_GRID_WIDTH * (2 * CARD_RADIUS) + (CHIT_CARD_GRID_WIDTH - 1) * CARD_SPACE_PADDING;
@@ -54,7 +56,7 @@ public class Config {
     public static final AnimalType[] ANIMALS = {SALAMANDER,SPIDER, BAT, BABY_DRAGON, SALAMANDER, BAT, SPIDER, SALAMANDER, BABY_DRAGON,
             BAT, BABY_DRAGON, SALAMANDER, BAT, SPIDER, BABY_DRAGON, SALAMANDER, BABY_DRAGON,
             SPIDER, BABY_DRAGON, BAT, SPIDER, SPIDER, BAT,SALAMANDER };
-    public static final int VOLCANO_RING_RADIUS = 200;
+    public static final int VOLCANO_RING_RADIUS = 230; //200
     public static final int VOLCANO_RING_NUM_CARDS = 24;
     public static final int FIRST_ROTATION_ANGLE = 90;
     public static final int VOLCANO_CARD_WIDTH = 40;
@@ -70,10 +72,10 @@ public class Config {
     public static final int END_TURN_RESULT = 0;
     public static final int CAVE_CIRCLE_RADIUS = 15;
     public static final int CAVE_POS_RADIUS_OFFSET = 35;
-    public static final int CAVE_TEXT_OFFSET = 7;
     public static final int ANGLE_OFFSET = 0; // because the cave and token starts at second chit card of any given segment
     public static final double TOKEN_MOVE_ANGLE_INCREMENT = 360.0/VOLCANO_RING_NUM_CARDS;
     public static final int TOKEN_PATH_RADIUS_OFFSET = 65; // so that token moves on a circular path of the circumference
+
     public static final int DRAGON_TOKEN_RADIUS = VOLCANO_RING_RADIUS+TOKEN_PATH_RADIUS_OFFSET;
     // of a larger circle compared to the volcano ring's circle
     public static final int TOKEN_WIDTH = 25;

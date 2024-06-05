@@ -1,8 +1,10 @@
-package com.example.demo;
+package com.example.demo.UserInterfaces;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
+import com.example.demo.Config;
+import com.example.demo.FieryDragonsApplication;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -26,18 +28,17 @@ import javafx.scene.text.Text;
 
 public class MainMenu extends FXGLMenu {
 
-
     private static ObjectProperty<Button> selectedButton;
 
-    public MainMenu() {
+    public MainMenu(LoadSaveUI loadSaveUI) {
         super(MenuType.MAIN_MENU);
         Image backGroundImage = new Image("/com/example/demo/assets/menu.png");
         Rectangle background = new Rectangle(0,0, Config.SCENE_WIDTH, Config.SCENE_HEIGHT);
         background.setFill(new ImagePattern(backGroundImage));
-        Button btnPlayGame = new Button("New Game", "Start new game", ()-> {
-            fireNewGame();
-        });
-        Button btnQuit = new Button("Quit Game", "Exit to desktop", ()->fireExit());
+        Button btnPlayGame = new Button("New Game", "Start new game", loadSaveUI::loadNewGame);
+        Button btnQuit = new Button("Quit Game", "Exit to desktop", this::fireExit);
+        Button btnLoadGame = new Button("Load Game", "Load an existing game", loadSaveUI::showMainMenu);
+
         selectedButton = new SimpleObjectProperty<>(btnPlayGame);
 
 
@@ -48,6 +49,7 @@ public class MainMenu extends FXGLMenu {
         textDescription.setFill(Color.GRAY);
         var box = new VBox(10,
                 btnPlayGame,
+                btnLoadGame,
                 btnQuit,
                 new Separator(Orientation.HORIZONTAL),
                 textDescription);
@@ -58,7 +60,8 @@ public class MainMenu extends FXGLMenu {
 
         getContentRoot().getChildren().addAll(background);
         getContentRoot().getChildren().addAll(box);
-
+        getContentRoot().getChildren().addAll();
+        getContentRoot().getChildren().addAll(loadSaveUI.mainMenuContainer);
 
 
     }
@@ -66,6 +69,9 @@ public class MainMenu extends FXGLMenu {
     private static final Color SELECTED_COLOR = Color.BLACK;
     private static final Color NOT_SELECTED_COLOR = Color.GRAY;
 
+    /**
+     * Custome implementation for buttons on the main menu. Allow
+     */
     private static class Button extends StackPane {
         private final String description;
 

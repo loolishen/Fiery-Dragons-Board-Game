@@ -1,5 +1,6 @@
 package com.example.demo.Model;
 
+import com.example.demo.Animals.Animal;
 import com.example.demo.Animals.AnimalType;
 import javafx.scene.shape.Circle;
 
@@ -9,17 +10,31 @@ import javafx.scene.shape.Circle;
  */
 public class ChitCard {
     private final int index;
-    private final AnimalType animalType;
-    private final int animalCount;
-    private final Circle coveredForm; // this is default to all Chit cards
-    private final Circle uncoveredForm;
+    private final Animal animal;
+    private Circle coveredForm; // this is default to all Chit cards
+    private Circle uncoveredForm;
+    private double x;
+    private double y;
+    private boolean coveredVisible;
+    private boolean uncoveredVisible;
 
-    public ChitCard(int idx, AnimalType newAnimalType, int newAnimalCount, Circle defaultChitCardShape, Circle newUncoveredForm){
+    public ChitCard(int idx, Animal newAnimal, Circle defaultChitCardShape, Circle newUncoveredForm, double x, double y, boolean covered, boolean uncovered){
         index = idx;
         coveredForm = defaultChitCardShape;
         uncoveredForm = newUncoveredForm;
-        animalType = newAnimalType;
-        animalCount = newAnimalCount;
+        animal = newAnimal;
+        this.x=x;
+        this.y=y;
+        this.coveredVisible = covered;
+        this.uncoveredVisible=uncovered;
+    }
+
+    public void setCoveredForm(Circle coveredForm) {
+        this.coveredForm = coveredForm;
+    }
+
+    public void setUncoveredForm(Circle uncoveredForm) {
+        this.uncoveredForm = uncoveredForm;
     }
 
     public int getIndex() {
@@ -34,11 +49,23 @@ public class ChitCard {
         return coveredForm;
     }
 
-    public AnimalType getAnimalType(){
-        return animalType;
+    public Animal getAnimal(){
+        return animal;
     }
 
-    public int getAnimalCount(){
-        return animalCount;
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public boolean isCoveredVisible() {
+        return coveredVisible;
+    }
+
+    public boolean isUncoveredVisible() {
+        return uncoveredVisible;
     }
 }

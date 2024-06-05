@@ -1,9 +1,8 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Model.ChitCard;
+import com.example.demo.Model.Player;
 import javafx.animation.RotateTransition;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
@@ -16,11 +15,13 @@ import java.util.HashMap;
  * @author Liang Dizhen
  */
 
-public class ChitCardFlipManager {
+public class ChitCardFlipManager{
     private static ChitCardFlipManager chitCardFlipManager;
-    private static Circle[] coveredChitCardShapes; // used to ensure that they do not listen for clicks
+    private Circle[] coveredChitCardShapes; // used to ensure that they do not listen for clicks
     private boolean animationInProgress = false; // used to ensure smoother animations
-    private final ArrayList<Circle> uncoveredChitCardsByPlayer = new ArrayList<>(); // specific uncovered chit cards in a player's turn
+    private ArrayList<Circle> uncoveredChitCardsByPlayer = new ArrayList<>(); // specific uncovered chit cards in a player's turn
+
+    private TextDisplayManager textDisplayManager;
 
     private ChitCardFlipManager(){}
     public static ChitCardFlipManager getInstance(){
@@ -29,8 +30,12 @@ public class ChitCardFlipManager {
         } return chitCardFlipManager;
     }
 
-    public static void setCoveredChitCardShapes(Circle[] coveredChitCardShapes) {
-        ChitCardFlipManager.coveredChitCardShapes = coveredChitCardShapes;
+    public void setUncoveredChitCardsByPlayer(ArrayList<Circle> uncoveredChitCardsByPlayer) {
+        this.uncoveredChitCardsByPlayer = uncoveredChitCardsByPlayer;
+    }
+
+    public void setCoveredChitCardShapes(Circle[] newCoveredChitCardShapes) {
+        coveredChitCardShapes = newCoveredChitCardShapes;
     }
 
     public void setAnimationInProgress(boolean COVERING_ANIMATION_IN_PROGRESS) {
@@ -74,13 +79,13 @@ public class ChitCardFlipManager {
     }
 
 
-    public void handleTurnEnd(){
+    public void handleTurnEnd(ChitCardAdapter chitCardAdapter){
         // do flip back animation
         for (Circle uncoveredChitCard : uncoveredChitCardsByPlayer) {
-            ChitCard chitCard = ChitCardAdapter.getViewControllerMapping().get(uncoveredChitCard);
+            ChitCard chitCard = chitCardAdapter.getViewControllerMapping().get(uncoveredChitCard);
             // animate
             Circle hiddenCircle = chitCard.getCoveredForm();
-            RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), uncoveredChitCard);
+            RotateTransition rotateTransition = new RotateTransition(Duration.millis(1500), uncoveredChitCard);
             rotateTransition.setAxis(Rotate.Y_AXIS); // Rotate around the Y axis
             rotateTransition.setByAngle(360);
             rotateTransition.setOnFinished(event -> {
@@ -94,5 +99,6 @@ public class ChitCardFlipManager {
         uncoveredChitCardsByPlayer.clear(); // all the chit cards that were uncovered have been covered, so they need to start listening for clicks again
 
     }
+
 
 }

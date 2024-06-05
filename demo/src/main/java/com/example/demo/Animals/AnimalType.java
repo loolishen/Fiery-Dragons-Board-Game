@@ -10,5 +10,6 @@ public enum AnimalType {
     BABY_DRAGON,
     BAT,
     SPIDER,
-    DRAGON_PIRATE
+    DRAGON_PIRATE,
+    LEPRECHAUN
 }

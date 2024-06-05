@@ -2,11 +2,9 @@ package com.example.demo.Model;
 
 import com.example.demo.Animals.Animal;
 import com.example.demo.Animals.AnimalType;
-import com.example.demo.Config;
 import com.example.demo.Controller.ChitCardAdapter;
 import com.example.demo.Controller.TextDisplayManager;
 import com.example.demo.EntityFactory.VolcanoRingFactory;
-import com.example.demo.LoadSave;
 import javafx.scene.shape.Circle;
 
 /**
@@ -23,13 +21,35 @@ public class Player {
     private final int ID;
     private TextDisplayManager textDisplayManager;
     private final AnimalType caveAnimalType;
-    private int incorrectRevealCounter = 0;
-    private boolean hasEqualityBoost = false;
+
+    private int points;
+    private boolean hasShield = false;
 
     public Player(int newID, AnimalType randAnimalType, TextDisplayManager textDisplayManager){
         ID = newID;
         caveAnimalType = randAnimalType;
         this.textDisplayManager = textDisplayManager;
+        points = 0;
+    }
+
+    public boolean hasShield() {
+        return hasShield;
+    }
+
+    public void setShield(boolean hasShield) {
+        this.hasShield = hasShield;
+    }
+
+    public int getPoints(){
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public void updatePoints(int delta) {
+        this.points += delta;
     }
 
     public int getId() {
@@ -58,39 +78,6 @@ public class Player {
     public DragonToken getDragonToken(){
         return dragonToken;
     }
-
-
-    public int getIncorrectRevealCounter() {
-        return incorrectRevealCounter;
-    }
-
-    public void incrementIncorrectRevealCounter() {
-        incorrectRevealCounter++;
-    }
-
-    public void resetIncorrectRevealCounter() {
-        incorrectRevealCounter = 0;
-    }
-
-    public boolean hasEqualityBoost() {
-        return hasEqualityBoost;
-    }
-
-    public void setEqualityBoost(boolean hasEqualityBoost) {
-        this.hasEqualityBoost = hasEqualityBoost;
-    }
-
-    public void useEqualityBoost() {
-        if (hasEqualityBoost) {
-            int currentPosition = getDragonToken().getCurrentPositionInRing();
-            int nextPosition = currentPosition + 1;
-            if (nextPosition > Config.VOLCANO_RING_NUM_CARDS) {
-                nextPosition -= Config.VOLCANO_RING_NUM_CARDS;
-            }
-            moveToken(1, nextPosition, false);
-            setEqualityBoost(false);
-        }
-    }
     /**
      * The integer return value determines the course of action:
      * END_TURN_RESULT means player's turn ends
@@ -117,13 +104,28 @@ public class Player {
         textDisplayManager.removeOldMovementCountMsg(textDisplayManager.getCurrentMovementCountEntity());
         textDisplayManager.handleMovementCountUpdate(this.getId(),this.getDragonToken().getTotalMovementCount());
 
+        //update the point system display
+        textDisplayManager.displayPlayerPointsMsg1(this.getId(),this.getDragonToken().getTotalPointsCount());
+
         // update movedOutOfCave to True if exiting cave for the first time
         if (!this.getDragonToken().getMovedOutOfCave()) {
             this.getDragonToken().setMovedOutOfCave();
         }
 
+        int pointsAwarded = allocatePoints(animalCount, destinationID, isSwap);
+        updatePoints(pointsAwarded);
+
+        textDisplayManager.updatePointsDisplay(this.getId(), this.getPoints());
+
         this.setDoNothingContinueTurn(true); // since we already did the animation, continue onto next flip
+
     }
+
+
+    private int allocatePoints(int animalCount, int destinationID, boolean isSwap) {
+        return animalCount + 1;
+    }
+
 
     public AnimalType getCaveAnimalType() {
         return caveAnimalType;
@@ -132,6 +134,4 @@ public class Player {
     public String loadSaveString(){
         return "Player:"+doNothingContinueTurn+","+turnEnded;
     }
-
-
 }
