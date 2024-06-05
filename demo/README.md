@@ -1,4 +1,4 @@
-# FIT3077 Sprint 3
+# FIT3077 Sprint 4
 Team: Swift Crafters
 
 Authors:
@@ -43,28 +43,36 @@ The executables were built using Maven based on the pom.xml file. The video in t
 See demo/executables for the built executable if you want to skip this step.
 
 The easiest way to build the executable is to download the entire repository as a zip file:
+
 ![Alt text](image-1.png)
 
 ![Alt text](image.png)
+
 The outer folder 'MA_Tuesday08am_Team123-Sprint3' is extracted from the downloaded zip file.
 In IntelliJ, open the inner folder (same name as outer folder) as shown in the above image.
 
 If you see this prompt:
+
 ![Alt text](image-2.png)
+
 Select 'load' for Maven to build according to the pom.xml file which is present in the repository.
 If not, enable Maven support for the project.
 
 ![Alt text](image-3.png)
+
 To compile and run the application, run the main class "FieryDragonsApplication"
 
 
  In your IDE,run the command ```mvn javafx:jlink``` using Maven. In IntelliJ this can be done by pressing the Ctrl key twice, then searching for this command. 
+
  ![Alt text](image-5.png)
 
 Target directory before building the executable:
+
 ![Alt text](image-4.png)
 
 Target directory after building the executable:
+
  ![Alt text](image-6.png)
 
 # Running the executable
