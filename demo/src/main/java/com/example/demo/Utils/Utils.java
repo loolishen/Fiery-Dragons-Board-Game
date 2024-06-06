@@ -40,7 +40,7 @@ public class Utils {
     }
 
     public static AnimalType stringTypeMapping(String animalTypeString){
-        AnimalType animalType = switch (animalTypeString) {
+        return switch (animalTypeString) {
             case "BAT" -> AnimalType.BAT;
             case "SALAMANDER" -> AnimalType.SALAMANDER;
             case "BABY_DRAGON" -> AnimalType.BABY_DRAGON;
@@ -49,6 +49,5 @@ public class Utils {
             case "LEPRECHAUN"-> AnimalType.LEPRECHAUN;
             default -> null;
         };
-        return animalType;
     }
 }

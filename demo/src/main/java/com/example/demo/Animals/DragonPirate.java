@@ -1,13 +1,10 @@
 package com.example.demo.Animals;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.example.demo.Config;
-import com.example.demo.Controller.TextDisplayManager;
 import com.example.demo.EntityFactory.VolcanoRingFactory;
 import com.example.demo.Model.DragonToken;
 import com.example.demo.Model.Player;
-import javafx.scene.control.Alert;
-
-import java.security.PrivateKey;
 
 /**
  * Dragon class
@@ -15,7 +12,6 @@ import java.security.PrivateKey;
  */
 
 public class DragonPirate extends Animal{
-
     public DragonPirate(int count) {
         super(Config.ANIMAL_IMAGE_IMAGE_PATH_PREFIX_MAPPINGS.get(AnimalType.DRAGON_PIRATE), count, AnimalType.DRAGON_PIRATE);
     }
@@ -23,8 +19,14 @@ public class DragonPirate extends Animal{
     @Override
     public int calculateDestinationID(Player player, DragonToken dragonToken, int animalCount)
     {
+        if (player.hasShield()){
+            player.setShield(false);
+            FXGL.getNotificationService().pushNotification("Player " + player.getId() + "'s shield consumed" );
+            player.setDoNothingContinueTurn(true);
+            return dragonToken.getCurrentPositionInRing();
+        }
         // if player has not moved out of cave, do not allow going back further than cave
-        int destinationRingID = dragonToken.getCurrentPositionInRing()-animalCount; // move BACKWARDS
+        int destinationRingID = dragonToken.getCurrentPositionInRing()+animalCount; // move BACKWARDS
         if ((destinationRingID < dragonToken.getInitialVolcanoCardID()) && !dragonToken.getMovedOutOfCave()) {
             player.setDoNothingContinueTurn(true);
             return dragonToken.getCurrentPositionInRing();
@@ -33,24 +35,11 @@ public class DragonPirate extends Animal{
 
         // no matter what, do not allow players to share same volcano card.
         boolean occupied = VolcanoRingFactory.getVolcanoCardByID(destinationRingID).getOccupiedStatus();
-        if (occupied) {
+        if (occupied ) {
             return Config.END_TURN_RESULT;
         }
-        return destinationRingID;
-    }
 
-    public void handleSkullCardFlip(Player player) {
-        if (player.hasShield()) {
-            player.setShield(false); // Consume the shield
-        } else {
-            // Logic to move player backward
-            player.getDragonToken().moveToken(-1);
-        }
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Shield Used");
-        alert.setHeaderText(null);
-        alert.setContentText("You have successfully used Shield");
-        alert.showAndWait();
+        return destinationRingID;
     }
 
     @Override
@@ -62,4 +51,5 @@ public class DragonPirate extends Animal{
     protected String getSuffixedImgPath() {
         return baseImgPath + "" + Math.abs(count) + ".png";
     }
+
 }

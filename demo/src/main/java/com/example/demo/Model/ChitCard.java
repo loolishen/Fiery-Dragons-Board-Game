@@ -13,10 +13,10 @@ public class ChitCard {
     private final Animal animal;
     private Circle coveredForm; // this is default to all Chit cards
     private Circle uncoveredForm;
-    private double x;
-    private double y;
-    private boolean coveredVisible;
-    private boolean uncoveredVisible;
+    private final double x;
+    private final double y;
+    private final boolean coveredVisible;
+    private final boolean uncoveredVisible;
 
     public ChitCard(int idx, Animal newAnimal, Circle defaultChitCardShape, Circle newUncoveredForm, double x, double y, boolean covered, boolean uncovered){
         index = idx;

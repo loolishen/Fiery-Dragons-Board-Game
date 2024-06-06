@@ -63,7 +63,7 @@ public class ChitCardAdapter implements InitModel, LoadSave {
                         String[] parts = line.split(":");
                         String[] fields = parts[1].split(",");
                         int idx=Integer.parseInt(parts[0]);
-                        chitCards[idx] = new ChitCard(idx, Animal.getAnimal(Utils.stringTypeMapping(fields[3]),Integer.parseInt(fields[2])),
+                        chitCards[idx] = new ChitCard(idx, Animal.getAnimal(stringTypeMapping(fields[3]),Integer.parseInt(fields[2])),
                                 null,// these don't need to be passed since ChitCardFactory handles them
                                 null,
                                 Double.parseDouble(fields[0]),

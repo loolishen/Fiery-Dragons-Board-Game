@@ -12,15 +12,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class GameMenu extends FXGLMenu{
-    LoadSaveUI loadInterface;
     public GameMenu(LoadSaveUI loadInterface) {
         super(MenuType.GAME_MENU);
-        this.loadInterface = loadInterface;
         Rectangle background = new Rectangle(0,0, Config.SCENE_WIDTH, Config.SCENE_HEIGHT);
         background.setFill(Color.rgb(255,255,255,0.4));
         Button btnResume = new Button("Resume", "Resume the game", this::fireResume);
         Button btnGoToMainMenu = new Button("Main Menu", "Go back to main menu", this::fireExitToMainMenu);
-        Button btnSave = new Button("Save","Save game state", this::handleSaveClick);
+        Button btnSave = new Button("Save","Save game state", () -> {fireResume(); loadInterface.showSaveMenu();});
 
         double firstX = getAppWidth()/2.0-65;
         double firstY = getAppHeight()/2.0-20;
@@ -34,10 +32,6 @@ public class GameMenu extends FXGLMenu{
         getContentRoot().getChildren().addAll(background,btnResume, btnGoToMainMenu);
         getContentRoot().getChildren().addAll(btnSave);
 
-    }
-    private void handleSaveClick(){
-        fireResume();
-        loadInterface.showSaveMenu();
     }
 
     private static class Button extends StackPane {

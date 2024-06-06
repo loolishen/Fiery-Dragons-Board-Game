@@ -218,7 +218,7 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel, LoadS
                     boolean occupied = parts[3].equals("true");
                     volcanoRing[index-1] = new VolcanoCard(
                             index,
-                            Utils.stringTypeMapping(parts[4]),
+                            stringTypeMapping(parts[4]),
                             Double.parseDouble(parts[1]),
                             Double.parseDouble(parts[2]),
                             occupied);

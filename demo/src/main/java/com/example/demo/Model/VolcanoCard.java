@@ -13,8 +13,8 @@ public class VolcanoCard {
     private final int ringID;
     private AnimalType animal;
     private boolean occupied;
-    private double xPos;
-    private double yPos;
+    private final double xPos;
+    private final double yPos;
     public VolcanoCard(int newRingID, AnimalType animalType, double xPos, double yPos, boolean occupied){
         ringID = newRingID;
         animal = animalType;

@@ -29,8 +29,15 @@ public class DragonTokenManager {
         for (DragonToken token:dragonTokens){
             // compare with the tokens on the board excluding itself
             if (token!=dragonToken && token.getMovedOutOfCave()){ // token in cave cannot be swapped
-                int firstTokenDiff = Math.abs(token.getCurrentPositionInRing()-dragonToken.getCurrentPositionInRing());
-                int secondTokenDiff = Math.abs(dragonToken.getCurrentPositionInRing()-token.getCurrentPositionInRing());
+                int toSwapPos = token.getCurrentPositionInRing();
+                // normalising pos in ring
+                if ((dragonToken.getCurrentPositionInRing() > 20 && dragonToken.getCurrentPositionInRing() <= 24)
+                        && (token.getCurrentPositionInRing() >= 1 && token.getCurrentPositionInRing() <= 7)){
+                    toSwapPos = token.getCurrentPositionInRing()+24;
+
+                }
+                int firstTokenDiff = Math.abs(toSwapPos-dragonToken.getCurrentPositionInRing());
+                int secondTokenDiff = Math.abs(dragonToken.getCurrentPositionInRing()-toSwapPos);
                 System.out.println("Distances are" + firstTokenDiff + " and " + secondTokenDiff);
                 tokenDiff = Math.min(firstTokenDiff, secondTokenDiff);
                 if (tokenDiff < currDifference){

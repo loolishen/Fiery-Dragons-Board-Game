@@ -1,5 +1,6 @@
 package com.example.demo.Animals;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.example.demo.Config;
 import com.example.demo.Controller.ChitCardAdapter;
 import com.example.demo.EntityFactory.VolcanoRingFactory;
@@ -31,7 +32,6 @@ public abstract class Animal{
      * Creates the image and fill the given UI shapes with it. Must be called after initUIShape() has been called
      */
     public void fillUIShape(Shape uiShape){
-        System.out.println(getSuffixedImgPath());
         Image animalImage = new Image(Objects.requireNonNull(getClass().getResource(getSuffixedImgPath())).toExternalForm());
         ImagePattern animalImagePattern = new ImagePattern(animalImage);
         uiShape.setFill(animalImagePattern);
@@ -97,6 +97,7 @@ public abstract class Animal{
         // reset
         player.setDoNothingContinueTurn(false);
         if (occupied) {
+            FXGL.getNotificationService().pushNotification("Destination is occupied!");
             return Config.END_TURN_RESULT;
         }
         return destinationRingID;

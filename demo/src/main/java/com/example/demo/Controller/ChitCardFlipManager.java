@@ -1,7 +1,6 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Model.ChitCard;
-import com.example.demo.Model.Player;
 import javafx.animation.RotateTransition;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Rotate;
@@ -20,8 +19,6 @@ public class ChitCardFlipManager{
     private Circle[] coveredChitCardShapes; // used to ensure that they do not listen for clicks
     private boolean animationInProgress = false; // used to ensure smoother animations
     private ArrayList<Circle> uncoveredChitCardsByPlayer = new ArrayList<>(); // specific uncovered chit cards in a player's turn
-
-    private TextDisplayManager textDisplayManager;
 
     private ChitCardFlipManager(){}
     public static ChitCardFlipManager getInstance(){
@@ -99,6 +96,5 @@ public class ChitCardFlipManager{
         uncoveredChitCardsByPlayer.clear(); // all the chit cards that were uncovered have been covered, so they need to start listening for clicks again
 
     }
-
 
 }

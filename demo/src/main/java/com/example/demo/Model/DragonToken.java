@@ -29,7 +29,6 @@ public class DragonToken {
 
     private final Player player;
 
-    private int getTotalPointsCount;
 
     private double currPosAngle; // its current position on the volcano ring measured by angle
 
@@ -108,10 +107,6 @@ public class DragonToken {
 
     public int getTotalMovementCount() {
         return totalMovementCount;
-    }
-
-    public int getTotalPointsCount(){
-        return getTotalPointsCount;
     }
 
     public int getCurrentPositionInRing() {

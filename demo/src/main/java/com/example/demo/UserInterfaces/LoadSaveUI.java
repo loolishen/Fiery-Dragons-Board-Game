@@ -20,10 +20,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
-public class LoadSaveUI extends VBox{
+public class LoadSaveUI{
     public VBox mainMenuContainer=new VBox(50);
     public VBox gameMenuContainer=new VBox(50);
-    private boolean loadContainerInitialised = false;
+    private boolean loadContainerInitialised=false;
     private boolean saveContainerInitialised = false;
     private final Rectangle[] slots = new Rectangle[8];
     private final FieryDragonsApplication application;
@@ -106,11 +106,15 @@ public class LoadSaveUI extends VBox{
                             System.out.println("parts[i] is "+ parts[1]);
                             slotDescriptions[counter] = parts[1];
                         } else {
-                            slotDescriptions[counter] = String.valueOf(counter + 1);
+                            slotDescriptions[counter] = (counter+1)+"";
                         }
                         counter += 1;
                     }
                 }
+            }
+            System.out.println("After reading the file, the slot descriptions are: ");
+            for (String slotDesc: slotDescriptions){
+                System.out.println(slotDesc + " ");
             }
         } catch (IOException e) {
             System.out.println("Save file does not exist");
@@ -149,13 +153,9 @@ public class LoadSaveUI extends VBox{
                 e2.printStackTrace();
             }
         }
-
         if (loadContainerInitialised){
             for (int i = 0; i < 8; i++) {
-                Text slotText=slotTexts[i];
-                System.out.println("The description is "+slotDescriptions[i]);
-                slotText.setText(slotDescriptions[i]);
-                slotText.setVisible(true);
+                slotTexts[i].setText(slotDescriptions[i]);
             }
             mainMenuContainer.setVisible(true);
         }else {
@@ -174,19 +174,20 @@ public class LoadSaveUI extends VBox{
             for (int i = 0; i < 8; i++) {
                 slots[i] = new Rectangle(100, 100, Color.GRAY);
                 int slotIndex = i;
-                slots[i].setOnMouseClicked(event -> handleLoadSlotClick(slotIndex+1));
+                slots[i].setOnMouseClicked(event -> handleLoadSlotClick(slotIndex + 1));
 
                 // Create a Text node for displaying the slot index
                 Text slotText = new Text();
 
                 slotText.setText(slotDescriptions[i]);
                 slotText.setFill(Color.WHITE);
-                slotTexts[i] = slotText;
                 // Create a VBox to hold both the rectangle and the text
                 VBox slotPane = new VBox(5);
                 slotPane.setAlignment(Pos.CENTER);
-                slotPane.getChildren().addAll(slots[i]);
+                slotPane.getChildren().addAll(slots[i], slotText);
                 slotsBox.getChildren().add(slotPane);
+                slotTexts[i] = slotText; // this must be called after we have added it as the child
+                // to ensure that the references still hold
 
             }
             mainMenuContainer.getChildren().addAll(title, closeButton, slotsBox);
@@ -243,12 +244,11 @@ public class LoadSaveUI extends VBox{
             }
         }
     }
-    public void hide(VBox container) {
+    private void hide(VBox container) {
         container.setVisible(false);
     }
 
     public void loadNewGame(){
-        application.setStartNewGame(true);
         if (application.loadGame(-1)) {
             FXGL.getGameController().startNewGame();
         }

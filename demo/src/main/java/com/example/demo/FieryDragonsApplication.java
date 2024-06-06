@@ -5,14 +5,15 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.SpawnData;
-import com.example.demo.Animals.AnimalType;
-import com.example.demo.Animals.DragonPirate;
 import com.example.demo.Controller.ChitCardAdapter;
 import com.example.demo.Controller.ChitCardFlipManager;
 import com.example.demo.Controller.PlayerTurnManager;
 import com.example.demo.Controller.TextDisplayManager;
 import com.example.demo.EntityFactory.*;
-import com.example.demo.Model.*;
+import com.example.demo.Model.ChitCard;
+import com.example.demo.Model.Player;
+import com.example.demo.Model.Shop;
+import com.example.demo.Model.ShopItem;
 import com.example.demo.UserInterfaces.GameMenu;
 import com.example.demo.UserInterfaces.LoadSaveUI;
 import com.example.demo.UserInterfaces.MainMenu;
@@ -20,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 
+import javax.swing.text.DefaultHighlighter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -31,20 +33,16 @@ import java.util.ArrayList;
  * @author Jia Wynn Khor
  */
 public class FieryDragonsApplication extends GameApplication implements LoadSave{
-    private boolean startNewGame;
     public  boolean endGame = false;
     private boolean turnEnded = false;
     private final ChitCardAdapter chitCardAdapter = new ChitCardAdapter();
     private PlayerTurnManager playerTurnManager;
-    private TextDisplayManager textDisplayManager=new TextDisplayManager();
-    private LoadSaveUI loadSaveUI = new LoadSaveUI(this);
+    private final TextDisplayManager textDisplayManager=new TextDisplayManager();
+    private final LoadSaveUI loadSaveUI = new LoadSaveUI(this);
 
     private ArrayList<LoadSave> loadSaves = new ArrayList<>();
     private int slotToLoad=-1;
 
-    private Shop shop;
-    DragonToken dragonToken;
-    Player player;
 
     public static void main(String[] args) {
         launch(args);
@@ -182,10 +180,15 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
         TextFactory newTextFactory = new TextFactory();
         newTextFactory.spawn(false);
         // initialize first player turn display message and state
-        textDisplayManager.initialize(playerTurnManager.getCurrPlayer().getId(),playerTurnManager.getCurrPlayer().getDragonToken().getTotalMovementCount() );
+        textDisplayManager.initialize(playerTurnManager.getCurrPlayer().getId(),
+        playerTurnManager.getCurrPlayer().getDragonToken().getTotalMovementCount(),
+        playerTurnManager.getCurrPlayer().getPoints());
 
-        // initialize point display
-        textDisplayManager.initialize(playerTurnManager.getCurrPlayer().getId(), playerTurnManager.getCurrPlayer().getDragonToken().getTotalPointsCount());
+        // shop factory does not need to be registered, it is static
+        Shop newShop = new Shop();
+        ShopFactory shopFactory = new ShopFactory(newShop, playerTurnManager, textDisplayManager);
+        shopFactory.spawn(false);
+
         // start first player's turn
         playTurn();
 
@@ -194,6 +197,7 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
     @Override
     protected void initGame() {
         endGame = false;
+        loadSaves = new ArrayList<>();
 
         // if loading fails for whatever reason, then we start a new game
         if (slotToLoad==-1) {
@@ -236,27 +240,23 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
             buttonFactory.spawn(true);
             buttonFactory.setListeners();
 
-            shop = new Shop();
-            shop.addItem(new ShopItem("Shield", 0, "Protects you once from a pirate card", ItemType.SHIELD));
-//            shop.addItem(new ShopItem("abcde", 10, "description stuff"));
-
-            ShopFactory shopFactory = new ShopFactory(shop, playerTurnManager, textDisplayManager);
-            shopFactory.spawn(true);
-
             // text factory for producing text messages
             TextFactory newTextFactory = new TextFactory();
             newTextFactory.spawn(true);
             // initialize first player turn display message and state
-            textDisplayManager.initialize(1,0);
+            textDisplayManager.initialize(1,0, 0);
+            // shop factory does not need to be registered, it is static
+            Shop newShop = new Shop();
+            ShopItem newItem = new ShopItem("SHIELD", 5, "Shield that grants immunity to dragon pirate's effect");
+            newShop.addItem(newItem);
+            ShopFactory shopFactory = new ShopFactory(newShop, playerTurnManager, textDisplayManager);
+            shopFactory.spawn(true);
+
             // start first player's turn
             playTurn();
         }else{loadGameState(slotToLoad);}//for testing let's use slot 1
         slotToLoad =0;
 
-    }
-
-    public void setStartNewGame(boolean startNewGame) {
-        this.startNewGame = startNewGame;
     }
 
     @Override
@@ -269,13 +269,13 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
                     turnEnded = true;
                     textDisplayManager.removeOldTurnUpdateMsg(textDisplayManager.getCurrentTextEntity());
                     textDisplayManager.removeOldMovementCountMsg(textDisplayManager.getCurrentMovementCountEntity());
+                    textDisplayManager.removeOldPointsMsg(textDisplayManager.getCurrentPointsEntity());
                     ChitCardFlipManager.getInstance().handleTurnEnd(chitCardAdapter);
                     playerTurnManager.handleTurnTransition();
                     Player currPlayer = playerTurnManager.getCurrPlayer();
                     textDisplayManager.handleTurnTransition(currPlayer.getId());
                     textDisplayManager.handleMovementCountUpdate(currPlayer.getId(), currPlayer.getDragonToken().getTotalMovementCount());
-
-                    textDisplayManager.handleRemoveOldPointsMsg(currPlayer.getId(), currPlayer.getPoints());
+                    textDisplayManager.updatePointsDisplay(currPlayer.getId(), currPlayer.getPoints());
                     playTurn();
                     turnEnded=false;
                 }
@@ -291,24 +291,24 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
         if (!endGame) {
             // handle the uncovering of chit card
             ChitCardFlipManager.getInstance().handleUncover(chitCardChosen, chitCardAdapter.getViewControllerMapping().get(chitCardChosen));
-
-            AnimalType animalType = chitCardAdapter.getViewControllerMapping().get(chitCardChosen).getAnimal().getAnimalType();
-            Player player = playerTurnManager.getCurrPlayer();
-
-            if (animalType == AnimalType.DRAGON_PIRATE && player != null) {
-                DragonPirate dragonPirate = (DragonPirate) chitCardAdapter.getViewControllerMapping().get(chitCardChosen).getAnimal();
-                dragonPirate.handleSkullCardFlip(player);
-            }
-
             int result = playerTurnManager.getCurrPlayer().validateMove(chitCardChosen, chitCardAdapter); // result = 0 means end turn, otherwise it is destination ring ID that token should move to
+            System.out.println("The result is "+result);
             if (!playerTurnManager.getCurrPlayer().getDoNothingContinueTurn()) { // this block is not executed when card is dragon pirate and player is currently on cave (has not moved out)
                 if (result != Config.END_TURN_RESULT) {
                     int animalCount = chitCardAdapter.getViewControllerMapping().get(chitCardChosen).getAnimal().getCount();
                     playerTurnManager.getCurrPlayer().moveToken(animalCount, result, false);
-
-                } else { // remember that if leprechaun also triggers this
+                    playerTurnManager.getCurrPlayer().resetIncorrectRevealCounter();
+                } else { // remember that leprechaun also triggers this
                     playerTurnManager.getCurrPlayer().setTurnEnded(true);
                     ChitCardFlipManager.getInstance().resetOnClickListener(chitCardAdapter.getViewControllerMapping());
+                    playerTurnManager.getCurrPlayer().incrementIncorrectRevealCounter();
+                    if (playerTurnManager.getCurrPlayer().getIncorrectRevealCounter() >= 3) {
+                        playerTurnManager.getCurrPlayer().setEqualityBoost(true);
+                        playerTurnManager.getCurrPlayer().resetIncorrectRevealCounter();
+                        playerTurnManager.getCurrPlayer().useEqualityBoost();
+                        FXGL.getNotificationService().pushNotification("Equality Boost awarded to Player " + playerTurnManager.getCurrPlayer().getId());
+                    }
+
                 }
             }
             if (playerTurnManager.getCurrPlayer().getDoNothingContinueTurn()) { // reset for next turn
@@ -334,7 +334,6 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
         }
 
     }
-
     @Override
     public void load(int slotIndex) {
         try (BufferedReader reader = Files.newBufferedReader(getSaveFilePath(slotIndex))) {

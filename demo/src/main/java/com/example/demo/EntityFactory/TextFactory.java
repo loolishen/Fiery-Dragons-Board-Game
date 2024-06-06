@@ -5,7 +5,6 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.example.demo.Config;
-import javafx.scene.Group;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -47,12 +46,13 @@ public class TextFactory extends SpawnFactory {
     }
 
     @Spawns("playerPointsMsg")
-    public Entity playerPointsMsg(SpawnData data){
-        Text pointsMsg = new Text("Player "+ data.get("playerTurn") + " 's points: " + data.get("playerPoints"));
-        pointsMsg.setFont(Font.font("Arial", 24));
-        int playerID = data.get("playerTurn");
-        pointsMsg.setFill(Config.COLORS[playerID - 1]);
-        return FXGL.entityBuilder(data).view(pointsMsg).build();
+    public Entity playerPointsMsg(SpawnData data) {
+        int currPlayerID = data.get("playerTurn");
+        int currPlayerPoints = data.get("playerPoints");
+        Text pointsText = new Text(data.getX()-20, data.getY()+40, "Points: "+currPlayerPoints);
+        pointsText.setFill(Config.COLORS[currPlayerID-1]);
+        pointsText.setFont(Font.font("Arial", 24));
+        return  FXGL.entityBuilder(data).view(pointsText).build();
     }
 
 }

@@ -28,7 +28,7 @@ import java.util.Objects;
 public class CaveFactory extends SpawnFactory implements LoadSave {
     private final PlayerTurnManager playerTurnManager;
     private final double circle_radius;
-    private  Cave[] caves=new Cave[Config.NUM_PLAYERS];
+    private final Cave[] caves=new Cave[Config.NUM_PLAYERS];
 
     public CaveFactory(double newCircleRadius, PlayerTurnManager playerTurnManager){
         circle_radius = newCircleRadius;
@@ -103,7 +103,7 @@ public class CaveFactory extends SpawnFactory implements LoadSave {
                                 Integer.parseInt(parts[0]),
                                 Double.parseDouble(parts[1]),
                                 Double.parseDouble(parts[2]),
-                                Utils.stringTypeMapping(parts[3])
+                                stringTypeMapping(parts[3])
                         );
                     }
                 }

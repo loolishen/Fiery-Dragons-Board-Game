@@ -51,7 +51,13 @@ public class Leprechaun extends Animal{
                     counterPartMoveAmount = -closestTokenDiff;
                 } // else: move forwards by closestTokenDiff
             } else {
-                if (dragonTokenCurrPos > destinationID) {
+                // normalising pos in ring
+                if ((dragonToken.getCurrentPositionInRing() > 20 && dragonToken.getCurrentPositionInRing() <= 24)
+                        && (dragonTokenToSwap.getCurrentPositionInRing() >= 1 && dragonTokenToSwap.getCurrentPositionInRing() <= 7)){
+                    moveAmount = closestTokenDiff;
+                    counterPartMoveAmount = Config.VOLCANO_RING_NUM_CARDS-closestTokenDiff;
+                }
+                else if (dragonTokenCurrPos > destinationID) {
                     moveAmount = Config.VOLCANO_RING_NUM_CARDS - closestTokenDiff;
                     counterPartMoveAmount = closestTokenDiff;
                 } else {

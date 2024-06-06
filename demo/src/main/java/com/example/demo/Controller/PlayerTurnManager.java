@@ -79,8 +79,6 @@ public class PlayerTurnManager implements InitModel, LoadSave {
             playerTurn += 1;
         }
         currPlayer = players[playerTurn-1];
-
-        TextDisplayManager.getInstance().displayPlayerPointsMsg(currPlayer.getId(),currPlayer.getPoints());
     }
 
     public boolean checkWinCondition(){
@@ -152,10 +150,12 @@ public class PlayerTurnManager implements InitModel, LoadSave {
                     else if (parts[0].equals("Player")){
                         String[] fields2 = parts[1].split(",");
                         Player newPlayer = new Player(playerIdx, Config.ANIMAL_TYPES[RAND_ANIMAL_CHOICES.get(playerIdx-1)], textDisplayManager);
+                        newPlayer.setPoints(Integer.parseInt(fields2[2]));
+                        newPlayer.setIncorrectRevealCounter(Integer.parseInt(fields2[3]));
+                        newPlayer.setEqualityBoost(fields2[4].equals("true"));
                         newPlayer.setDoNothingContinueTurn(fields2[0].equals("true"));
                         newPlayer.setTurnEnded(fields2[1].equals("true"));
                         players[playerIdx-1]=newPlayer;
-
                     }
                 }
                 break;
