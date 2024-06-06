@@ -21,7 +21,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 
-import javax.swing.text.DefaultHighlighter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -38,10 +37,11 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
     private final ChitCardAdapter chitCardAdapter = new ChitCardAdapter();
     private PlayerTurnManager playerTurnManager;
     private final TextDisplayManager textDisplayManager=new TextDisplayManager();
-    private final LoadSaveUI loadSaveUI = new LoadSaveUI(this);
+    private final LoadSaveUI loadSaveUI = new LoadSaveUI(this); // the load save UI needs to be able to
+    // inform the application of the save slot
 
-    private ArrayList<LoadSave> loadSaves = new ArrayList<>();
-    private int slotToLoad=-1;
+    private ArrayList<LoadSave> loadSaves = new ArrayList<>(); // array of classes involved in load/save
+    private int slotToLoad=Config.NEW_GAME; // by default, we start a new game
 
 
     public static void main(String[] args) {
@@ -54,7 +54,7 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
 
     private void registerLoadSave(LoadSave loadSave){
         loadSaves.add(loadSave);
-    }
+    } // add LoadSave instance to array
     @Override
     protected void initSettings(GameSettings gameSettings) {
 
@@ -109,9 +109,10 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
     }
 
     /**
-     * This method creates the factories and state managers etc. according to saved file
-     * @param slotIndex
-     * @return
+     * This method creates the factories and state managers etc. according to the saved file
+     * The LoadSave instances call their load() implementations to initialise the Model classes, and so that the
+     * factory classes can spawn the View components
+     * @param slotIndex the index telling us which save file to read from
      */
     private void loadGameState(int slotIndex) {
         load(slotIndex);
@@ -199,8 +200,8 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
         endGame = false;
         loadSaves = new ArrayList<>();
 
-        // if loading fails for whatever reason, then we start a new game
-        if (slotToLoad==-1) {
+        //
+        if (slotToLoad==Config.NEW_GAME) {
             registerLoadSave(chitCardAdapter);
 
             playerTurnManager = new PlayerTurnManager(textDisplayManager);
@@ -254,8 +255,7 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
 
             // start first player's turn
             playTurn();
-        }else{loadGameState(slotToLoad);}//for testing let's use slot 1
-        slotToLoad =0;
+        }else{loadGameState(slotToLoad);}
 
     }
 
@@ -266,17 +266,19 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
                 textDisplayManager.handleEndGame(playerTurnManager.getWinner().getId());
             } else {
                 if (playerTurnManager.getCurrPlayer().getTurnEnded()) {
+                    // remove old text displays
                     turnEnded = true;
                     textDisplayManager.removeOldTurnUpdateMsg(textDisplayManager.getCurrentTextEntity());
                     textDisplayManager.removeOldMovementCountMsg(textDisplayManager.getCurrentMovementCountEntity());
                     textDisplayManager.removeOldPointsMsg(textDisplayManager.getCurrentPointsEntity());
+                    // transition turn
                     ChitCardFlipManager.getInstance().handleTurnEnd(chitCardAdapter);
                     playerTurnManager.handleTurnTransition();
                     Player currPlayer = playerTurnManager.getCurrPlayer();
                     textDisplayManager.handleTurnTransition(currPlayer.getId());
                     textDisplayManager.handleMovementCountUpdate(currPlayer.getId(), currPlayer.getDragonToken().getTotalMovementCount());
                     textDisplayManager.updatePointsDisplay(currPlayer.getId(), currPlayer.getPoints());
-                    playTurn();
+                    playTurn(); //start next player's turn
                     turnEnded=false;
                 }
             }
@@ -292,7 +294,6 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
             // handle the uncovering of chit card
             ChitCardFlipManager.getInstance().handleUncover(chitCardChosen, chitCardAdapter.getViewControllerMapping().get(chitCardChosen));
             int result = playerTurnManager.getCurrPlayer().validateMove(chitCardChosen, chitCardAdapter); // result = 0 means end turn, otherwise it is destination ring ID that token should move to
-            System.out.println("The result is "+result);
             if (!playerTurnManager.getCurrPlayer().getDoNothingContinueTurn()) { // this block is not executed when card is dragon pirate and player is currently on cave (has not moved out)
                 if (result != Config.END_TURN_RESULT) {
                     int animalCount = chitCardAdapter.getViewControllerMapping().get(chitCardChosen).getAnimal().getCount();
@@ -334,6 +335,10 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
         }
 
     }
+
+    /**
+     * Mainly to determine if the loaded game state is one where the game has ended
+     */
     @Override
     public void load(int slotIndex) {
         try (BufferedReader reader = Files.newBufferedReader(getSaveFilePath(slotIndex))) {
@@ -352,7 +357,7 @@ public class FieryDragonsApplication extends GameApplication implements LoadSave
 
     @Override
     public void save(BufferedWriter writer, int slotIndex) throws IOException {
-        // Save current state
+        // Save current state of whether game has ended
         writer.write("Application\n");
         writer.write(endGame+""+"\n");
         writer.write("*\n");

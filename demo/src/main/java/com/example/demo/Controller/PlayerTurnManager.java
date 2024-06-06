@@ -34,11 +34,11 @@ import static com.example.demo.EntityFactory.DragonTokenFactory.DRAGON_TOKEN_IMA
 
 public class PlayerTurnManager implements InitModel, LoadSave {
     private final ArrayList<Integer> RAND_ANIMAL_CHOICES;
-    private  Player[] players=new Player[Config.NUM_PLAYERS];
+    private final Player[] players=new Player[Config.NUM_PLAYERS];
     private Player currPlayer;
     private int playerTurn;
     private Player winner;
-    private TextDisplayManager textDisplayManager;
+    private final TextDisplayManager textDisplayManager;
 
     public PlayerTurnManager(TextDisplayManager textDisplayManager){
         RAND_ANIMAL_CHOICES = new ArrayList<>(Arrays.asList(0,1,2,3));
@@ -48,12 +48,17 @@ public class PlayerTurnManager implements InitModel, LoadSave {
 
 
     /**
-     * Connascenece of execution: can only be called after getInstance() is called
+     * Connascence of execution: can only be called after getInstance() is called
      * @return the players
      */
     public Player[] getPlayers() {
         return players;
     }
+
+    /**
+     * Creates the array of players and initialises the first player as current player. This is only used for new games
+     * @param data payload containing the number of players to create
+     */
     @Override
     public void createModel(SpawnData data){
         int numPlayers = data.get("numPlayers");
@@ -71,6 +76,9 @@ public class PlayerTurnManager implements InitModel, LoadSave {
         return currPlayer;
     }
 
+    /**
+     * Transitions player turn
+     */
     public void handleTurnTransition(){
         currPlayer.setTurnEnded(false); // reset for next round
         if (playerTurn == players.length) { // reset to 1 if the 4th player ended their turn
@@ -81,6 +89,10 @@ public class PlayerTurnManager implements InitModel, LoadSave {
         currPlayer = players[playerTurn-1];
     }
 
+    /**
+     * Checks for a win condition
+     * @return boolean indicating a winner has been identified
+     */
     public boolean checkWinCondition(){
         boolean winnerFound = false;
         for (Player player: players){
@@ -96,6 +108,14 @@ public class PlayerTurnManager implements InitModel, LoadSave {
         return winner;
     }
 
+    /**
+     * Loads the state of itself, the players, and the dragon token.
+     * While this method is bloated, it is necessary so that the logic is correct. It also prevents any errors
+     * due to connascence of execution if we were to separate the load functionality into the separate classes.
+     * For example, creating a player, and its dragon token, and linking them to each other
+     * @param slotIndex the slot chosen for loading the game
+     * @throws IOException error encountered in relation to opening a save file for reading
+     */
     @Override
     public void load(int slotIndex) throws IOException{
         BufferedReader reader = Files.newBufferedReader(getSaveFilePath(slotIndex));
@@ -110,13 +130,15 @@ public class PlayerTurnManager implements InitModel, LoadSave {
             if (line.equals("PlayerTurnManager")) {
                 String currPlayer =reader.readLine();
                 String [] parts_ = currPlayer.split(":");
+                // parse the current player info
                 String[] fields_ = parts_[1].split(",");
                 currPlayerID = Integer.parseInt(fields_[0]);
                 currPlayerTurn = Integer.parseInt(fields_[1]);
-                if (!fields_[2].equals("null")){winnerID=Integer.parseInt(fields_[2]);}
+                if (!fields_[2].equals("null")){winnerID=Integer.parseInt(fields_[2]);} // parse whether a winner is present
                 int playerIdx = 1;
                 while (!(line = reader.readLine()).equals("*")) {
                     String[] parts = line.split(":");
+                    // parse the token
                     if (parts[0].equals("Token")) {
                         String[] fields = parts[1].split(",");
                         double x = appCentreX + tokenRadius * Math.cos(Double.parseDouble(fields[0]));
@@ -142,11 +164,12 @@ public class PlayerTurnManager implements InitModel, LoadSave {
                         dragonToken.setCurrentPosition(VolcanoRingFactory.getVolcanoCardByID(Integer.parseInt(fields[2])));
                         dragonToken.setTotalMovementCount(Integer.parseInt(fields[4]));
                         if (fields[3].equals("true")){dragonToken.setMovedOutOfCave();}
-                        players[playerIdx-1].setDragonToken(dragonToken);
+                        players[playerIdx-1].setDragonToken(dragonToken); // set the initialised dragon token for the player
                         DragonTokenManager.addDragonToken(dragonToken);
                         playerIdx+=1;
 
                     }
+                    // parse the individual player
                     else if (parts[0].equals("Player")){
                         String[] fields2 = parts[1].split(",");
                         Player newPlayer = new Player(playerIdx, Config.ANIMAL_TYPES[RAND_ANIMAL_CHOICES.get(playerIdx-1)], textDisplayManager);
@@ -155,17 +178,24 @@ public class PlayerTurnManager implements InitModel, LoadSave {
                         newPlayer.setEqualityBoost(fields2[4].equals("true"));
                         newPlayer.setDoNothingContinueTurn(fields2[0].equals("true"));
                         newPlayer.setTurnEnded(fields2[1].equals("true"));
-                        players[playerIdx-1]=newPlayer;
+                        players[playerIdx-1]=newPlayer; // initialise Players
                     }
                 }
                 break;
             }
         }
+        // initialise state based on loaded data
         currPlayer = players[currPlayerID-1];
         playerTurn = currPlayerTurn;
         if (winnerID!=0){winner=players[winnerID-1];}
     }
 
+    /**
+     * Here, we save our state into the file, and call upon the player and dragon tokens to save their states as well
+     * @param writer the writer
+     * @param slotIndex slot to save
+     * @throws IOException error when trying to get a file path
+     */
     @Override
     public void save(BufferedWriter writer, int slotIndex) throws IOException{
         // Save current state
@@ -175,10 +205,10 @@ public class PlayerTurnManager implements InitModel, LoadSave {
             winnerID = winner.getId()+"";
         }else{winnerID="null";}
         writer.write("currPlayer:" + currPlayer.getId()+ ","+playerTurn + ","+winnerID+"\n");
+        // call respective components to save their state
         for (Player player:players){
             writer.write(player.loadSaveString() + "\n");
             writer.write(player.getDragonToken().loadSaveString() + "\n");
-
         }
         writer.write("*\n");
     }

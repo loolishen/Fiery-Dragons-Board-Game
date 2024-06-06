@@ -3,8 +3,11 @@ package com.example.demo.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Logical representation of a shop. It contains a list of purchasable items
+ */
 public class Shop {
-    private List<ShopItem> items;
+    private final List<ShopItem> items;
 
     public Shop() {
         this.items = new ArrayList<>();
@@ -16,15 +19,6 @@ public class Shop {
 
     public List<ShopItem> getItems() {
         return items;
-    }
-
-    public ShopItem getItemByName(String itemName) {
-        for (ShopItem item : items) {
-            if (item.getName().equals(itemName)) {
-                return item;
-            }
-        }
-        return null;
     }
 
 }

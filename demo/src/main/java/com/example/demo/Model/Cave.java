@@ -2,6 +2,9 @@ package com.example.demo.Model;
 
 import com.example.demo.Animals.AnimalType;
 
+/**
+ * Stores the information of a cave necessary for enabling the load/save functionality
+ */
 public class Cave {
     private final int playerID;
     private final double xPos;

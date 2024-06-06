@@ -15,6 +15,9 @@ import static com.example.demo.Animals.AnimalType.*;
  */
 
 public class Config {
+    // save/load
+    public static final int NEW_GAME = -1;
+
     // For RNG testing
     public static long RNG_SEED = 531;
     public static long NO_SEED = 0; // when we want true randomness each time

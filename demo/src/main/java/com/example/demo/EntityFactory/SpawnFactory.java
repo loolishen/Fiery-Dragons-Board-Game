@@ -5,8 +5,6 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
 
 /**
  * Abstract class for classes that use the FXGL entity factory interface. Its default spawn()
@@ -21,7 +19,7 @@ public abstract class SpawnFactory implements EntityFactory {
 
     /**
      * Spawns the entity into the game world by rendering it. It can only be added once into the FXGL gameworld
-     * @param isNewGame
+     * @param isNewGame boolean indicating whether it is a new game
      */
     public void spawn(boolean isNewGame){
         FXGL.getGameWorld().addEntityFactory(this);

@@ -39,15 +39,4 @@ public class Utils {
         } else {Collections.shuffle(array);}
     }
 
-    public static AnimalType stringTypeMapping(String animalTypeString){
-        return switch (animalTypeString) {
-            case "BAT" -> AnimalType.BAT;
-            case "SALAMANDER" -> AnimalType.SALAMANDER;
-            case "BABY_DRAGON" -> AnimalType.BABY_DRAGON;
-            case "SPIDER" -> AnimalType.SPIDER;
-            case "DRAGON_PIRATE"-> AnimalType.DRAGON_PIRATE;
-            case "LEPRECHAUN"-> AnimalType.LEPRECHAUN;
-            default -> null;
-        };
-    }
 }

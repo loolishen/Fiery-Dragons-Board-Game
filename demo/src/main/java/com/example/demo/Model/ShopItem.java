@@ -1,9 +1,12 @@
 package com.example.demo.Model;
 
+/**
+ * A shop item. The name, price and description will be displayed in the UI.
+ */
 public class ShopItem {
-    private String name;
-    private int price;
-    private String description;
+    private final String name;
+    private final int price; // maybe we could implement price increases with each purchase in the future
+    private final String description;
 
     public ShopItem(String name, int price, String description) {
         this.name = name;

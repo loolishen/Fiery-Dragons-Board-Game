@@ -3,6 +3,10 @@ package com.example.demo.Controller;
 import com.example.demo.Config;
 import com.example.demo.Model.DragonToken;
 
+/**
+ * Helps Leprechaun dragon chit card to find the closest dragon token to the current player's dragon token by managing
+ * the list of dragon tokens.
+ */
 public class DragonTokenManager {
 
     private static int closestTokenDiff = 0;
@@ -34,11 +38,10 @@ public class DragonTokenManager {
                 if ((dragonToken.getCurrentPositionInRing() > 20 && dragonToken.getCurrentPositionInRing() <= 24)
                         && (token.getCurrentPositionInRing() >= 1 && token.getCurrentPositionInRing() <= 7)){
                     toSwapPos = token.getCurrentPositionInRing()+24;
-
                 }
+                // only get the shortest distance
                 int firstTokenDiff = Math.abs(toSwapPos-dragonToken.getCurrentPositionInRing());
                 int secondTokenDiff = Math.abs(dragonToken.getCurrentPositionInRing()-toSwapPos);
-                System.out.println("Distances are" + firstTokenDiff + " and " + secondTokenDiff);
                 tokenDiff = Math.min(firstTokenDiff, secondTokenDiff);
                 if (tokenDiff < currDifference){
                     currDifference = tokenDiff;

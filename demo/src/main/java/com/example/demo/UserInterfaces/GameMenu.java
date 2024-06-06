@@ -11,6 +11,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+/**
+ * Representation of in-game menu.
+ */
 public class GameMenu extends FXGLMenu{
     public GameMenu(LoadSaveUI loadInterface) {
         super(MenuType.GAME_MENU);
@@ -34,6 +37,9 @@ public class GameMenu extends FXGLMenu{
 
     }
 
+    /**
+     * Custom button implementation
+     */
     private static class Button extends StackPane {
         private final String description;
 

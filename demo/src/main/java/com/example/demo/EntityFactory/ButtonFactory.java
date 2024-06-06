@@ -1,22 +1,18 @@
 package com.example.demo.EntityFactory;
 
-import com.almasb.fxgl.app.scene.FXGLDefaultMenu;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
 /**
  * The ButtonFactory class is responsible for creating and managing the exit button entity, including its appearance,
  * position, and mouse event listeners for interaction effects such as changing colors and handling clicks.
+ * It is static and does not need to be saved/loaded
  * @author Loo Li Shen
  */
 

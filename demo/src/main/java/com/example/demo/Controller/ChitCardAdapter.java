@@ -2,15 +2,11 @@ package com.example.demo.Controller;
 
 import com.almasb.fxgl.entity.SpawnData;
 import com.example.demo.Animals.Animal;
-import com.example.demo.Animals.AnimalType;
 import com.example.demo.Config;
-import com.example.demo.EntityFactory.ChitCardFactory;
 import com.example.demo.InitModel;
 import com.example.demo.LoadSave;
 import com.example.demo.Model.ChitCard;
-import com.example.demo.Utils.Utils;
 import javafx.scene.shape.Circle;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -18,7 +14,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 
 /**
- * Used to adapt Circle into ChitCard by maintaining a mapping of view to model
+ * Used to adapt Circle into ChitCard by maintaining a mapping of view to model. Involved in the load/save process.
  * @author Liang Dizhen
  */
 public class ChitCardAdapter implements InitModel, LoadSave {

@@ -16,9 +16,13 @@ import javafx.scene.text.Text;
 
 import java.util.Objects;
 
+/**
+ * Shop factory to spawn the components of the shop
+ */
 public class ShopFactory extends SpawnFactory {
-    private final Shop shop;
-    private final String SHIELD_TYPE = "SHIELD";
+    private final Shop shop; // the shop (model)
+    private final String SHIELD_TYPE = "SHIELD"; // currently we have one shop item type, for future extensions we could
+    // have even more items with varying bonuses
 
     PlayerTurnManager playerManager;
 
@@ -30,6 +34,10 @@ public class ShopFactory extends SpawnFactory {
         this.textDisplayManager = textDisplayManager;
     }
 
+    /**
+     * Creates the visuals for the shop which contain the ShopItem name, the price and the description, as well
+     * as a 'Buy' button to purchase the item.
+     */
     @Spawns("shop")
     public Entity shop(SpawnData data) {
         VBox shopUI = new VBox(10);
@@ -60,6 +68,12 @@ public class ShopFactory extends SpawnFactory {
         FXGL.spawn("shop");
     }
 
+    /**
+     * Handles click of the 'buy' button. Insufficient points means no effect.
+     * Otherwise, reduces the player's points.
+     * Makes use of FXGL's notification service to provide helpful feedback to the player
+     * @param item
+     */
     private void handleItemPurchase(ShopItem item) {
         Player currentPlayer = playerManager.getCurrPlayer();
         if (currentPlayer.getPoints() >= item.getPrice()) {

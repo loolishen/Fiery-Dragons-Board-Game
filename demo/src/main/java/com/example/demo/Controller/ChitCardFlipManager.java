@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Used to respond to players flipping chit cards
+ * Used to respond to players flipping chit cards.
  * @author Liang Dizhen
  */
 
@@ -47,6 +47,11 @@ public class ChitCardFlipManager{
     }
 
 
+    /**
+     * Animates the uncovering of the clicked chit card
+     * @param chitCardChosen the shape clicked by the player
+     * @param cardChosen the chit card (model) chosen
+     */
     public void handleUncover(Circle chitCardChosen, ChitCard cardChosen){
         getCoveredChitCardShapes()[cardChosen.getIndex()] = null; // this is so that it won't be listening for clicks on next turn
         uncoveredChitCardsByPlayer.add(cardChosen.getUncoveredForm());
@@ -76,6 +81,10 @@ public class ChitCardFlipManager{
     }
 
 
+    /**
+     * Covers up all chit cards.
+     * @param chitCardAdapter the chit card adapter containing model-view mappings
+     */
     public void handleTurnEnd(ChitCardAdapter chitCardAdapter){
         // do flip back animation
         for (Circle uncoveredChitCard : uncoveredChitCardsByPlayer) {

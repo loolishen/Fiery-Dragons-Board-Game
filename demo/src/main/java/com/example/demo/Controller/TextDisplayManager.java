@@ -12,10 +12,10 @@ import com.example.demo.Config;
 
 public class TextDisplayManager {
     private boolean gameEnd;
+    // below three help with ensuring that the text is only displayed once
     private Entity currentTurnTextEntity;
     private Entity currentMovementCountEntity;
     private Entity currentPointsEntity;
-
 
     public TextDisplayManager(){
     }
@@ -67,7 +67,12 @@ public class TextDisplayManager {
         this.currentMovementCountEntity = movementEntity;
     }
 
-
+    /**
+     * Used for initialising the texts based on the supplied parameters. This works for loading a game as well
+     * @param currPlayerID the current player
+     * @param currDragonTokenMovementCount the current player's movement count
+     * @param currPoints the current player's points (used for purchasing shop items)
+     */
     public void initialize(int currPlayerID, int currDragonTokenMovementCount, int currPoints){
         gameEnd= true;
         setCurrentTextEntity(displayTurnUpdateMsg(currPlayerID));
@@ -75,6 +80,10 @@ public class TextDisplayManager {
         setCurrentPlayerPointsEntity(displayPlayerPointsMsg1(currPlayerID, currPoints));
     }
 
+    /**
+     * Used to handle the end of the game. Once the winner message is displayed we don't display anything else
+     * @param currPlayerID
+     */
     public void handleEndGame(int currPlayerID){
         if (gameEnd) {
             removeOldTurnUpdateMsg(currentTurnTextEntity);
@@ -95,7 +104,6 @@ public class TextDisplayManager {
     }
 
     public Entity displayPlayerPointsMsg1(int currPlayerID, int points) {
-        System.out.println("Displaying");
         SpawnData pointsMsgData = new SpawnData(20, 30);
         pointsMsgData.put("playerTurn", currPlayerID);
         pointsMsgData.put("playerPoints", points); // adding points data to SpawnData

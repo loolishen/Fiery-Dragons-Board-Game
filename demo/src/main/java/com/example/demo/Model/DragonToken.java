@@ -3,7 +3,6 @@ package com.example.demo.Model;
 import com.almasb.fxgl.dsl.FXGL;
 import com.example.demo.Animals.AnimalType;
 import com.example.demo.Config;
-import com.example.demo.LoadSave;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -84,20 +83,14 @@ public class DragonToken {
      * Additionally, it would not be fair if a dragon token keeps going backward beyond its cave, so
      * if a dragon token moves beyond its cave by more than one cycle, we reset it
      * For example, if the total movement count becomes -25, we reset it to -1.
-     * @param steps
+     * @param steps steps taken
      */
     public void updateTotalMovementCount(int steps){
-        System.out.println("token's movement count before adding offset "+totalMovementCount);
         totalMovementCount += steps;
-        System.out.println("token's movement count after adding offset "+totalMovementCount);
-
-        if (totalMovementCount > Config.VOLCANO_RING_NUM_CARDS){
+        if (totalMovementCount > Config.VOLCANO_RING_NUM_CARDS){ // reset if we swapped past cave
             totalMovementCount-=Config.VOLCANO_RING_NUM_CARDS;
-            System.out.println("token's count normalized to "+totalMovementCount);
-        } else if (totalMovementCount < -Config.VOLCANO_RING_NUM_CARDS){
+        } else if (totalMovementCount < -Config.VOLCANO_RING_NUM_CARDS){ // prevent unbounded negative cycles
             totalMovementCount += Config.VOLCANO_RING_NUM_CARDS;
-            System.out.println("token's count normalized to "+totalMovementCount);
-
         }
     }
 
@@ -132,6 +125,9 @@ public class DragonToken {
         return player;
     }
 
+    /**
+     * Returns its save information for the use of the PlayerTurnManger
+     */
     public String loadSaveString(){
         return "Token:"+currPosAngle+","+initialVolcanoCardID+","+getCurrentPositionInRing()+","+movedOutOfCave+","+getTotalMovementCount();
     }

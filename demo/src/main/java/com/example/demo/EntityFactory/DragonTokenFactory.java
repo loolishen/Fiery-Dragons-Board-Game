@@ -32,6 +32,9 @@ public class DragonTokenFactory extends SpawnFactory implements InitModel{
     public static final String[] DRAGON_TOKEN_IMAGE_PATHS = {"/com/example/demo/assets/bluedragon.png", "/com/example/demo/assets/greenDragon.png",
             "/com/example/demo/assets/redDragon.png","/com/example/demo/assets/yellowDragon.png"};
 
+    /**
+     * Spawning dragon tokens based on the initialised dragon token from a load operation
+     */
     @Spawns("loadDragonTokens")
     public Entity loadDragonTokens(SpawnData data){
         Group tokenGroup = new Group();
@@ -47,6 +50,9 @@ public class DragonTokenFactory extends SpawnFactory implements InitModel{
         return FXGL.entityBuilder(data).view(tokenGroup).build();
     }
 
+    /**
+     * Spawns dragon tokens based on pre-defined configuration
+     */
     @Spawns("newDragonTokens")
     public Entity newDragonTokens(SpawnData data) {
         Group tokenGroup = new Group();
@@ -90,6 +96,9 @@ public class DragonTokenFactory extends SpawnFactory implements InitModel{
         return FXGL.entityBuilder(data).view(tokenGroup).build();
     }
 
+    /**
+     * Determines which spawn method to use based on whether or not it is a new game
+     */
     @Override
     public void spawn(boolean isNewGame) {
         super.spawn(isNewGame);
@@ -100,6 +109,9 @@ public class DragonTokenFactory extends SpawnFactory implements InitModel{
         }
     }
 
+    /**
+     * During a new game, helps to set up the state of various 'Model' classes
+     */
     @Override
     public void createModel(SpawnData spawnData) {
         int nextPlayerAt = spawnData.get("nextPlayerAt");
@@ -108,7 +120,7 @@ public class DragonTokenFactory extends SpawnFactory implements InitModel{
         Text playerIDText = spawnData.get("text");
         int i = spawnData.get("idx");
 
-        // set occupied status to True at the start
+        // set occupied status of volcano card to True at the start
         VolcanoRingFactory.getVolcanoCardByID(nextPlayerAt).setOccupied(true);
 
         // create token and assign it to player
@@ -118,6 +130,9 @@ public class DragonTokenFactory extends SpawnFactory implements InitModel{
         playerTurnManager.getPlayers()[i].setDragonToken(dragonToken);
     }
 
+    /**
+     * Create the label that follows the dragon token image whenever it moves
+     */
     private Text createPlayerIDLabel(double x, double y, int id){
         Text playerID = new Text(""+(id+1) + "P");
         playerID.setX(x - (Config.TOKEN_WIDTH / 2.0) + 30);

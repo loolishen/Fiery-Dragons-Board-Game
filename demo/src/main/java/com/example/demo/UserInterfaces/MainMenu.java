@@ -22,13 +22,14 @@ import javafx.scene.text.Text;
 
 /**
  * The MainMenu class defines the main menu of the application, including background image, menu buttons,
- * and their respective actions. Handles UI and user interactions for starting and quitting the game.
+ * and their respective actions. Handles UI and user interactions for starting a new game, loading a saved game,
+ * or quitting the game to the desktop.
  * @author Jia Wynn Khor
  */
 
 public class MainMenu extends FXGLMenu {
 
-    private static ObjectProperty<Button> selectedButton;
+    private static ObjectProperty<Button> selectedButton; // just for fancy visuals
 
     public MainMenu(LoadSaveUI loadSaveUI) {
         super(MenuType.MAIN_MENU);
@@ -66,11 +67,12 @@ public class MainMenu extends FXGLMenu {
 
     }
 
+    // again, below two are for fancy visuals
     private static final Color SELECTED_COLOR = Color.BLACK;
     private static final Color NOT_SELECTED_COLOR = Color.GRAY;
 
     /**
-     * Custome implementation for buttons on the main menu. Allow
+     * Custome implementation for buttons on the main menu.
      */
     private static class Button extends StackPane {
         private final String description;

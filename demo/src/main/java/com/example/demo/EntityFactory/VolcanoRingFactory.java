@@ -43,6 +43,9 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel, LoadS
         return volcanoRing[id-1]; // our ID starts from 1 but array indexing is 0
     }
 
+    /**
+     * Creates volcano ring with pre-defined configuration
+     */
     @Spawns("newVolcanoRing")
     public Entity newVolcanoRing(SpawnData data){
         // Create a group to hold the cards
@@ -101,6 +104,10 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel, LoadS
         return FXGL.entityBuilder(data).view(cardGroup).build();
     }
 
+    /**
+     * Loads the volcano ring based on the initialised volcano card tiles (based on
+     * configuration specified in the saved file)
+     */
     @Spawns("loadVolcanoRing")
     public Entity loadVolcanoRing(SpawnData data){
         int cardCounter = 23;
@@ -160,6 +167,10 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel, LoadS
         return  segments;
     }
 
+    /**
+     * Calls appropriate spawn method based on whether it is new game
+     * @param isNewGame boolean indicating whether it is a new game
+     */
     @Override
     public void spawn(boolean isNewGame) {
         super.spawn(isNewGame);
@@ -175,6 +186,9 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel, LoadS
         }
     }
 
+    /**
+     * Create the rectangle view of the volcano card tile
+     */
     private Rectangle createVolcanoCardShape(double x, double y, VolcanoSegment segment, int j, int cardCounter){
         Rectangle rect = new Rectangle(x - Config.VOLCANO_CARD_WIDTH / 2.0, y - Config.VOLCANO_CARD_HEIGHT / 2.0, Config.VOLCANO_CARD_WIDTH, Config.VOLCANO_CARD_HEIGHT);
         Animal newAnimal = Animal.getAnimal(segment.getSegmentCards()[j].getAnimal(), 1);
@@ -192,7 +206,7 @@ public class VolcanoRingFactory extends SpawnFactory implements InitModel, LoadS
     }
 
     /**
-     * Create the Volcano Card and store in the array of the volcano ring
+     * Create the Volcano Card and store in the array of the volcano ring. This is used only for new games
      * @param spawnData the payload containing information of the VolcanoCard
      */
     @Override

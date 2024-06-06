@@ -63,7 +63,7 @@ public class ChitCardFactory extends SpawnFactory{
 
 
     /**
-     * Get random coordinates for the cards, except Leprechaun
+     * Get random coordinates for the cards
      * @return list of random coordinates
      */
     private static List<int[]> getRandomCoordinates(){
@@ -79,7 +79,6 @@ public class ChitCardFactory extends SpawnFactory{
         int y = Config.SCENE_HEIGHT/2;
 
         sublist.add(new int[]{x, y});
-        // get first 16 unique pairs
         // Shuffle for randomness
         Utils.shuffleIntArray(sublist, Config.RNG_SEED); // this simulates randomness of chit card positions
         return sublist;
@@ -173,6 +172,9 @@ public class ChitCardFactory extends SpawnFactory{
         return uncoveredChitCardShape;
     }
 
+    /**
+     * Used for spawning chit cards that have been initialised as a result of a load
+     */
     private void spawnLoaded(){
         for (ChitCard chitCard : chitCardAdapter.getChitCards()) {
             // create new covered image for every chit card

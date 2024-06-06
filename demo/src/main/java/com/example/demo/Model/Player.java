@@ -23,10 +23,10 @@ public class Player {
     private final int ID;
     private final TextDisplayManager textDisplayManager;
     private final AnimalType caveAnimalType;
-    private int incorrectRevealCounter = 0;
-    private boolean hasEqualityBoost = false;
-    private int points;
-    private boolean hasShield;
+    private int incorrectRevealCounter = 0; // tracks the streak of incorrect flips (mismatches) made by player
+    private boolean hasEqualityBoost = false; // whether the player has an equality boost
+    private int points; // the points the player has, to purchase shop items
+    private boolean hasShield; // whether the player has a shield to negate the dragon pirate's effect
 
     public Player(int newID, AnimalType randAnimalType, TextDisplayManager textDisplayManager){
         ID = newID;
@@ -71,9 +71,16 @@ public class Player {
         int animalCount = chitCardAdapter.getViewControllerMapping().get(cardChosen).getAnimal().getCount();
         return animal.calculateDestinationID(this, dragonToken, animalCount);
     }
+
+    /**
+     * The player moves its token. Additionally, it enlists the help of other classes to update their model's state
+     * @param animalCount the amount the token should move (could be negative if it is for dragon pirate chit card
+     * @param destinationID the destination card's id within the volcano ring
+     * @param isSwap whether this move came from a Leprechaun's swap
+     */
     public void moveToken(int animalCount, int destinationID, boolean isSwap){
+        // update point display
         if (!isSwap){
-            System.out.println("Removing old points message");
             setPoints(getPoints()+animalCount);
             textDisplayManager.removeOldPointsMsg(textDisplayManager.getCurrentPointsEntity());
             textDisplayManager.updatePointsDisplay(getId(), getPoints());
@@ -89,7 +96,7 @@ public class Player {
         // update the state: dragon token's position and total movement count
         VolcanoRingFactory.getVolcanoCardByID(destinationID).setOccupied(true);
         this.getDragonToken().setCurrentPosition(VolcanoRingFactory.getVolcanoCardByID(destinationID));
-        // since we updated movement count, message needs to updated as well
+        // since we updated movement count, the view component needs to updated as well
         this.getDragonToken().updateTotalMovementCount(animalCount);
         textDisplayManager.removeOldMovementCountMsg(textDisplayManager.getCurrentMovementCountEntity());
         textDisplayManager.handleMovementCountUpdate(this.getId(),this.getDragonToken().getTotalMovementCount());
@@ -107,9 +114,13 @@ public class Player {
         return caveAnimalType;
     }
 
+    /**
+     * Provides the save information for the use of PlayerTurnManager
+     */
     public String loadSaveString(){
         return "Player:"+doNothingContinueTurn+","+turnEnded + ","+points+','+incorrectRevealCounter+','+hasEqualityBoost;
     }
+
 
     public int getIncorrectRevealCounter() {
         return incorrectRevealCounter;
@@ -117,6 +128,11 @@ public class Player {
     public void setEqualityBoost(boolean hasEqualityBoost) {
         this.hasEqualityBoost = hasEqualityBoost;
     }
+
+    /**
+     * Performs the equality boost action of moving the dragon token forwards by one step. Nothing happens if the card
+     * in front is occupied.
+     */
     public void useEqualityBoost() {
         if (hasEqualityBoost) {
             int currentPosition = dragonToken.getCurrentPositionInRing();

@@ -35,6 +35,11 @@ public class CaveFactory extends SpawnFactory implements LoadSave {
         this.playerTurnManager = playerTurnManager;
     }
 
+    /**
+     * Method for loading caves. We just use the cave instances in the array since the caves have been initialised
+     * @param data payload
+     * @return the entity
+     */
     @Spawns("loadCaves")
     public Entity loadCaves(SpawnData data){
         Group tokenGroup = new Group();
@@ -45,6 +50,12 @@ public class CaveFactory extends SpawnFactory implements LoadSave {
         }
         return FXGL.entityBuilder(data).view(tokenGroup).build();
     }
+
+    /**
+     * Method for creating the pre-defined cave configuration
+     * @param data payload
+     * @return the entity
+     */
     @Spawns("newCaves")
     public Entity newCaves(SpawnData data){
         Group tokenGroup = new Group();
@@ -71,6 +82,10 @@ public class CaveFactory extends SpawnFactory implements LoadSave {
         return FXGL.entityBuilder(data).view(tokenGroup).build();
     }
 
+    /**
+     * Performs the spawn according to whether it is a new game or a loaded one
+     * @param isNewGame boolean indicating if it is a new game
+     */
     @Override
     public void spawn(boolean isNewGame) {
         super.spawn(isNewGame);
@@ -79,6 +94,13 @@ public class CaveFactory extends SpawnFactory implements LoadSave {
         }else{ FXGL.spawn("loadCaves");}
     }
 
+    /**
+     * Creates the cave shapes(view) and populates the caves array (model) according to the position and id of the player
+     * @param x x-coord
+     * @param y y-coord
+     * @param i player it belongs to
+     * @return Circle circular shape representing the cave
+     */
     private Circle createCaveShapes(double x, double y, int i){
         Circle cave = new Circle(x,y, Config.CAVE_CIRCLE_RADIUS);
         String imagePathPrefix = Config.ANIMAL_IMAGE_IMAGE_PATH_PREFIX_MAPPINGS.get(playerTurnManager.getPlayers()[i].getCaveAnimalType());
@@ -91,6 +113,10 @@ public class CaveFactory extends SpawnFactory implements LoadSave {
         return cave;
     }
 
+    /**
+     * Custom parsing logic for reading the saved caves information. Used to initialise the model
+     * @param slotIndex the chosen load slot
+     */
     @Override
     public void load(int slotIndex){
         try (BufferedReader reader = Files.newBufferedReader(getSaveFilePath(slotIndex))) {
@@ -114,6 +140,13 @@ public class CaveFactory extends SpawnFactory implements LoadSave {
     }
 
 
+    /**
+     * Saves the information of the caves into the save file. Mainly the coordinates of the circular shape and the animal type
+     * Saving the animal type allows for flexibility in changing the config file to use different animals for the cave
+     * @param writer the writer
+     * @param slotIndex the slot to save in (and by extension the file to be created)
+     * @throws IOException
+     */
     @Override
     public void save(BufferedWriter writer, int slotIndex)throws IOException {
         // Save VolcanoRingFactory
