@@ -13,7 +13,7 @@ import com.example.demo.Model.Player;
 
 public class DragonPirate extends Animal{
     public DragonPirate(int count) {
-        super(Config.ANIMAL_IMAGE_IMAGE_PATH_PREFIX_MAPPINGS.get(AnimalType.DRAGON_PIRATE), count, AnimalType.DRAGON_PIRATE);
+        super(Config.ANIMAL_IMAGE_IMAGE_PATH_PREFIX_MAPPINGS.get(AnimalType.DRAGON_PIRATE), Math.abs(count), AnimalType.DRAGON_PIRATE);
     }
 
     @Override
