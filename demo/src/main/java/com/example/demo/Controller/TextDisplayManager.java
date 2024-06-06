@@ -20,7 +20,6 @@ public class TextDisplayManager {
 
     private Player currPlayer;
 
-
     public TextDisplayManager(){
     }
 

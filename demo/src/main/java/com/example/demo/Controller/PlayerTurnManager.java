@@ -80,7 +80,7 @@ public class PlayerTurnManager implements InitModel, LoadSave {
         }
         currPlayer = players[playerTurn-1];
 
-        TextDisplayManager.getInstance().displayPlayerPointsMsg(currPlayer.getId(),currPlayer.getPoints());
+        textDisplayManager.displayPlayerPointsMsg1(currPlayer.getId(),currPlayer.getPoints());
     }
 
     public boolean checkWinCondition(){

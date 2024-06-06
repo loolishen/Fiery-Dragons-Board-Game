@@ -1,6 +1,7 @@
 package com.example.demo.Animals;
 
 import com.example.demo.Config;
+import com.example.demo.Controller.ChitCardAdapter;
 import com.example.demo.Controller.TextDisplayManager;
 import com.example.demo.EntityFactory.VolcanoRingFactory;
 import com.example.demo.Model.DragonToken;
@@ -15,6 +16,8 @@ import java.security.PrivateKey;
  */
 
 public class DragonPirate extends Animal{
+
+    private ChitCardAdapter chitCardAdapter;
 
     public DragonPirate(int count) {
         super(Config.ANIMAL_IMAGE_IMAGE_PATH_PREFIX_MAPPINGS.get(AnimalType.DRAGON_PIRATE), count, AnimalType.DRAGON_PIRATE);
@@ -42,9 +45,7 @@ public class DragonPirate extends Animal{
     public void handleSkullCardFlip(Player player) {
         if (player.hasShield()) {
             player.setShield(false); // Consume the shield
-        } else {
-            // Logic to move player backward
-            player.getDragonToken().moveToken(-1);
+            player.getDragonToken().moveToken(chitCardAdapter.getViewControllerMapping().get().getAnimal().getCount());
         }
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Shield Used");
