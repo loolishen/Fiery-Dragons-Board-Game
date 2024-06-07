@@ -18,11 +18,11 @@ This folder contains the single PDF containing all drawn/written deliverables
 ## demo/executables
 
 This folder contains the built executable for launching the game:
-- zip file: fieryDragons.zip
+- zip file:  Sprint3-SwiftCrafters-Executable.zip
   - Platform: Windows
   - Steps to run application:
     - Download and extract zip file.
-    - Open a terminal and navigate to fieryDragons/bin, where 'fieryDragons' is the extracted folder. Example ```cd Downloads/fieryDragons/bin```
+    - Open a terminal and navigate to Sprint3-SwiftCrafters-Executable/bin, where ' Sprint3-SwiftCrafters-Executable' is the extracted folder. Example ```cd Downloads/Sprint3-SwiftCrafters-Executable/bin```
     - Run the command ```./start-game``` to launch the game application.
 
 ## demo/src/main
@@ -71,7 +71,7 @@ Target directory after building the executable:
 This is also shown in the video demonstration.
  1. For convenience, you may want to copy the zip file and place it into an easily accessible directory, e.g. your Downloads folder
  2. Extract the zip file.
- 3. Open a terminal and navigate to fieryDragons/bin, where 'fieryDragons' is the extracted folder. Example ```cd Downloads/fieryDragons/bin```
+ 3. Open a terminal and navigate to  Sprint3-SwiftCrafters-Executable/bin, where 'fieryDragons' is the extracted folder. Example ```cd Downloads/ Sprint3-SwiftCrafters-Executable/bin```
  4. Run the command ```./start-game``` to launch the game application.
 
 
