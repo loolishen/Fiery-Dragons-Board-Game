@@ -10,6 +10,7 @@ need to be added to your Sprint 3 design and executable. In the self-defined cat
 what kind of extensions can be implemented, but it is up to each team how to interpret the guidelines,
 identify and implement their own extensions. The two categories of extensions are defined below.
 Required Extensions
+
 ● Introduce one of two additional, distinct Dragon cards (or “chit” cards) - animal/visualisation of your
 choice - were the action to be taken when one of these two cards is flipped over is as follows:
 ○ New Dragon Card 1: the token of this player needs to go backwards on the board until it finds
@@ -27,7 +28,7 @@ If, for visualisation purposes, you prefer to have an even number of Dragon card
 feel free to add two of the new Dragon card you have implemented.
 ● Loading and saving the game from/to an external (configuration) file in a suitable text (not binary)
 format. The specific format is up to you to define (we will kick-start discussions around file formats
-on the forum; we strongly recommend not to use an XML format), but must allow the following:
+on the forum; we strongly recommend not to use an XML format), but must allow the following:        
 ○ The format must allow for the entire state of a game to be stored and loaded:
 ■ all Volcano cards (including the animals on their tiles and their sequence),
 Note: for Sprint 4, we require Volcano cards to be part of the design/implementation.
